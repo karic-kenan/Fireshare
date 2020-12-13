@@ -35,4 +35,10 @@
     <string name="repeated_password">Confirm your password</string>
     <string name="success_registration">Successfully registered account</string>
 
+    <!-- Add post screen -->
+    <string name="choose_image">Choose image</string>
+    <string name="enter_post_text">Enter post text…</string>
+    <string name="post">Post</string>
+    <string name="error_no_image_chosen">Please choose an image for the post</string>
+
 </resources>
