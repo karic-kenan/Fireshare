@@ -10,4 +10,22 @@
     <string name="error_incorrectly_repeated_password">The passwords do not match</string>
     <string name="error_invalid_credentials">The E-Mail or password is incorrect</string>
     <string name="error_unknown">An unknown error occurred</string>
+
+    <!-- Auth options -->
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+
+    <!-- Login screen -->
+    <string name="login_title">Welcome back</string>
+    <string name="login_subtitle">Sign in to continue</string>
+    <string name="email">Enter your email</string>
+    <string name="password">Enter your password</string>
+
+    <!-- Register screen -->
+    <string name="register_title">Hey, get on board</string>
+    <string name="register_subtitle">Sign up to continue</string>
+    <string name="username">Enter your username</string>
+    <string name="repeated_password">Confirm your password</string>
+    <string name="success_registration">Successfully registered account</string>
+
 </resources>

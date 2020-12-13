@@ -60,7 +60,7 @@ class AuthViewModel(
         }
 
         error?.let {
-            _registerStatus.postValue(Event(Resource.Failure(it)))
+            _registerStatus.postValue(Event(Resource.Error(it)))
             return
         }
 
@@ -74,7 +74,7 @@ class AuthViewModel(
     fun login(email: String, password: String) {
         if (email.isEmpty() or password.isEmpty()) {
             val error = applicationContext.getString(R.string.error_input_empty)
-            _loginStatus.postValue(Event(Resource.Failure(error)))
+            _loginStatus.postValue(Event(Resource.Error(error)))
         } else {
             _loginStatus.postValue(Event(Resource.Loading()))
             viewModelScope.launch(dispatchers) {

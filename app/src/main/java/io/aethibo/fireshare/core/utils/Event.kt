@@ -28,9 +28,9 @@ class EventObserver<T>(
             is Resource.Success -> {
                 content.data?.let(onSuccess)
             }
-            is Resource.Failure -> {
+            is Resource.Error -> {
                 t.getContentIfNotHandled()?.let {
-                    onError?.let { error(it) }
+                    onError?.let { error -> error(it.message!!) }
                 }
             }
             is Resource.Loading -> {
