@@ -8,11 +8,11 @@ inline fun <T> safeCall(action: () -> Resource<T>): Resource<T> {
     } catch (e: FirebaseFirestoreException) {
         when (e.code) {
             FirebaseFirestoreException.Code.NOT_FOUND -> {
-                Resource.Failure(e)
+                Resource.Failure(e.localizedMessage)
             }
-            else -> Resource.Failure(e)
+            else -> Resource.Failure(e.localizedMessage)
         }
     } catch (e: Exception) {
-        Resource.Failure(e)
+        Resource.Failure(e.localizedMessage)
     }
 }

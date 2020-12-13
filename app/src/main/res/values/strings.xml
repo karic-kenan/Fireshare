@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Fireshare</string>
+
+    <!-- Auth Screen - Errors -->
+    <string name="error_password_too_short">The password must be at least %d digits long</string>
+    <string name="error_username_too_short">The username can\'t have less than %d characters</string>
+    <string name="error_username_too_long">The username can\'t have more than %d characters</string>
+    <string name="error_not_a_valid_email">Please enter a valid E-Mail</string>
+    <string name="error_input_empty">The fields must not be empty</string>
+    <string name="error_incorrectly_repeated_password">The passwords do not match</string>
+    <string name="error_invalid_credentials">The E-Mail or password is incorrect</string>
+    <string name="error_unknown">An unknown error occurred</string>
 </resources>
