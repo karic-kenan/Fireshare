@@ -9,13 +9,13 @@ import androidx.lifecycle.viewModelScope
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.Event
 import io.aethibo.fireshare.core.utils.Resource
-import io.aethibo.fireshare.domain.main.IMainUseCase
+import io.aethibo.fireshare.domain.add.IAddPostUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AddPostViewModel(
-        private val useCase: IMainUseCase,
+        private val useCase: IAddPostUseCase,
         private val applicationContext: Context,
         private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
