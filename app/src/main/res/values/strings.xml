@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Fireshare</string>
 
+    <!-- Main menu -->
+    <string name="timeline">Timeline</string>
+    <string name="discovery">Discovery</string>
+    <string name="add">Add</string>
+    <string name="feed">Feed</string>
+    <string name="profile">Profile</string>
+
     <!-- Auth Screen - Errors -->
     <string name="error_password_too_short">The password must be at least %d digits long</string>
     <string name="error_username_too_short">The username can\'t have less than %d characters</string>
