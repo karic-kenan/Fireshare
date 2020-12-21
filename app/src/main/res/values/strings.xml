@@ -41,4 +41,9 @@
     <string name="post">Post</string>
     <string name="error_no_image_chosen">Please choose an image for the post</string>
 
+    <!-- Profile screen -->
+    <string name="no_description">No Description</string>
+    <string name="no_location">No Location</string>
+    <string name="profile_updated">Profile updated</string>
+
 </resources>

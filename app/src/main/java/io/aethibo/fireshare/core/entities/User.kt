@@ -6,6 +6,8 @@ import java.util.*
 data class User(
         val uid: String = UUID.randomUUID().toString(),
         val username: String = "",
+        val displayName: String = "",
         val bio: String = "",
-        val photoUrl: String = AppConst.DEFAULT_PROFILE_IMAGE_URL,
+        val location: String = "",
+        val photoUrl: String = AppConst.DEFAULT_PROFILE_PICTURE_URL,
 )

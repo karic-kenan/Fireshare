@@ -10,4 +10,10 @@
         android:name="io.aethibo.fireshare.features.profile.view.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="io.aethibo.fireshare.features.settings.view.SettingsFragment"
+        android:label="SettingsFragment"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

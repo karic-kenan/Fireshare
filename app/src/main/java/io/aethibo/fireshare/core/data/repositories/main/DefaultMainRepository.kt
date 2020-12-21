@@ -6,6 +6,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import io.aethibo.fireshare.core.entities.Post
+import io.aethibo.fireshare.core.entities.ProfileUpdate
+import io.aethibo.fireshare.core.entities.User
 import io.aethibo.fireshare.core.utils.AppConst
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.core.utils.safeCall
@@ -20,6 +22,7 @@ class DefaultMainRepository : MainRepository {
     private val firestore = FirebaseFirestore.getInstance()
     private val storage = Firebase.storage
     private val posts = firestore.collection(AppConst.postsCollection)
+    private val users = firestore.collection(AppConst.usersCollection)
 
     override suspend fun createPost(imageUri: Uri, text: String): Resource<Any> =
             withContext(Dispatchers.IO) {
@@ -42,4 +45,50 @@ class DefaultMainRepository : MainRepository {
                     Resource.Success(Any())
                 }
             }
+
+
+    override suspend fun getSingleUser(uid: String): Resource<User> = withContext(Dispatchers.IO) {
+        safeCall {
+            val user = users.document(uid).get().await().toObject(User::class.java)
+                    ?: throw IllegalStateException()
+            Resource.Success(user)
+        }
+    }
+
+    override suspend fun updateProfile(profileUpdate: ProfileUpdate): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+            val imageUrl = profileUpdate.photoUrl?.let { uri ->
+                updateProfilePicture(profileUpdate.uidToUpdate, uri).toString()
+            }
+
+            val map = mutableMapOf(
+                    "displayName" to profileUpdate.displayName,
+                    "username" to profileUpdate.username,
+                    "bio" to profileUpdate.bio
+            )
+
+            imageUrl?.let { url ->
+                map["photoUrl"] = url
+            }
+
+            users.document(profileUpdate.uidToUpdate).update(map.toMap()).await()
+
+            Resource.Success(Any())
+        }
+    }
+
+    override suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri? = withContext(Dispatchers.IO) {
+        val storageRef = storage.getReference(uid)
+        val user = getSingleUser(uid).data!!
+
+        if (user.photoUrl != AppConst.DEFAULT_PROFILE_PICTURE_URL)
+            storage.getReferenceFromUrl(user.photoUrl).delete().await()
+
+        storageRef.putFile(imageUri)
+                .await()
+                .metadata
+                ?.reference
+                ?.downloadUrl
+                ?.await()
+    }
 }
