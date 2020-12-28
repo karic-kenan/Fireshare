@@ -16,36 +16,34 @@ import coil.transform.RoundedCornersTransformation
 import com.google.firebase.auth.FirebaseAuth
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.Post
-import kotlinx.android.synthetic.main.layout_item_post.view.*
 
 class PostAdapter : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(Companion) {
 
     companion object : DiffUtil.ItemCallback<Post>() {
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem.id == newItem.id
+            oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem.hashCode() == newItem.hashCode()
+            oldItem.hashCode() == newItem.hashCode()
     }
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivPostImage: ImageView = itemView.postImage
-        val ivAuthorProfileImage: ImageView = itemView.postAvatar
-        val tvPostAuthor: TextView = itemView.postUsername
-        val tvPostText: TextView = itemView.postDescription
-        val tvDate: TextView = itemView.postDate
-        val tvLikedBy: TextView = itemView.postLikeCountTxt
-        val tvCommentedBy: TextView = itemView.postCommentCount
-        val ibLike: ImageButton = itemView.postLikeButton
-        val ibComment: ImageButton = itemView.postCommentButton
-        val ibShare: ImageButton = itemView.postShareButton
-        val ibMenu: ImageButton = itemView.postMenu
+        val ivPostImage: ImageView = itemView.findViewById(R.id.postImage)
+        val ivAuthorProfileImage: ImageView = itemView.findViewById(R.id.postAvatar)
+        val tvPostAuthor: TextView = itemView.findViewById(R.id.postUsername)
+        val tvPostText: TextView = itemView.findViewById(R.id.postDescription)
+        val tvDate: TextView = itemView.findViewById(R.id.postDate)
+        val tvLikedBy: TextView = itemView.findViewById(R.id.postLikeCountTxt)
+        val tvCommentedBy: TextView = itemView.findViewById(R.id.postCommentCountTxt)
+        val ibLike: ImageButton = itemView.findViewById(R.id.postLikeButton)
+        val ibComment: ImageButton = itemView.findViewById(R.id.postCommentButton)
+        val ibMenu: ImageButton = itemView.findViewById(R.id.postMenu)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder =
-            PostViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.layout_item_post, parent, false)
-            )
+        PostViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.layout_item_post, parent, false)
+        )
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val post = getItem(position) ?: return

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/divider_grey" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_edit_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="start|center_vertical"
+        android:text="@string/single_post_menu_option_edit"
+        android:textAllCaps="false"
+        android:textColor="?android:attr/textColorPrimary"
+        app:cornerRadius="15dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_delete_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="start|center_vertical"
+        android:text="@string/single_post_menu_option_delete"
+        android:textAllCaps="false"
+        android:textColor="?android:attr/textColorPrimary"
+        app:cornerRadius="15dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_share_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="start|center_vertical"
+        android:text="@string/single_post_menu_option_share"
+        android:textAllCaps="false"
+        android:textColor="?android:attr/textColorPrimary"
+        app:cornerRadius="15dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/option_copy_link_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/open_sans_regular"
+        android:gravity="start|center_vertical"
+        android:text="@string/single_post_menu_option_copy_link"
+        android:textAllCaps="false"
+        android:textColor="?android:attr/textColorPrimary"
+        app:cornerRadius="15dp" />
+</LinearLayout>

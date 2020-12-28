@@ -22,8 +22,8 @@
 
         <ImageView
             android:id="@+id/ivProfileImage"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:layout_marginTop="32dp"
             tools:srcCompat="@tools:sample/avatars" />

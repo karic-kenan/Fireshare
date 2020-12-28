@@ -3,6 +3,7 @@ package io.aethibo.fireshare.features.profile.view
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
@@ -20,12 +21,12 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.OnClickListener {
+open class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.OnClickListener {
 
     private val binding: FragmentProfileBinding by viewBinding()
     private val viewModel: ProfileViewModel by viewModel()
 
-    private val uid: String
+    protected open val uid: String
         get() = FirebaseAuth.getInstance().uid!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,7 +34,6 @@ class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.OnClic
 
         viewModel.loadProfile(uid)
 
-        setupRecyclerView()
         setupButtonClickListeners()
         subscribeToObservers()
         setupAdapter()
@@ -42,18 +42,21 @@ class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.OnClic
     private fun setupAdapter() {
         lifecycleScope.launch {
             viewModel.getPagingFlow(uid).collect {
-                postsAdapter.submitData(it)
+                profilePostAdapter.submitData(it)
             }
         }
 
         lifecycleScope.launch {
-            postsAdapter.loadStateFlow.collectLatest {
-                binding.profileHeader.profileProgressBar.isVisible = it.refresh is LoadState.Loading || it.append is LoadState.Loading
+            profilePostAdapter.loadStateFlow.collectLatest {
+                if (lifecycle.currentState == Lifecycle.State.RESUMED) {
+                    binding.profileHeader.profileProgressBar.isVisible =
+                            it.refresh is LoadState.Loading || it.append is LoadState.Loading
+                }
             }
         }
 
         binding.rvProfilePosts.apply {
-            adapter = postsAdapter
+            adapter = profilePostAdapter
             itemAnimator = null
         }
     }
@@ -65,9 +68,12 @@ class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.OnClic
                 },
                 onSuccess = { user ->
                     binding.profileHeader.profileProgressBar.isVisible = false
-                    binding.profileHeader.tvProfileUsername.text = if (user.displayName.isEmpty()) user.username else user.displayName
-                    binding.profileHeader.tvProfileBio.text = if (user.bio.isEmpty()) getString(R.string.no_description) else user.bio
-//                    binding.tvProfileLocation.text = if (user.location.isEmpty()) getString(R.string.no_location) else user.location
+                    binding.profileHeader.tvProfileUsername.text =
+                            if (user.displayName.isEmpty()) user.username else user.displayName
+                    binding.profileHeader.tvProfileBio.text =
+                            if (user.bio.isEmpty()) getString(R.string.no_description) else user.bio
+                    binding.profileHeader.tvProfileLocation.text =
+                            if (user.location.isEmpty()) getString(R.string.no_location) else user.location
                     binding.profileHeader.ivProfileAvatar.load(user.photoUrl) {
                         crossfade(true)
                         transformations(CircleCropTransformation())
@@ -81,10 +87,6 @@ class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.OnClic
 
     private fun setupButtonClickListeners() {
         binding.profileHeader.btnProfileSettings.setOnClickListener(this)
-    }
-
-    private fun setupRecyclerView() {
-
     }
 
     override fun onClick(view: View?) {

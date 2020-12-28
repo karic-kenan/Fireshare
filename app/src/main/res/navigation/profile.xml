@@ -9,11 +9,25 @@
         android:id="@+id/profileFragment"
         android:name="io.aethibo.fireshare.features.profile.view.ProfileFragment"
         android:label="ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_detailPostFragment"
+            app:destination="@id/detailPostFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="io.aethibo.fireshare.features.settings.view.SettingsFragment"
         android:label="SettingsFragment"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/detailPostFragment"
+        android:name="io.aethibo.fireshare.features.singlepost.view.DetailPostFragment"
+        android:label="DetailPostFragment"
+        tools:layout="@layout/layout_item_post">
+        <argument
+            android:name="singlePost"
+            app:argType="io.aethibo.fireshare.core.entities.Post" />
+    </fragment>
 </navigation>

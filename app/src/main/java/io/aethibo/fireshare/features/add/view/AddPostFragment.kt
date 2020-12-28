@@ -33,7 +33,6 @@ class AddPostFragment : Fragment(R.layout.fragment_add_post), View.OnClickListen
 
         override fun createIntent(context: Context, input: Any?): Intent {
             return CropImage.activity()
-                    .setAspectRatio(16, 9)
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .getIntent(requireContext())
         }

@@ -1,9 +1,12 @@
 package io.aethibo.fireshare.core.entities
 
+import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
+import kotlinx.android.parcel.Parcelize
 
 @IgnoreExtraProperties
+@Parcelize
 data class Post(
         val id: String = "",
         val ownerId: String = "",
@@ -16,4 +19,4 @@ data class Post(
         val location: String = "",
         val imageUrl: String = "",
         val timestamp: Long = 0L,
-)
+) : Parcelable

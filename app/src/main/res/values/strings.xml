@@ -46,4 +46,16 @@
     <string name="no_location">No Location</string>
     <string name="profile_updated">Profile updated</string>
 
+    <!-- Single post detail -->
+    <string name="single_post_no_likes">No likes</string>
+    <string name="single_post_one_like">1 like</string>
+    <string name="single_post_multiple_likes">%d likes</string>
+    <string name="single_post_no_comments">No comments</string>
+    <string name="single_post_one_comment">1 comment</string>
+    <string name="single_post_multiple_comments">%d comments</string>
+    <string name="single_post_menu_option_edit">Edit post</string>
+    <string name="single_post_menu_option_delete">Delete post</string>
+    <string name="single_post_menu_option_share">Share to…</string>
+    <string name="single_post_menu_option_copy_link">Copy link</string>
+
 </resources>
