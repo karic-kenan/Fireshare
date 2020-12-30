@@ -7,13 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.Post
+import io.aethibo.fireshare.core.entities.PostToUpdate
 import io.aethibo.fireshare.core.utils.Event
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.domain.post.IPostUseCase
+import io.aethibo.fireshare.features.singlepost.view.DetailPostFragmentDirections
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,6 +34,11 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
     val deletePostStatus: LiveData<Event<Resource<Post>>>
         get() = _deletePostStatus
 
+    private var updatePostJob: Job? = null
+    private val _updatePostStatus: MutableLiveData<Event<Resource<Any>>> = MutableLiveData()
+    val updatePostStatus: LiveData<Event<Resource<Any>>>
+        get() = _updatePostStatus
+
     fun toggleLikeForPost(post: Post) {
         likeJob?.cancel()
 
@@ -38,6 +46,16 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
         likeJob = viewModelScope.launch(dispatcher) {
             val result = postUseCase.toggleLikeForPost(post)
             _likePostStatus.postValue(Event(result))
+        }
+    }
+
+    fun updatePost(postToUpdate: PostToUpdate) {
+        updatePostJob?.cancel()
+
+        _updatePostStatus.postValue(Event(Resource.Loading()))
+        updatePostJob = viewModelScope.launch(dispatcher) {
+            val result = postUseCase.updatePost(postToUpdate)
+            _updatePostStatus.postValue(Event(result))
         }
     }
 
@@ -59,7 +77,8 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
     fun singlePostOptionsMenuClicked(
             context: Context,
             layoutInflater: LayoutInflater,
-            post: Post
+            post: Post,
+            findNavController: NavController
     ) {
         val builder = BottomSheetDialog(context)
         val dialogView = layoutInflater.inflate(R.layout.single_post_options_menu, null)
@@ -79,6 +98,7 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
 
         editButton.setOnClickListener {
             Timber.i("Post ${post.id} edited")
+            findNavController.navigate(DetailPostFragmentDirections.actionDetailPostFragmentToEditPostFragment(post))
             builder.dismiss()
         }
 

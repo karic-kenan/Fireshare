@@ -29,5 +29,20 @@
         <argument
             android:name="singlePost"
             app:argType="io.aethibo.fireshare.core.entities.Post" />
+        <action
+            android:id="@+id/action_detailPostFragment_to_editPostFragment"
+            app:destination="@id/editPostFragment"
+            app:popUpTo="@id/detailPostFragment"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editPostFragment"
+        android:name="io.aethibo.fireshare.features.singlepost.view.EditPostFragment"
+        android:label="EditPostFragment"
+        tools:layout="@layout/fragment_edit_post">
+        <argument
+            android:name="post"
+            app:argType="io.aethibo.fireshare.core.entities.Post" />
     </fragment>
 </navigation>

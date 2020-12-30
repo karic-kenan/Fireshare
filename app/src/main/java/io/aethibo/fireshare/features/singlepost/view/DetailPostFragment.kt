@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.load
 import coil.transform.CircleCropTransformation
@@ -16,7 +17,6 @@ import io.aethibo.fireshare.features.utils.snackBar
 import kotlinx.android.synthetic.main.layout_item_post.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
-
 
 class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
 
@@ -80,7 +80,7 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
             }
 
             postMenu.setOnClickListener {
-                viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post)
+                viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post, findNavController())
             }
 
             postDivider.isVisible = false
