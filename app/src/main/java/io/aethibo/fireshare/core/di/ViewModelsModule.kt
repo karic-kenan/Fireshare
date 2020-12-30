@@ -4,7 +4,7 @@ import io.aethibo.fireshare.features.add.viewmodel.AddPostViewModel
 import io.aethibo.fireshare.features.auth.shared.AuthViewModel
 import io.aethibo.fireshare.features.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.features.settings.viewmodel.SettingsViewModel
-import io.aethibo.fireshare.features.singlepost.viewmodel.SinglePostViewModel
+import io.aethibo.fireshare.features.singlepost.viewmodel.DetailPostViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -13,5 +13,5 @@ val viewModelsModule = module {
     viewModel { AddPostViewModel(get(), get()) }
     viewModel { ProfileViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
-    viewModel { SinglePostViewModel() }
+    viewModel { DetailPostViewModel(get()) }
 }

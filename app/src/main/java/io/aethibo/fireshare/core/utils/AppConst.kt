@@ -7,11 +7,21 @@ object AppConst {
      */
     const val usersCollection: String = "users"
     const val postsCollection: String = "posts"
+    const val followersCollection: String = "followers"
+    const val followingCollection: String = "following"
+    const val commentsCollection: String = "comments"
+    const val feedCollection: String = "feed"
+    const val timelineCollection: String = "timeline"
 
     /**
      * Sub-collections
      */
     const val usersPostsCollection: String = "userPosts"
+    const val postCommentsCollection: String = "postComments"
+    const val userFollowersCollection: String = "userFollowers"
+    const val userFollowingCollection: String = "userFollowing"
+    const val userFeedCollection: String = "feedItems"
+    const val userTimelineCollection: String = "timelinePosts"
 
     const val MAX_USERNAME_LENGTH = 8
     const val MIN_USERNAME_LENGTH = 3

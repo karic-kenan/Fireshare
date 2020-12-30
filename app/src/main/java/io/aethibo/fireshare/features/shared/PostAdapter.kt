@@ -63,14 +63,14 @@ class PostAdapter : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(Companio
             tvPostText.text = post.caption
             tvDate.text = DateUtils.getRelativeTimeSpanString(post.timestamp)
 
-            val likeCount = post.likes.size
+            val likeCount = post.likedBy.size
             tvLikedBy.text = when {
                 likeCount <= 0 -> "No likes"
                 likeCount == 1 -> "1 like"
                 else -> "$likeCount likes"
             }
 
-            val commentCount = post.likes.size
+            val commentCount = post.likedBy.size
             tvCommentedBy.text = when {
                 likeCount <= 0 -> "No comments"
                 likeCount == 1 -> "1 comment"

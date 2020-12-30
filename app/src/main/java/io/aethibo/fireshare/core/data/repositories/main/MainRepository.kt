@@ -1,6 +1,8 @@
 package io.aethibo.fireshare.core.data.repositories.main
 
 import android.net.Uri
+import io.aethibo.fireshare.core.entities.Post
+import io.aethibo.fireshare.core.entities.PostToUpdate
 import io.aethibo.fireshare.core.entities.ProfileUpdate
 import io.aethibo.fireshare.core.entities.User
 import io.aethibo.fireshare.core.utils.Resource
@@ -13,4 +15,10 @@ interface MainRepository {
     suspend fun updateProfile(profileUpdate: ProfileUpdate): Resource<Any>
 
     suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri?
+
+    suspend fun updatePost(postToUpdate: PostToUpdate): Resource<Any>
+
+    suspend fun deletePost(post: Post): Resource<Post>
+
+    suspend fun toggleLikeForPost(post: Post): Resource<Boolean>
 }

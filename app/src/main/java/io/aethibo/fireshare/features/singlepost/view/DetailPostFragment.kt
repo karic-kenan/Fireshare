@@ -9,20 +9,42 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import io.aethibo.fireshare.R
-import io.aethibo.fireshare.features.singlepost.viewmodel.SinglePostViewModel
+import io.aethibo.fireshare.core.utils.EventObserver
+import io.aethibo.fireshare.features.singlepost.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.features.utils.BasePostFragment
+import io.aethibo.fireshare.features.utils.snackBar
 import kotlinx.android.synthetic.main.layout_item_post.*
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
+
 
 class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
 
     private val args by navArgs<DetailPostFragmentArgs>()
-    private val viewModel: SinglePostViewModel by viewModel()
+    private val viewModel: DetailPostViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupViews()
+        subscribeToObservers()
+    }
+
+    private fun subscribeToObservers() {
+        viewModel.deletePostStatus.observe(viewLifecycleOwner, EventObserver(
+                onError = { snackBar(it) },
+                onSuccess = {
+                    Timber.i("Post ${it.id} deleted")
+                }
+        ))
+
+        viewModel.likePostStatus.observe(viewLifecycleOwner, EventObserver(
+                onLoading = {},
+                onSuccess = {},
+                onError = {
+                    snackBar(it)
+                }
+        ))
     }
 
     private fun setupViews() {
@@ -38,14 +60,19 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
             postUsername.text = post.authorUsername
             postDate.text = DateUtils.getRelativeTimeSpanString(post.timestamp)
             postDescription.text = post.caption
-            val likeCount = post.likes.size
+
+            postLikeButton?.setOnClickListener {
+                viewModel.toggleLikeForPost(post)
+            }
+
+            val likeCount = post.likedBy.size
             postLikeCountTxt.text = when {
                 likeCount <= 0 -> getString(R.string.single_post_no_likes)
                 likeCount == 1 -> getString(R.string.single_post_one_like)
                 else -> getString(R.string.single_post_multiple_likes, likeCount)
             }
 
-            val commentCount = post.likes.size
+            val commentCount = post.likedBy.size
             postCommentCountTxt.text = when {
                 likeCount <= 0 -> getString(R.string.single_post_no_comments)
                 likeCount == 1 -> getString(R.string.single_post_one_comment)

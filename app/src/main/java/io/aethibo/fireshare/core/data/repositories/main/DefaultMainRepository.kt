@@ -6,6 +6,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import io.aethibo.fireshare.core.entities.Post
+import io.aethibo.fireshare.core.entities.PostToUpdate
 import io.aethibo.fireshare.core.entities.ProfileUpdate
 import io.aethibo.fireshare.core.entities.User
 import io.aethibo.fireshare.core.utils.AppConst
@@ -90,5 +91,56 @@ class DefaultMainRepository : MainRepository {
                 ?.reference
                 ?.downloadUrl
                 ?.await()
+    }
+
+    override suspend fun updatePost(postToUpdate: PostToUpdate): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+            val uid = auth.uid!!
+
+            val map = mutableMapOf("caption" to postToUpdate.caption)
+
+            posts
+                    .document(uid)
+                    .collection(AppConst.usersPostsCollection)
+                    .document(postToUpdate.postIdToUpdate)
+                    .update(map.toMap())
+                    .await()
+
+            Resource.Success(Any())
+        }
+    }
+
+    override suspend fun deletePost(post: Post): Resource<Post> = withContext(Dispatchers.IO) {
+        safeCall {
+            val uid = auth.uid!!
+            posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id).delete().await()
+            storage.getReferenceFromUrl(post.imageUrl).delete().await()
+            Resource.Success(post)
+        }
+    }
+
+    override suspend fun toggleLikeForPost(post: Post): Resource<Boolean> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            var isLiked = false
+
+            firestore.runTransaction { transaction ->
+                val uid = auth.uid!!
+                val postResult = transaction.get(posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id))
+                val currentLikes = postResult.toObject(Post::class.java)?.likedBy ?: emptyList()
+
+                transaction.update(
+                        posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id),
+                        "likedBy",
+                        if (uid in currentLikes)
+                            currentLikes - uid
+                        else {
+                            isLiked = true
+                            currentLikes + uid
+                        })
+            }.await()
+
+            Resource.Success(isLiked)
+        }
     }
 }

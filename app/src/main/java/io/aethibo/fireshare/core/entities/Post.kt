@@ -15,7 +15,11 @@ data class Post(
         @get:Exclude
         var authorProfilePictureUrl: String = "",
         val caption: String = "",
-        val likes: List<Boolean> = emptyList(),
+        @get:Exclude
+        var isLiked: Boolean = false,
+        @get:Exclude
+        var isLiking: Boolean = false,
+        val likedBy: List<String> = emptyList(),
         val location: String = "",
         val imageUrl: String = "",
         val timestamp: Long = 0L,
