@@ -3,12 +3,10 @@ package io.aethibo.fireshare.core.data.repositories.main
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import io.aethibo.fireshare.core.entities.Post
-import io.aethibo.fireshare.core.entities.PostToUpdate
-import io.aethibo.fireshare.core.entities.ProfileUpdate
-import io.aethibo.fireshare.core.entities.User
+import io.aethibo.fireshare.core.entities.*
 import io.aethibo.fireshare.core.utils.AppConst
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.core.utils.safeCall
@@ -24,6 +22,7 @@ class DefaultMainRepository : MainRepository {
     private val storage = Firebase.storage
     private val posts = firestore.collection(AppConst.postsCollection)
     private val users = firestore.collection(AppConst.usersCollection)
+    private val comments = firestore.collection(AppConst.commentsCollection)
 
     override suspend fun createPost(imageUri: Uri, text: String): Resource<Any> =
             withContext(Dispatchers.IO) {
@@ -141,6 +140,60 @@ class DefaultMainRepository : MainRepository {
             }.await()
 
             Resource.Success(isLiked)
+        }
+    }
+
+    override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val commentsForPost = comments
+                    .document(postId)
+                    .collection(AppConst.postCommentsCollection)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .get()
+                    .await()
+                    .toObjects(Comment::class.java)
+                    .onEach { comment ->
+                        val user = getSingleUser(comment.userId).data!!
+
+                        comment.authorUsername = user.username
+                        comment.authorProfilePictureUrl = user.photoUrl
+                    }
+
+            Resource.Success(commentsForPost)
+        }
+    }
+
+    override suspend fun createComment(postId: String, commentText: String): Resource<Comment> = withContext(Dispatchers.IO) {
+        safeCall {
+            val uid = auth.uid!!
+            val user = getSingleUser(uid).data!!
+            val commentId = UUID.randomUUID().toString()
+
+            val comment = Comment(
+                    id = commentId,
+                    userId = uid,
+                    postId = postId,
+                    comment = commentText,
+                    authorUsername = user.username,
+                    authorProfilePictureUrl = user.photoUrl)
+
+            comments.document(postId).collection(AppConst.postCommentsCollection).document(commentId).set(comment).await()
+
+            Resource.Success(comment)
+        }
+    }
+
+    override suspend fun deleteComment(comment: Comment): Resource<Comment> = withContext(Dispatchers.IO) {
+        safeCall {
+            comments
+                    .document(comment.postId)
+                    .collection(AppConst.postCommentsCollection)
+                    .document(comment.id)
+                    .delete()
+                    .await()
+
+            Resource.Success(comment)
         }
     }
 }

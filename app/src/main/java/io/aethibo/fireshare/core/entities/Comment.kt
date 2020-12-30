@@ -6,10 +6,11 @@ import java.util.*
 
 @IgnoreExtraProperties
 data class Comment(
-        val commentId: String = UUID.randomUUID().toString(),
+        val id: String = UUID.randomUUID().toString(),
         val userId: String = "",
+        val postId: String = "",
         val comment: String = "",
-        val timestamp: Long = 0L,
+        val timestamp: Long = System.currentTimeMillis(),
         @get:Exclude
         var authorUsername: String = "",
         @get:Exclude

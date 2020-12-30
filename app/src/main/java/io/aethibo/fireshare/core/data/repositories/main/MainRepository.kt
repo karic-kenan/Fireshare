@@ -1,10 +1,7 @@
 package io.aethibo.fireshare.core.data.repositories.main
 
 import android.net.Uri
-import io.aethibo.fireshare.core.entities.Post
-import io.aethibo.fireshare.core.entities.PostToUpdate
-import io.aethibo.fireshare.core.entities.ProfileUpdate
-import io.aethibo.fireshare.core.entities.User
+import io.aethibo.fireshare.core.entities.*
 import io.aethibo.fireshare.core.utils.Resource
 
 interface MainRepository {
@@ -21,4 +18,10 @@ interface MainRepository {
     suspend fun deletePost(post: Post): Resource<Post>
 
     suspend fun toggleLikeForPost(post: Post): Resource<Boolean>
+
+    suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
+
+    suspend fun createComment(postId: String, comment: String): Resource<Comment>
+
+    suspend fun deleteComment(comment: Comment): Resource<Comment>
 }

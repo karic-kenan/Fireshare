@@ -83,6 +83,10 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
                 viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post, findNavController())
             }
 
+            postCommentButton?.setOnClickListener {
+                findNavController().navigate(DetailPostFragmentDirections.actionDetailPostFragmentToCommentsFragment(post.id))
+            }
+
             postDivider.isVisible = false
         }
     }
