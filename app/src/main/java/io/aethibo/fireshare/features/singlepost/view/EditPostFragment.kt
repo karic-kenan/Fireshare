@@ -13,6 +13,7 @@ import io.aethibo.fireshare.core.utils.EventObserver
 import io.aethibo.fireshare.databinding.FragmentEditPostBinding
 import io.aethibo.fireshare.features.singlepost.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.features.utils.BasePostFragment
+import io.aethibo.fireshare.features.utils.slideUpViews
 import io.aethibo.fireshare.features.utils.snackBar
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -28,6 +29,8 @@ class EditPostFragment : BasePostFragment(R.layout.fragment_edit_post), View.OnC
         setupView()
         setupClickListeners()
         subscribeToObservers()
+
+        slideUpViews(requireContext(), binding.ivEditPost, binding.tilEditPost, binding.mbEditPostSave)
     }
 
     private fun subscribeToObservers() {

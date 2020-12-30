@@ -58,4 +58,10 @@
     <string name="single_post_menu_option_share">Share to…</string>
     <string name="single_post_menu_option_copy_link">Copy link</string>
 
+    <!-- Post dialog -->
+    <string name="delete_post_dialog_title">Delete post</string>
+    <string name="delete_post_dialog_subtitle">Are you sure you want to delete this post?</string>
+    <string name="delete_post_dialog_negative_button">Cancel</string>
+    <string name="delete_post_dialog_positive_button">Delete</string>
+
 </resources>
