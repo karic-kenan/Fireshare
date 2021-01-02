@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Fireshare</string>
 
+    <!-- Misc -->
+    <string name="actionDelete">Delete</string>
+    <string name="actionCancel">Cancel</string>
+
     <!-- Main menu -->
     <string name="timeline">Timeline</string>
     <string name="discovery">Discovery</string>
@@ -61,7 +65,15 @@
     <!-- Post dialog -->
     <string name="delete_post_dialog_title">Delete post</string>
     <string name="delete_post_dialog_subtitle">Are you sure you want to delete this post?</string>
-    <string name="delete_post_dialog_negative_button">Cancel</string>
-    <string name="delete_post_dialog_positive_button">Delete</string>
+
+    <!-- Comment dialog -->
+    <string name="delete_comment_dialog_title">Delete comment</string>
+    <string name="delete_comment_dialog_subtitle">Are you sure you want to remove this comment?</string>
+
+    <!-- Comments screen -->
+    <string name="hint_enter_comment">Enter your comment</string>
+    <string name="description_add_comment">Add your comment</string>
+    <string name="comments_dialog_edit_comment">Edit comment</string>
+    <string name="comments_dialog_delete_comment">Delete comment</string>
 
 </resources>

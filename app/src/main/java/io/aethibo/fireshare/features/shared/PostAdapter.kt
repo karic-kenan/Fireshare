@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
-import com.google.firebase.auth.FirebaseAuth
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.Post
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 
 class PostAdapter : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(Companion) {
 
@@ -77,7 +77,7 @@ class PostAdapter : PagingDataAdapter<Post, PostAdapter.PostViewHolder>(Companio
                 else -> "$commentCount comments"
             }
 
-            val uid = FirebaseAuth.getInstance().uid!!
+            val uid = auth.uid!!
 
         }
     }

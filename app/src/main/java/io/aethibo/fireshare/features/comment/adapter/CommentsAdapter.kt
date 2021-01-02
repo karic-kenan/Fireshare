@@ -1,4 +1,4 @@
-package io.aethibo.fireshare.features.singlepost.misc
+package io.aethibo.fireshare.features.comment.adapter
 
 import android.text.format.DateUtils
 import android.view.LayoutInflater
@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.firebase.auth.FirebaseAuth
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.Comment
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 
 class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 
@@ -37,7 +37,7 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
         val avatar: ImageView = itemView.findViewById(R.id.ivCommentAvatar)
         val username: TextView = itemView.findViewById(R.id.tvCommentUsername)
         val date: TextView = itemView.findViewById(R.id.tvCommentDate)
-        val commentText: TextView = itemView.findViewById(R.id.tvCommenText)
+        val commentText: TextView = itemView.findViewById(R.id.tvCommentText)
         val commentMenu: ImageButton = itemView.findViewById(R.id.ibCommentMenu)
     }
 
@@ -60,7 +60,7 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
             date.text = DateUtils.getRelativeTimeSpanString(comment.timestamp)
             commentText.text = comment.comment
 
-            commentMenu.isVisible = comment.userId == FirebaseAuth.getInstance().uid
+            commentMenu.isVisible = comment.userId == auth.uid
 
             /**
              * Click listeners
@@ -72,7 +72,7 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
             }
 
             commentMenu.setOnClickListener {
-                onDeleteCommentListener?.let { click ->
+                onMenuCommentListener?.let { click ->
                     click(comment)
                 }
             }
@@ -82,14 +82,14 @@ class CommentsAdapter : RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
     /**
      * Click listeners
      */
+    private var onMenuCommentListener: ((Comment) -> Unit)? = null
     private var onUserClickListener: ((Comment) -> Unit)? = null
-    private var onDeleteCommentListener: ((Comment) -> Unit)? = null
+
+    fun setOnMenuCommentClickListener(listener: (Comment) -> Unit) {
+        onMenuCommentListener = listener
+    }
 
     fun setOnUserClickListener(listener: (Comment) -> Unit) {
         onUserClickListener = listener
-    }
-
-    fun setOnDeleteCommentClickListener(listener: (Comment) -> Unit) {
-        onDeleteCommentListener = listener
     }
 }

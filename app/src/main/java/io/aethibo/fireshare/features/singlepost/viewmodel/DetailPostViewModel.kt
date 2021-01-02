@@ -61,10 +61,10 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
 
     private fun deletePost(context: Context, post: Post) {
         AlertDialog.Builder(context)
-                .setTitle(context.getString(R.string.delete_post_dialog_title))
-                .setMessage(context.getString(R.string.delete_post_dialog_subtitle))
-                .setNegativeButton(context.getString(R.string.delete_post_dialog_negative_button)) { _, _ -> }
-                .setPositiveButton(context.getString(R.string.delete_post_dialog_positive_button)) { _, _ ->
+                .setTitle(context.getText(R.string.delete_post_dialog_title))
+                .setMessage(context.getText(R.string.delete_post_dialog_subtitle))
+                .setNegativeButton(context.getText(R.string.actionCancel)) { _, _ -> }
+                .setPositiveButton(context.getText(R.string.actionDelete)) { _, _ ->
                     _deletePostStatus.postValue(Event(Resource.Loading()))
                     viewModelScope.launch(dispatcher) {
                         val result = postUseCase.deletePost(post)

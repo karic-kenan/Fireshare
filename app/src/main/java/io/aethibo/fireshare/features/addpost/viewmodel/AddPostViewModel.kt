@@ -1,4 +1,4 @@
-package io.aethibo.fireshare.features.add.viewmodel
+package io.aethibo.fireshare.features.addpost.viewmodel
 
 import android.content.Context
 import android.net.Uri

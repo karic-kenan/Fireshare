@@ -1,4 +1,4 @@
-package io.aethibo.fireshare.features.add.view
+package io.aethibo.fireshare.features.addpost.view
 
 import android.content.Context
 import android.content.Intent
@@ -16,7 +16,7 @@ import com.theartofdev.edmodo.cropper.CropImageView
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
 import io.aethibo.fireshare.databinding.FragmentAddPostBinding
-import io.aethibo.fireshare.features.add.viewmodel.AddPostViewModel
+import io.aethibo.fireshare.features.addpost.viewmodel.AddPostViewModel
 import io.aethibo.fireshare.features.utils.slideUpViews
 import io.aethibo.fireshare.features.utils.snackBar
 import org.koin.android.viewmodel.ext.android.viewModel

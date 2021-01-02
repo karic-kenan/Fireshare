@@ -5,6 +5,10 @@
     android:id="@+id/profile"
     app:startDestination="@id/profileFragment">
 
+    <action
+        android:id="@+id/globalActionToCommentDialog"
+        app:destination="@id/commentDialog" />
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="io.aethibo.fireshare.features.profile.view.ProfileFragment"
@@ -51,11 +55,20 @@
 
     <fragment
         android:id="@+id/commentsFragment"
-        android:name="io.aethibo.fireshare.features.singlepost.view.CommentsFragment"
+        android:name="io.aethibo.fireshare.features.comment.view.CommentsFragment"
         android:label="CommentsFragment"
         tools:layout="@layout/fragment_comments">
         <argument
             android:name="postId"
             app:argType="string" />
     </fragment>
+
+    <dialog
+        android:id="@+id/commentDialog"
+        android:name="io.aethibo.fireshare.features.comment.view.CommentDialog"
+        android:label="CommentDialog">
+        <argument
+            android:name="comment"
+            app:argType="io.aethibo.fireshare.core.entities.Comment" />
+    </dialog>
 </navigation>

@@ -1,13 +1,12 @@
 package io.aethibo.fireshare.core.data.repositories.main
 
 import android.net.Uri
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import io.aethibo.fireshare.core.entities.*
 import io.aethibo.fireshare.core.utils.AppConst
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
+import io.aethibo.fireshare.core.utils.FirebaseUtil.firestore
+import io.aethibo.fireshare.core.utils.FirebaseUtil.storage
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.core.utils.safeCall
 import kotlinx.coroutines.Dispatchers
@@ -17,9 +16,6 @@ import java.util.*
 
 class DefaultMainRepository : MainRepository {
 
-    private val auth = FirebaseAuth.getInstance()
-    private val firestore = FirebaseFirestore.getInstance()
-    private val storage = Firebase.storage
     private val posts = firestore.collection(AppConst.postsCollection)
     private val users = firestore.collection(AppConst.usersCollection)
     private val comments = firestore.collection(AppConst.commentsCollection)
@@ -194,6 +190,22 @@ class DefaultMainRepository : MainRepository {
                     .await()
 
             Resource.Success(comment)
+        }
+    }
+
+    override suspend fun updateComment(commentToUpdate: CommentToUpdate): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val map = mutableMapOf("comment" to commentToUpdate.comment)
+
+            comments
+                    .document(commentToUpdate.postId)
+                    .collection(AppConst.postCommentsCollection)
+                    .document(commentToUpdate.commentIdToUpdate)
+                    .update(map.toMap())
+                    .await()
+
+            Resource.Success(Any())
         }
     }
 }

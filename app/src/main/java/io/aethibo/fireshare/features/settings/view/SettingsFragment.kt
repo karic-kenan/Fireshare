@@ -13,12 +13,12 @@ import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.firebase.auth.FirebaseAuth
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.ProfileUpdate
 import io.aethibo.fireshare.core.utils.EventObserver
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.databinding.FragmentSettingsBinding
 import io.aethibo.fireshare.features.settings.viewmodel.SettingsViewModel
 import io.aethibo.fireshare.features.utils.slideUpViews
@@ -65,7 +65,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        uid = FirebaseAuth.getInstance().uid!!
+        uid = auth.uid!!
         viewModel.getUser(uid)
 
         subscribeToObservers()

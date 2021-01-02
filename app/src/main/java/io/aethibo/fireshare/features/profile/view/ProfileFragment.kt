@@ -10,9 +10,9 @@ import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.google.firebase.auth.FirebaseAuth
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.databinding.FragmentProfileBinding
 import io.aethibo.fireshare.features.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.features.utils.BasePostFragment
@@ -27,7 +27,7 @@ open class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.O
     private val viewModel: ProfileViewModel by viewModel()
 
     protected open val uid: String
-        get() = FirebaseAuth.getInstance().uid!!
+        get() = auth.uid!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

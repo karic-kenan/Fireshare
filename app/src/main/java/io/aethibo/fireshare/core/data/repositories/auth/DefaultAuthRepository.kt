@@ -1,10 +1,10 @@
 package io.aethibo.fireshare.core.data.repositories.auth
 
 import com.google.firebase.auth.AuthResult
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import io.aethibo.fireshare.core.entities.User
 import io.aethibo.fireshare.core.utils.AppConst
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
+import io.aethibo.fireshare.core.utils.FirebaseUtil.firestore
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.core.utils.safeCall
 import kotlinx.coroutines.Dispatchers
@@ -13,9 +13,8 @@ import kotlinx.coroutines.withContext
 
 class DefaultAuthRepository : AuthRepository {
 
-    private val auth = FirebaseAuth.getInstance()
     private val usersCollection =
-        FirebaseFirestore.getInstance().collection(AppConst.usersCollection)
+        firestore.collection(AppConst.usersCollection)
 
     override suspend fun register(
         email: String,

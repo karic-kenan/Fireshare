@@ -7,12 +7,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.google.firebase.firestore.FirebaseFirestore
 import io.aethibo.fireshare.core.data.pagingsource.ProfilePostsPagingSource
 import io.aethibo.fireshare.core.entities.Post
 import io.aethibo.fireshare.core.entities.User
 import io.aethibo.fireshare.core.utils.AppConst.PAGE_SIZE
 import io.aethibo.fireshare.core.utils.Event
+import io.aethibo.fireshare.core.utils.FirebaseUtil.firestore
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.domain.users.IUserUseCase
 import io.aethibo.fireshare.features.utils.BasePostViewModel
@@ -28,7 +28,7 @@ class ProfileViewModel(private val userUseCase: IUserUseCase, private val dispat
         get() = _profileMeta
 
     fun getPagingFlow(uid: String): Flow<PagingData<Post>> {
-        val pagingSource = ProfilePostsPagingSource(FirebaseFirestore.getInstance(), uid)
+        val pagingSource = ProfilePostsPagingSource(firestore, uid)
 
         return Pager(PagingConfig(PAGE_SIZE)) {
             pagingSource

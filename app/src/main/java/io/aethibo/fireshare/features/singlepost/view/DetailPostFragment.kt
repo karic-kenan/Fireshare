@@ -11,6 +11,7 @@ import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.features.singlepost.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.features.utils.BasePostFragment
 import io.aethibo.fireshare.features.utils.snackBar
@@ -25,6 +26,8 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        postMenu?.isVisible = auth.uid == args.singlePost.ownerId
 
         setupViews()
         subscribeToObservers()

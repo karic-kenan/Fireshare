@@ -24,4 +24,6 @@ interface MainRepository {
     suspend fun createComment(postId: String, comment: String): Resource<Comment>
 
     suspend fun deleteComment(comment: Comment): Resource<Comment>
+
+    suspend fun updateComment(commentToUpdate: CommentToUpdate): Resource<Any>
 }
