@@ -17,7 +17,11 @@ abstract class BasePostFragment(layoutId: Int) : Fragment(layoutId) {
         super.onViewCreated(view, savedInstanceState)
 
         profilePostAdapter.setOnProfilePostClickListener { post, position ->
-            findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToDetailPostFragment(post))
+            try {
+                findNavController().navigate(ProfileFragmentDirections.actionProfileFragmentToDetailPostFragment(post))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }

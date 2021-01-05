@@ -26,4 +26,6 @@ interface MainRepository {
     suspend fun deleteComment(comment: Comment): Resource<Comment>
 
     suspend fun updateComment(commentToUpdate: CommentToUpdate): Resource<Any>
+
+    suspend fun searchUser(query: String): Resource<List<User>>
 }

@@ -27,7 +27,7 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        postMenu?.isVisible = auth.uid == args.singlePost.ownerId
+        postMenu?.isVisible = auth.uid == args.post.ownerId
 
         setupViews()
         subscribeToObservers()
@@ -51,7 +51,7 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
     }
 
     private fun setupViews() {
-        args.singlePost.let { post ->
+        args.post.let { post ->
             postAvatar.load(post.authorProfilePictureUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())

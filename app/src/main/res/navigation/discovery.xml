@@ -9,5 +9,33 @@
         android:id="@+id/discoveryFragment"
         android:name="io.aethibo.fireshare.features.discovery.view.DiscoveryFragment"
         android:label="DiscoveryFragment"
-        tools:layout="@layout/fragment_discovery" />
+        tools:layout="@layout/fragment_discovery">
+        <action
+            android:id="@+id/action_discovery_to_profile"
+            app:destination="@id/othersProfileFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/othersProfileFragment"
+        android:name="io.aethibo.fireshare.features.profile.view.OthersProfileFragment"
+        android:label="OthersProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <argument
+            android:name="user"
+            app:argType="io.aethibo.fireshare.core.entities.User" />
+        <action
+            android:id="@+id/action_othersProfileFragment_to_detailPostFragment"
+            app:destination="@id/detailPostFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailPostFragment"
+        android:name="io.aethibo.fireshare.features.singlepost.view.DetailPostFragment"
+        android:label="DetailPostFragment"
+        tools:layout="@layout/layout_item_post">
+
+        <argument
+            android:name="post"
+            app:argType="io.aethibo.fireshare.core.entities.Post" />
+    </fragment>
 </navigation>

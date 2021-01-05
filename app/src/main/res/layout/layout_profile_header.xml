@@ -70,13 +70,17 @@
         android:textColor="?android:attr/textColorSecondary"
         tools:text="London, UK" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/divider_grey" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_margin="16dp"
         android:baselineAligned="false"
         android:orientation="horizontal">
 
@@ -144,5 +148,65 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/divider_grey" />
+
+    <LinearLayout
+        android:id="@+id/llProfileButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnToggleFollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/pink_main"
+            android:fontFamily="@font/open_sans_regular"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="Follow"
+            android:textAllCaps="false"
+            app:cornerRadius="15dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMessageProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:fontFamily="@font/open_sans_regular"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="Message"
+            android:textAllCaps="false"
+            android:textColor="?android:attr/textColorPrimary"
+            app:cornerRadius="15dp"
+            app:strokeColor="@color/pink_main"
+            app:strokeWidth="1dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/open_sans_semi_bold"
+        android:text="Posts"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="20sp" />
 
 </LinearLayout>

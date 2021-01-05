@@ -31,7 +31,7 @@
         android:label="DetailPostFragment"
         tools:layout="@layout/layout_item_post">
         <argument
-            android:name="singlePost"
+            android:name="post"
             app:argType="io.aethibo.fireshare.core.entities.Post" />
         <action
             android:id="@+id/action_detailPostFragment_to_editPostFragment"

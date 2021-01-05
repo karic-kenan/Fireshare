@@ -33,6 +33,7 @@ open class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.O
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.loadProfile(uid)
+        binding.profileHeader.llProfileButtons.isVisible = false
 
         setupButtonClickListeners()
         subscribeToObservers()

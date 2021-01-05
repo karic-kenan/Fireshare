@@ -208,4 +208,16 @@ class DefaultMainRepository : MainRepository {
             Resource.Success(Any())
         }
     }
+
+    override suspend fun searchUser(query: String): Resource<List<User>> = withContext(Dispatchers.IO) {
+        safeCall {
+            val userResults = users
+                    .whereGreaterThanOrEqualTo("username", query.toLowerCase(Locale.ROOT))
+                    .get()
+                    .await()
+                    .toObjects(User::class.java)
+
+            Resource.Success(userResults)
+        }
+    }
 }
