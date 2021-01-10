@@ -9,10 +9,13 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.databinding.FragmentCommentsBinding
 import io.aethibo.fireshare.features.comment.adapter.CommentsAdapter
 import io.aethibo.fireshare.features.comment.viewmodel.CommentsViewModel
+import io.aethibo.fireshare.features.profile.view.OthersProfileFragment
 import io.aethibo.fireshare.features.utils.snackBar
+import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class CommentsFragment : Fragment(R.layout.fragment_comments), View.OnClickListener {
@@ -64,12 +67,12 @@ class CommentsFragment : Fragment(R.layout.fragment_comments), View.OnClickListe
         binding.ibAddComment.setOnClickListener(this)
 
         commentsAdapter.setOnUserClickListener { comment ->
-//            if (auth.uid == comment.userId) {
-//                requireActivity().nav_view.selectedItemId = R.id.profileFragment
-//                return@setOnUserClickListener
-//            }
+            if (auth.uid == comment.userId) {
+                requireActivity().nav_view.selectedItemId = R.id.profile
+                return@setOnUserClickListener
+            }
 
-            // TODO: Navigate to other user profile
+            BottomNavigator.provide(requireActivity()).addFragment(OthersProfileFragment.newInstance(comment.userId))
         }
 
         commentsAdapter.setOnMenuCommentClickListener { comment ->

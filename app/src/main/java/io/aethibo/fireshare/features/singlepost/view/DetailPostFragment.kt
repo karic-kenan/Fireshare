@@ -56,6 +56,7 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
             onError = { snackBar(it) },
             onSuccess = {
                 Timber.i("Post ${it.id} deleted")
+                BottomNavigator.provide(requireActivity()).pop()
             }
         ))
 

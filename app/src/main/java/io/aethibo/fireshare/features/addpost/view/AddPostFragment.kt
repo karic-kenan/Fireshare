@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import com.pandora.bottomnavigator.BottomNavigator
 import com.theartofdev.edmodo.cropper.CropImage
 import com.theartofdev.edmodo.cropper.CropImageView
 import io.aethibo.fireshare.R
@@ -33,8 +34,8 @@ class AddPostFragment : Fragment(R.layout.fragment_add_post), View.OnClickListen
 
         override fun createIntent(context: Context, input: Any?): Intent {
             return CropImage.activity()
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .getIntent(requireContext())
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .getIntent(requireContext())
         }
 
         override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
@@ -60,28 +61,29 @@ class AddPostFragment : Fragment(R.layout.fragment_add_post), View.OnClickListen
         subscribeToObservers()
         setupButtonClickListeners()
 
-        slideUpViews(requireContext(),
-                binding.ivPostImage,
-                binding.btnSetPostImage,
-                binding.tilPostText,
-                binding.btnPost
+        slideUpViews(
+            requireContext(),
+            binding.ivPostImage,
+            binding.btnSetPostImage,
+            binding.tilPostText,
+            binding.btnPost
         )
     }
 
     private fun subscribeToObservers() {
 
         viewModel.createPostStatus.observe(viewLifecycleOwner, EventObserver(
-                onLoading = {
-                    binding.createPostProgressBar.isVisible = true
-                },
-                onSuccess = {
-                    binding.createPostProgressBar.isVisible = false
-                    // TODO: navigate back to timeline
-                },
-                onError = {
-                    binding.createPostProgressBar.isVisible = false
-                    snackBar(it)
-                }
+            onLoading = {
+                binding.createPostProgressBar.isVisible = true
+            },
+            onSuccess = {
+                binding.createPostProgressBar.isVisible = false
+                BottomNavigator.provide(requireActivity()).pop()
+            },
+            onError = {
+                binding.createPostProgressBar.isVisible = false
+                snackBar(it)
+            }
         ))
 
         viewModel.currentImageUrl.observe(viewLifecycleOwner) {

@@ -17,7 +17,6 @@ import io.aethibo.fireshare.core.entities.CommentToUpdate
 import io.aethibo.fireshare.core.utils.EventObserver
 import io.aethibo.fireshare.databinding.DialogFragmentCommentBinding
 import io.aethibo.fireshare.features.comment.viewmodel.CommentsViewModel
-import io.aethibo.fireshare.features.singlepost.view.DetailPostFragment
 import io.aethibo.fireshare.features.utils.snackBar
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -30,7 +29,7 @@ class CommentDialog : DialogFragment(), View.OnClickListener {
     private lateinit var comment: Comment
 
     companion object {
-        fun newInstance(comment: Comment) = DetailPostFragment().apply {
+        fun newInstance(comment: Comment) = CommentDialog().apply {
             arguments = Bundle().apply {
                 putParcelable("comment", comment)
             }
@@ -41,7 +40,9 @@ class CommentDialog : DialogFragment(), View.OnClickListener {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         dialogView =
-            LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fragment_comment, null)
+            LayoutInflater
+                .from(requireContext())
+                .inflate(R.layout.dialog_fragment_comment, null)
 
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle("Edit comment")

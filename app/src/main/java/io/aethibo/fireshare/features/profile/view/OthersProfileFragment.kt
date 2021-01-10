@@ -1,5 +1,6 @@
 package io.aethibo.fireshare.features.profile.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -18,15 +19,31 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
     private val binding: FragmentProfileBinding by viewBinding()
 
     override val uid: String
-        get() = ""
+        get() = id
 
     private val currentUser: User? = null
+    private lateinit var id: String
+
+    companion object {
+        fun newInstance(id: String) = OthersProfileFragment().apply {
+            arguments = Bundle().apply {
+                putString("id", id)
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         subscribeToObservers()
         setupClickListeners()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        arguments?.getString("id")?.let { id ->
+            this.id = id
+        }
     }
 
     private fun setupClickListeners() {

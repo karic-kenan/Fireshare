@@ -9,13 +9,17 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
+import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.databinding.FragmentDiscoveryBinding
 import io.aethibo.fireshare.features.discovery.adapter.UserAdapter
 import io.aethibo.fireshare.features.discovery.viewmodel.DiscoveryViewModel
+import io.aethibo.fireshare.features.profile.view.OthersProfileFragment
 import io.aethibo.fireshare.features.utils.hideKeyboard
 import io.aethibo.fireshare.features.utils.snackBar
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -61,9 +65,13 @@ class DiscoveryFragment : Fragment(R.layout.fragment_discovery), SearchView.OnQu
 
     private fun setupClickListeners() {
         userAdapter.setOnUserClickListener { user ->
-            println("Clicked: ${user.username}")
-//            BottomNavigator.provide(requireActivity())
-//                .addFragment(OthersProfileFragment.newInstance(user))
+            if (auth.uid == user.uid) {
+                requireActivity().nav_view.selectedItemId = R.id.profile
+                return@setOnUserClickListener
+            }
+
+            BottomNavigator.provide(requireActivity())
+                .addFragment(OthersProfileFragment.newInstance(user.uid))
         }
     }
 
