@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
@@ -45,25 +44,26 @@ class DiscoveryFragment : Fragment(R.layout.fragment_discovery), SearchView.OnQu
 
     private fun subscribeToObservables() {
         viewModel.searchResults.observe(viewLifecycleOwner, EventObserver(
-                onLoading = {
-                    binding.searchProgressBar.isVisible = true
-                },
-                onSuccess = { users ->
-                    binding.searchProgressBar.isVisible = false
-                    binding.tvSearchPlaceholder.isVisible = false
-                    userAdapter.users = users
-                },
-                onError = {
-                    binding.searchProgressBar.isVisible = false
-                    snackBar(it)
-                }
+            onLoading = {
+                binding.searchProgressBar.isVisible = true
+            },
+            onSuccess = { users ->
+                binding.searchProgressBar.isVisible = false
+                binding.tvSearchPlaceholder.isVisible = false
+                userAdapter.users = users
+            },
+            onError = {
+                binding.searchProgressBar.isVisible = false
+                snackBar(it)
+            }
         ))
     }
 
     private fun setupClickListeners() {
         userAdapter.setOnUserClickListener { user ->
-            println("User clicked: ${user.username}")
-            findNavController().navigate(DiscoveryFragmentDirections.actionDiscoveryToProfile(user))
+            println("Clicked: ${user.username}")
+//            BottomNavigator.provide(requireActivity())
+//                .addFragment(OthersProfileFragment.newInstance(user))
         }
     }
 

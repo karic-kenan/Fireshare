@@ -29,20 +29,20 @@ class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
 
     private fun subscribeToObservers() {
         viewModel.loginStatus.observe(viewLifecycleOwner, EventObserver(
-            onLoading = {
-                binding.signInProgressBar.isVisible = true
-            },
-            onSuccess = {
-                binding.signInProgressBar.isVisible = false
-                Intent(requireActivity(), MainActivity::class.java).also {
-                    startActivity(it)
-                    requireActivity().finish()
+                onLoading = {
+                    binding.signInProgressBar.isVisible = true
+                },
+                onSuccess = {
+                    binding.signInProgressBar.isVisible = false
+                    Intent(requireActivity(), MainActivity::class.java).also {
+                        startActivity(it)
+                        requireActivity().finish()
+                    }
+                },
+                onError = {
+                    binding.signInProgressBar.isVisible = false
+                    snackBar(it)
                 }
-            },
-            onError = {
-                binding.signInProgressBar.isVisible = false
-                snackBar(it)
-            }
         ))
     }
 
@@ -52,7 +52,7 @@ class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
     }
 
     private fun signIn() =
-        viewModel.login(binding.etEmail.text?.trim().toString(), binding.etPassword.text?.trim().toString())
+            viewModel.login(binding.etEmail.text?.trim().toString(), binding.etPassword.text?.trim().toString())
 
     private fun registerAccount() {
         if (findNavController().previousBackStackEntry != null)

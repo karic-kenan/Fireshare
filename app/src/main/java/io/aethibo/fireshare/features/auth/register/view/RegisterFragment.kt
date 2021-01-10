@@ -29,23 +29,23 @@ class RegisterFragment : Fragment(R.layout.fragment_register), View.OnClickListe
 
     private fun subscribeToObservers() {
         viewModel.registerStatus.observe(viewLifecycleOwner, EventObserver(
-            onLoading = {
-                binding.signUpProgressBar.isVisible = true
-            },
+                onLoading = {
+                    binding.signUpProgressBar.isVisible = true
+                },
 
-            onSuccess = {
-                binding.signUpProgressBar.isVisible = false
-                snackBar(getString(R.string.success_registration))
+                onSuccess = {
+                    binding.signUpProgressBar.isVisible = false
+                    snackBar(getString(R.string.success_registration))
 
-                Intent(requireContext(), MainActivity::class.java).also {
-                    startActivity(it)
-                    requireActivity().finish()
+                    Intent(requireContext(), MainActivity::class.java).also {
+                        startActivity(it)
+                        requireActivity().finish()
+                    }
+                },
+                onError = {
+                    binding.signUpProgressBar.isVisible = true
+                    snackBar(it)
                 }
-            },
-            onError = {
-                binding.signUpProgressBar.isVisible = true
-                snackBar(it)
-            }
         ))
     }
 
@@ -55,10 +55,10 @@ class RegisterFragment : Fragment(R.layout.fragment_register), View.OnClickListe
     }
 
     private fun signUp() = viewModel.register(
-        binding.etEmail.text?.trim().toString(),
-        binding.etUsername.text?.trim().toString(),
-        binding.etPassword.text?.trim().toString(),
-        binding.etRepeatPassword.text?.trim().toString()
+            binding.etEmail.text?.trim().toString(),
+            binding.etUsername.text?.trim().toString(),
+            binding.etPassword.text?.trim().toString(),
+            binding.etRepeatPassword.text?.trim().toString()
     )
 
     private fun loginToAccount() {

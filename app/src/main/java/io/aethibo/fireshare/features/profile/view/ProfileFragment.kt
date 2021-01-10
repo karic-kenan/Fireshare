@@ -5,16 +5,17 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.utils.EventObserver
 import io.aethibo.fireshare.core.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.databinding.FragmentProfileBinding
 import io.aethibo.fireshare.features.profile.viewmodel.ProfileViewModel
+import io.aethibo.fireshare.features.settings.view.SettingsFragment
 import io.aethibo.fireshare.features.utils.BasePostFragment
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -51,7 +52,7 @@ open class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.O
             profilePostAdapter.loadStateFlow.collectLatest {
                 if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                     binding.profileHeader.profileProgressBar.isVisible =
-                            it.refresh is LoadState.Loading || it.append is LoadState.Loading
+                        it.refresh is LoadState.Loading || it.append is LoadState.Loading
                 }
             }
         }
@@ -64,25 +65,25 @@ open class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.O
 
     private fun subscribeToObservers() {
         viewModel.profileMeta.observe(viewLifecycleOwner, EventObserver(
-                onLoading = {
-                    binding.profileHeader.profileProgressBar.isVisible = true
-                },
-                onSuccess = { user ->
-                    binding.profileHeader.profileProgressBar.isVisible = false
-                    binding.profileHeader.tvProfileUsername.text =
-                            if (user.displayName.isEmpty()) user.username else user.displayName
-                    binding.profileHeader.tvProfileBio.text =
-                            if (user.bio.isEmpty()) getString(R.string.no_description) else user.bio
-                    binding.profileHeader.tvProfileLocation.text =
-                            if (user.location.isEmpty()) getString(R.string.no_location) else user.location
-                    binding.profileHeader.ivProfileAvatar.load(user.photoUrl) {
-                        crossfade(true)
-                        transformations(CircleCropTransformation())
-                    }
-                },
-                onError = {
-                    binding.profileHeader.profileProgressBar.isVisible = false
+            onLoading = {
+                binding.profileHeader.profileProgressBar.isVisible = true
+            },
+            onSuccess = { user ->
+                binding.profileHeader.profileProgressBar.isVisible = false
+                binding.profileHeader.tvProfileUsername.text =
+                    if (user.displayName.isEmpty()) user.username else user.displayName
+                binding.profileHeader.tvProfileBio.text =
+                    if (user.bio.isEmpty()) getString(R.string.no_description) else user.bio
+                binding.profileHeader.tvProfileLocation.text =
+                    if (user.location.isEmpty()) getString(R.string.no_location) else user.location
+                binding.profileHeader.ivProfileAvatar.load(user.photoUrl) {
+                    crossfade(true)
+                    transformations(CircleCropTransformation())
                 }
+            },
+            onError = {
+                binding.profileHeader.profileProgressBar.isVisible = false
+            }
         ))
     }
 
@@ -92,7 +93,8 @@ open class ProfileFragment : BasePostFragment(R.layout.fragment_profile), View.O
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btnProfileSettings -> findNavController().navigate(R.id.settingsFragment)
+            R.id.btnProfileSettings -> BottomNavigator.provide(requireActivity())
+                .addFragment(SettingsFragment())
         }
     }
 }

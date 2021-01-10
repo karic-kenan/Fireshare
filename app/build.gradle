@@ -89,6 +89,7 @@ dependencies {
     implementation libs.navigationFragmentKtx
     implementation libs.navigationUIKtx
     implementation libs.navigationRuntimeKtx
+    implementation libs.pandoraBottomNav
 
     // Koin
     implementation libs.koinCore

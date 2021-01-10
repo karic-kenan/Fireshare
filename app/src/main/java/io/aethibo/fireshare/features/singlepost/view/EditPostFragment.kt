@@ -1,13 +1,14 @@
 package io.aethibo.fireshare.features.singlepost.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
+import io.aethibo.fireshare.core.entities.Post
 import io.aethibo.fireshare.core.entities.PostToUpdate
 import io.aethibo.fireshare.core.utils.EventObserver
 import io.aethibo.fireshare.databinding.FragmentEditPostBinding
@@ -19,9 +20,24 @@ import org.koin.android.viewmodel.ext.android.viewModel
 
 class EditPostFragment : BasePostFragment(R.layout.fragment_edit_post), View.OnClickListener {
 
-    private val args: EditPostFragmentArgs by navArgs()
     private val binding: FragmentEditPostBinding by viewBinding()
     private val viewModel: DetailPostViewModel by viewModel()
+    private lateinit var post: Post
+
+    companion object {
+        fun newInstance(post: Post) = EditPostFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable("post", post)
+            }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        arguments?.getParcelable<Post>("post")?.let { post ->
+            this.post = post
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,22 +46,27 @@ class EditPostFragment : BasePostFragment(R.layout.fragment_edit_post), View.OnC
         setupClickListeners()
         subscribeToObservers()
 
-        slideUpViews(requireContext(), binding.ivEditPost, binding.tilEditPost, binding.mbEditPostSave)
+        slideUpViews(
+            requireContext(),
+            binding.ivEditPost,
+            binding.tilEditPost,
+            binding.mbEditPostSave
+        )
     }
 
     private fun subscribeToObservers() {
         viewModel.updatePostStatus.observe(viewLifecycleOwner, EventObserver(
-                onLoading = {
-                    binding.pbEditPost.isVisible = true
-                },
-                onSuccess = {
-                    binding.pbEditPost.isVisible = false
-                    findNavController().popBackStack(R.id.editPostFragment, true)
-                },
-                onError = {
-                    binding.pbEditPost.isVisible = false
-                    snackBar(it)
-                }
+            onLoading = {
+                binding.pbEditPost.isVisible = true
+            },
+            onSuccess = {
+                binding.pbEditPost.isVisible = false
+                BottomNavigator.provide(requireActivity()).pop()
+            },
+            onError = {
+                binding.pbEditPost.isVisible = false
+                snackBar(it)
+            }
         ))
     }
 
@@ -54,17 +75,22 @@ class EditPostFragment : BasePostFragment(R.layout.fragment_edit_post), View.OnC
     }
 
     private fun setupView() {
-        binding.ivEditPost.load(args.post.imageUrl) {
+        binding.ivEditPost.load(post.imageUrl) {
             crossfade(true)
         }
 
-        binding.etEditPost.setText(args.post.caption)
+        binding.etEditPost.setText(post.caption)
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.mbEditPostSave -> {
-                viewModel.updatePost(PostToUpdate(args.post.id, binding.etEditPost.text?.trim()?.toString()))
+                viewModel.updatePost(
+                    PostToUpdate(
+                        post.id,
+                        binding.etEditPost.text?.trim()?.toString()
+                    )
+                )
             }
         }
     }

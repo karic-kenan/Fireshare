@@ -3,7 +3,6 @@ package io.aethibo.fireshare.features.profile.view
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.User
@@ -13,14 +12,13 @@ import io.aethibo.fireshare.databinding.FragmentProfileBinding
 import io.aethibo.fireshare.features.profile.viewmodel.ProfileViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class OthersProfileFragment: ProfileFragment(), View.OnClickListener {
+class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
 
-    private val args: OthersProfileFragmentArgs by navArgs()
     private val viewModel: ProfileViewModel by viewModel()
     private val binding: FragmentProfileBinding by viewBinding()
 
     override val uid: String
-        get() = args.user.uid
+        get() = ""
 
     private val currentUser: User? = null
 
@@ -44,7 +42,7 @@ class OthersProfileFragment: ProfileFragment(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
-        when(view?.id) {
+        when (view?.id) {
             R.id.btnToggleFollow -> println("Hello follow")
             R.id.btnMessageProfile -> println("Hello message")
         }

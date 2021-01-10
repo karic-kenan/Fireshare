@@ -68,6 +68,7 @@ ext.versions = [
          */
         navigationVersion         : '2.3.2',
         navigationSafeArgsVersion : '2.1.0',
+        pandoraVersion            : '1.8',
 
         /**
          * Koin
@@ -158,6 +159,7 @@ ext.libs = [
         navigationFragmentKtx: "androidx.navigation:navigation-fragment-ktx:${versions.navigationVersion}",
         navigationUIKtx      : "androidx.navigation:navigation-ui-ktx:${versions.navigationVersion}",
         navigationRuntimeKtx : "androidx.navigation:navigation-runtime-ktx:${versions.navigationVersion}",
+        pandoraBottomNav     : "com.pandora.bottomnavigator:bottom-navigator:${versions.pandoraVersion}",
 
         /**
          * Koin

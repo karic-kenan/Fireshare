@@ -7,23 +7,26 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.Post
 import io.aethibo.fireshare.core.entities.PostToUpdate
 import io.aethibo.fireshare.core.utils.Event
 import io.aethibo.fireshare.core.utils.Resource
 import io.aethibo.fireshare.domain.post.IPostUseCase
-import io.aethibo.fireshare.features.singlepost.view.DetailPostFragmentDirections
+import io.aethibo.fireshare.features.singlepost.view.EditPostFragment
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dispatcher: CoroutineDispatcher = Dispatchers.Main) : ViewModel() {
+class DetailPostViewModel(
+    private val postUseCase: IPostUseCase,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+) : ViewModel() {
 
     private var likeJob: Job? = null
     private val _likePostStatus: MutableLiveData<Event<Resource<Boolean>>> = MutableLiveData()
@@ -61,24 +64,24 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
 
     private fun deletePost(context: Context, post: Post) {
         AlertDialog.Builder(context)
-                .setTitle(context.getText(R.string.delete_post_dialog_title))
-                .setMessage(context.getText(R.string.delete_post_dialog_subtitle))
-                .setNegativeButton(context.getText(R.string.actionCancel)) { _, _ -> }
-                .setPositiveButton(context.getText(R.string.actionDelete)) { _, _ ->
-                    _deletePostStatus.postValue(Event(Resource.Loading()))
-                    viewModelScope.launch(dispatcher) {
-                        val result = postUseCase.deletePost(post)
-                        _deletePostStatus.postValue(Event(result))
-                    }
+            .setTitle(context.getText(R.string.delete_post_dialog_title))
+            .setMessage(context.getText(R.string.delete_post_dialog_subtitle))
+            .setNegativeButton(context.getText(R.string.actionCancel)) { _, _ -> }
+            .setPositiveButton(context.getText(R.string.actionDelete)) { _, _ ->
+                _deletePostStatus.postValue(Event(Resource.Loading()))
+                viewModelScope.launch(dispatcher) {
+                    val result = postUseCase.deletePost(post)
+                    _deletePostStatus.postValue(Event(result))
                 }
-                .show()
+            }
+            .show()
     }
 
     fun singlePostOptionsMenuClicked(
-            context: Context,
-            layoutInflater: LayoutInflater,
-            post: Post,
-            findNavController: NavController
+        context: Context,
+        layoutInflater: LayoutInflater,
+        post: Post,
+        navigator: BottomNavigator
     ) {
         val builder = BottomSheetDialog(context)
         val dialogView = layoutInflater.inflate(R.layout.single_post_options_menu, null)
@@ -97,7 +100,7 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
 
         editButton.setOnClickListener {
             Timber.i("Post ${post.id} edited")
-            findNavController.navigate(DetailPostFragmentDirections.actionDetailPostFragmentToEditPostFragment(post))
+            navigateToEditPost(post, navigator)
             builder.dismiss()
         }
 
@@ -106,4 +109,7 @@ class DetailPostViewModel(private val postUseCase: IPostUseCase, private val dis
             builder.dismiss()
         }
     }
+
+    private fun navigateToEditPost(post: Post, navigator: BottomNavigator) =
+        navigator.addFragment(EditPostFragment.newInstance(post))
 }

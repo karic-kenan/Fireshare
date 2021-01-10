@@ -2,56 +2,38 @@ package io.aethibo.fireshare
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.LiveData
-import androidx.navigation.NavController
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import io.aethibo.fireshare.features.utils.setupWithNavController
+import com.pandora.bottomnavigator.BottomNavigator
+import io.aethibo.fireshare.features.addpost.view.AddPostFragment
+import io.aethibo.fireshare.features.discovery.view.DiscoveryFragment
+import io.aethibo.fireshare.features.feed.view.FeedFragment
+import io.aethibo.fireshare.features.profile.view.ProfileFragment
+import io.aethibo.fireshare.features.timeline.view.TimelineFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private var currentNavController: LiveData<NavController>? = null
+    private lateinit var navigator: BottomNavigator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            setupBottomNavigationBar()
-        } // Else, need to wait for onRestoreInstanceState
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        // Now that BottomNavigationBar has restored its instance state
-        // and its selectedItemId, we can proceed with setting up the
-        // BottomNavigationBar with Navigation
-        setupBottomNavigationBar()
-    }
-
-    /**
-     * Called on first creation and when restoring state.
-     */
-    private fun setupBottomNavigationBar() {
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
-
-        val navGraphIds = listOf(
-                R.navigation.timeline,
-                R.navigation.discovery,
-                R.navigation.add,
-                R.navigation.feed,
-                R.navigation.profile
+        navigator = BottomNavigator.onCreate(
+            fragmentContainer = R.id.nav_host_container,
+            bottomNavigationView = findViewById(R.id.nav_view),
+            rootFragmentsFactory = mapOf(
+                R.id.timeline to { TimelineFragment() },
+                R.id.discovery to { DiscoveryFragment() },
+                R.id.add to { AddPostFragment() },
+                R.id.feed to { FeedFragment() },
+                R.id.profile to { ProfileFragment() }
+            ),
+            defaultTab = R.id.timeline,
+            activity = this
         )
-
-        // Setup the bottom navigation view with a list of navigation graphs
-        val controller = bottomNavigationView.setupWithNavController(
-                navGraphIds = navGraphIds,
-                fragmentManager = supportFragmentManager,
-                containerId = R.id.nav_host_container,
-                intent = intent
-        )
-
-        currentNavController = controller
     }
 
-    override fun onSupportNavigateUp() = currentNavController?.value?.navigateUp() ?: false
+    override fun onBackPressed() {
+        if (!navigator.pop())
+            super.onBackPressed()
+    }
 }
