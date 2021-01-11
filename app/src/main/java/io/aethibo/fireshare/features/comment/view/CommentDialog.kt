@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.core.entities.Comment
 import io.aethibo.fireshare.core.entities.CommentToUpdate
@@ -37,18 +38,20 @@ class CommentDialog : DialogFragment(), View.OnClickListener {
     }
 
     @SuppressLint("InflateParams")
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         dialogView =
-            LayoutInflater
-                .from(requireContext())
-                .inflate(R.layout.dialog_fragment_comment, null)
-
-        return MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Edit comment")
-            .setView(dialogView)
-            .create()
+                LayoutInflater
+                        .from(requireContext())
+                        .inflate(R.layout.dialog_fragment_comment, null)
     }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+            MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Edit comment")
+                    .setView(dialogView)
+                    .create()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -58,11 +61,10 @@ class CommentDialog : DialogFragment(), View.OnClickListener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View = dialogView
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -74,17 +76,18 @@ class CommentDialog : DialogFragment(), View.OnClickListener {
 
     private fun subscribeToObservers() {
         viewModel.updateCommentStatus.observe(viewLifecycleOwner, EventObserver(
-            onLoading = {
-                binding.pbCommentDialog.isVisible = true
-            },
-            onSuccess = {
-                binding.pbCommentDialog.isVisible = false
-                dismiss()
-            },
-            onError = {
-                binding.pbCommentDialog.isVisible = false
-                snackBar(it)
-            }
+                onLoading = {
+                    binding.pbCommentDialog.isVisible = true
+                },
+                onSuccess = {
+                    binding.pbCommentDialog.isVisible = false
+                    dismiss()
+                    BottomNavigator.provide(requireActivity()).pop()
+                },
+                onError = {
+                    binding.pbCommentDialog.isVisible = false
+                    snackBar(it)
+                }
         ))
     }
 
@@ -100,9 +103,9 @@ class CommentDialog : DialogFragment(), View.OnClickListener {
         when (view?.id) {
             R.id.mbCommentDialogUpdate -> {
                 val commentToUpdate = CommentToUpdate(
-                    comment.id,
-                    comment.postId,
-                    binding.etCommentDialog.text?.trim().toString()
+                        comment.id,
+                        comment.postId,
+                        binding.etCommentDialog.text?.trim().toString()
                 )
 
                 viewModel.updateComment(commentToUpdate)
