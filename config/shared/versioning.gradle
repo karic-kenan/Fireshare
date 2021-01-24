@@ -25,7 +25,7 @@ ext.versions = [
          * Build
          */
         kotlinVersion             : '1.4.21',
-        gradleToolsVersion        : '4.1.1',
+        gradleToolsVersion        : '4.1.2',
 
         /**
          * Android

@@ -17,6 +17,7 @@ import io.aethibo.fireshare.features.comment.view.CommentsFragment
 import io.aethibo.fireshare.features.singlepost.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.features.utils.BasePostFragment
 import io.aethibo.fireshare.features.utils.snackBar
+import io.aethibo.fireshare.features.utils.startBounceAnimation
 import kotlinx.android.synthetic.main.layout_item_post.*
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -53,19 +54,19 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
 
     private fun subscribeToObservers() {
         viewModel.deletePostStatus.observe(viewLifecycleOwner, EventObserver(
-            onError = { snackBar(it) },
-            onSuccess = {
-                Timber.i("Post ${it.id} deleted")
-                BottomNavigator.provide(requireActivity()).pop()
-            }
+                onError = { snackBar(it) },
+                onSuccess = {
+                    Timber.i("Post ${it.id} deleted")
+                    BottomNavigator.provide(requireActivity()).pop()
+                }
         ))
 
         viewModel.likePostStatus.observe(viewLifecycleOwner, EventObserver(
-            onLoading = {},
-            onSuccess = {},
-            onError = {
-                snackBar(it)
-            }
+                onLoading = {},
+                onSuccess = {},
+                onError = { error ->
+                    snackBar(error)
+                }
         ))
     }
 
@@ -83,6 +84,7 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
         postDescription.text = post.caption
 
         postLikeButton?.setOnClickListener {
+            it.startBounceAnimation()
             viewModel.toggleLikeForPost(post)
         }
 
@@ -102,16 +104,16 @@ class DetailPostFragment : BasePostFragment(R.layout.layout_item_post) {
 
         postMenu.setOnClickListener {
             viewModel.singlePostOptionsMenuClicked(
-                requireContext(),
-                layoutInflater,
-                post,
-                BottomNavigator.provide(requireActivity())
+                    requireContext(),
+                    layoutInflater,
+                    post,
+                    BottomNavigator.provide(requireActivity())
             )
         }
 
         postCommentButton?.setOnClickListener {
             BottomNavigator.provide(requireActivity())
-                .addFragment(CommentsFragment.newInstance(post.id))
+                    .addFragment(CommentsFragment.newInstance(post.id))
         }
 
         postDivider.isVisible = false
