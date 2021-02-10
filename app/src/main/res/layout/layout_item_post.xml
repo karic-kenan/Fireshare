@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     android:scrollbars="none">
 
@@ -17,7 +17,6 @@
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/postDescription"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@tools:sample/avatars"
@@ -27,14 +26,12 @@
             android:id="@+id/postUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/open_sans_semi_bold"
             android:text="John Doe"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/postDate"
             app:layout_constraintStart_toEndOf="@+id/postAvatar"
-            app:layout_constraintTop_toTopOf="@+id/postAvatar"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintTop_toTopOf="@+id/postAvatar" />
 
         <TextView
             android:id="@+id/postDate"
@@ -50,7 +47,7 @@
             android:id="@+id/postMenu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@null"
             app:layout_constraintEnd_toEndOf="parent"
@@ -60,15 +57,12 @@
         <com.github.abdularis.piv.VerticalScrollParallaxImageView
             android:id="@+id/postImage"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_marginLeft="16dp"
+            android:layout_height="250dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/postLikeButton"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postDescription"
             tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -76,14 +70,11 @@
             android:id="@+id/postDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:breakStrategy="simple"
             android:fontFamily="@font/open_sans_regular"
-            app:layout_constraintBottom_toTopOf="@+id/postImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/postMenu"
+            app:layout_constraintStart_toStartOf="@+id/postAvatar"
             app:layout_constraintTop_toBottomOf="@+id/postAvatar"
             tools:text="This is just a simple placeholder for potential description for this particular post in this case, so I'm just typing this here" />
 
@@ -91,12 +82,10 @@
             android:id="@+id/postLikeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
             android:background="@null"
-            app:layout_constraintBottom_toTopOf="@+id/postDivider"
-            app:layout_constraintStart_toStartOf="parent"
+            android:tint="@color/pink_main"
+            app:layout_constraintStart_toStartOf="@+id/postImage"
             app:layout_constraintTop_toBottomOf="@+id/postImage"
             app:srcCompat="@drawable/ic_like" />
 
@@ -115,11 +104,11 @@
             android:id="@+id/postCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:background="@null"
-            app:layout_constraintBottom_toBottomOf="@+id/postLikeButton"
+            app:layout_constraintBottom_toBottomOf="@+id/postLikeCountTxt"
             app:layout_constraintStart_toEndOf="@+id/postLikeCountTxt"
-            app:layout_constraintTop_toTopOf="@+id/postLikeButton"
+            app:layout_constraintTop_toTopOf="@+id/postLikeCountTxt"
             app:srcCompat="@drawable/ic_comment" />
 
         <TextView
@@ -138,11 +127,9 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="8dp"
             android:background="@drawable/divider_grey"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postLikeButton" />

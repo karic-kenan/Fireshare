@@ -49,6 +49,7 @@
     <string name="no_description">No Description</string>
     <string name="no_location">No Location</string>
     <string name="profile_updated">Profile updated</string>
+    <string name="label_username">\u0040%s</string>
 
     <!-- Single post detail -->
     <string name="single_post_no_likes">No likes</string>

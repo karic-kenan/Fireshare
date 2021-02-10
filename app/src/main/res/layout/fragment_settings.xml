@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:indeterminateTint="@color/pink_main"
-            android:visibility="visible" />
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <ImageView
             android:id="@+id/ivProfileImage"
@@ -29,31 +30,12 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tilFillName"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:hint="Enter your full name"
-            app:hintAnimationEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etFullName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:imeOptions="actionNext"
-                android:inputType="text" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilUsername"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="36dp"
             android:layout_marginEnd="8dp"
             android:hint="Enter your username">
 
@@ -95,10 +77,12 @@
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
             android:backgroundTint="@color/pink_main"
+            android:enabled="false"
             android:fontFamily="@font/open_sans_regular"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:text="Update profile"
+            android:textAllCaps="false"
             app:cornerRadius="15dp" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

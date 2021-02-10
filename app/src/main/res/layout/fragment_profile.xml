@@ -12,6 +12,16 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/profileProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/pink_main"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
         <include
             android:id="@+id/profileHeader"
             layout="@layout/layout_profile_header"
@@ -23,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="18dp"
+            android:layout_marginTop="18dp"
             android:layout_marginEnd="18dp"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
