@@ -62,7 +62,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/divider_grey" />
+        android:background="@color/colorWhiteAlpha30" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -146,5 +146,5 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/divider_grey" />
+        android:background="@color/colorWhiteAlpha30" />
 </LinearLayout>

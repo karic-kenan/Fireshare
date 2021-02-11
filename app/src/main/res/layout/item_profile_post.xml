@@ -33,7 +33,6 @@
         android:fontFamily="@font/open_sans_light"
         android:text="4th July, 2020"
         android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@+id/postAvatar"
         app:layout_constraintStart_toStartOf="@+id/postUsername"
         app:layout_constraintTop_toBottomOf="@+id/postUsername" />
 
@@ -46,7 +45,7 @@
         android:background="@null"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu_horizontal" />
+        app:srcCompat="@drawable/ic_menu_vertical" />
 
     <com.github.abdularis.piv.VerticalScrollParallaxImageView
         android:id="@+id/postImage"
@@ -54,8 +53,9 @@
         android:layout_height="250dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/postAvatar"
         tools:src="@tools:sample/backgrounds/scenic" />
@@ -64,58 +64,70 @@
         android:id="@+id/postDescription"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:breakStrategy="simple"
         android:fontFamily="@font/open_sans_regular"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/postImage"
-        app:layout_constraintStart_toStartOf="@+id/postImage"
-        app:layout_constraintTop_toBottomOf="@+id/postLikeButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/postImage"
         tools:text="This is just a simple placeholder for potential description for this particular post in this case, so I'm just typing this here" />
 
-    <ImageButton
-        android:id="@+id/postLikeButton"
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@null"
-        android:tint="@color/pink_main"
-        app:layout_constraintStart_toStartOf="@+id/postImage"
-        app:layout_constraintTop_toBottomOf="@+id/postImage"
-        app:srcCompat="@drawable/ic_unlike" />
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center|top"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/postImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/postImage">
 
-    <TextView
-        android:id="@+id/postLikeCountTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/open_sans_regular"
-        android:text="132"
-        app:layout_constraintBottom_toBottomOf="@+id/postLikeButton"
-        app:layout_constraintStart_toEndOf="@+id/postLikeButton"
-        app:layout_constraintTop_toTopOf="@+id/postLikeButton" />
+        <ImageButton
+            android:id="@+id/postLikeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:tint="@color/pink_main"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/postImage"
+            app:srcCompat="@drawable/ic_unlike" />
 
-    <ImageButton
-        android:id="@+id/postCommentButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:background="@null"
-        app:layout_constraintBottom_toBottomOf="@+id/postLikeCountTxt"
-        app:layout_constraintStart_toEndOf="@+id/postLikeCountTxt"
-        app:layout_constraintTop_toTopOf="@+id/postLikeCountTxt"
-        app:srcCompat="@drawable/ic_comment" />
+        <TextView
+            android:id="@+id/postLikeCountTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_regular"
+            android:text="999k"
+            app:layout_constraintEnd_toEndOf="@+id/postLikeButton"
+            app:layout_constraintStart_toStartOf="@+id/postLikeButton"
+            app:layout_constraintTop_toBottomOf="@+id/postLikeButton" />
 
-    <TextView
-        android:id="@+id/postCommentCountTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/open_sans_regular"
-        android:text="64"
-        app:layout_constraintBottom_toBottomOf="@+id/postCommentButton"
-        app:layout_constraintStart_toEndOf="@+id/postCommentButton"
-        app:layout_constraintTop_toTopOf="@+id/postCommentButton" />
+        <ImageButton
+            android:id="@+id/postCommentButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@null"
+            app:layout_constraintEnd_toEndOf="@+id/postLikeCountTxt"
+            app:layout_constraintStart_toStartOf="@+id/postLikeCountTxt"
+            app:layout_constraintTop_toBottomOf="@+id/postLikeCountTxt"
+            app:srcCompat="@drawable/ic_comment" />
+
+        <TextView
+            android:id="@+id/postCommentCountTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_regular"
+            android:text="64"
+            app:layout_constraintEnd_toEndOf="@+id/postCommentButton"
+            app:layout_constraintStart_toStartOf="@+id/postCommentButton"
+            app:layout_constraintTop_toBottomOf="@+id/postCommentButton" />
+    </LinearLayout>
 
     <View
         android:id="@+id/postDivider"

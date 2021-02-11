@@ -32,13 +32,13 @@
             android:id="@+id/rvProfilePosts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="18dp"
+            android:layout_marginStart="12dp"
             android:layout_marginTop="18dp"
-            android:layout_marginEnd="18dp"
+            android:layout_marginEnd="12dp"
+            android:orientation="vertical"
             android:overScrollMode="never"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            app:spanCount="2"
-            tools:listitem="@layout/layout_item_profile_post" />
+            tools:listitem="@layout/layout_item_post" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

@@ -49,7 +49,6 @@ class CreatePostFragment : Fragment(R.layout.fragment_create_post), View.OnClick
 
         override fun createIntent(context: Context, input: Any?): Intent {
             return CropImage.activity()
-                .setAspectRatio(16, 9)
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .getIntent(requireContext())
         }

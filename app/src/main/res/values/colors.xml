@@ -11,4 +11,5 @@
     <color name="pink_main">#FC466B</color>
     <color name="blue_main">#3F5EFB</color>
     <color name="light_background">#808080</color>
+    <color name="colorWhiteAlpha30">#4de4e4e4</color>
 </resources>

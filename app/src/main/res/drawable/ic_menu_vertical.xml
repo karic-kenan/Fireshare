@@ -1,0 +1,32 @@
+<!--
+  ~ Created by Karic Kenan on 11.2.2021
+  ~ Copyright (c) 2021 . All rights reserved.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="29dp"
+    android:height="29dp"
+    android:viewportWidth="29"
+    android:viewportHeight="29">
+  <path
+      android:strokeWidth="1"
+      android:pathData="M13.5989,14.2008C13.5989,14.7531 14.0466,15.2008 14.5989,15.2008C15.1512,15.2008 15.5989,14.7531 15.5989,14.2008C15.5989,13.6486 15.1512,13.2008 14.5989,13.2008C14.0466,13.2008 13.5989,13.6486 13.5989,14.2008Z"
+      android:strokeLineJoin="round"
+      android:fillColor="#00000000"
+      android:strokeColor="#999999"
+      android:strokeLineCap="round"/>
+  <path
+      android:strokeWidth="1"
+      android:pathData="M13.5989,21.2008C13.5989,21.7531 14.0466,22.2008 14.5989,22.2008C15.1512,22.2008 15.5989,21.7531 15.5989,21.2008C15.5989,20.6486 15.1512,20.2008 14.5989,20.2008C14.0466,20.2008 13.5989,20.6486 13.5989,21.2008Z"
+      android:strokeLineJoin="round"
+      android:fillColor="#00000000"
+      android:strokeColor="#999999"
+      android:strokeLineCap="round"/>
+  <path
+      android:strokeWidth="1"
+      android:pathData="M13.5989,7.2008C13.5989,7.7531 14.0466,8.2008 14.5989,8.2008C15.1512,8.2008 15.5989,7.7531 15.5989,7.2008C15.5989,6.6486 15.1512,6.2008 14.5989,6.2008C14.0466,6.2008 13.5989,6.6486 13.5989,7.2008Z"
+      android:strokeLineJoin="round"
+      android:fillColor="#00000000"
+      android:strokeColor="#999999"
+      android:strokeLineCap="round"/>
+</vector>

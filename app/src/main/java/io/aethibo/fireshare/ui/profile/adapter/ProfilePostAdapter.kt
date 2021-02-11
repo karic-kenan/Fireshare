@@ -5,17 +5,23 @@
 
 package io.aethibo.fireshare.ui.profile.adapter
 
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import coil.transform.RoundedCornersTransformation
+import coil.transform.CircleCropTransformation
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.Post
+import io.aethibo.fireshare.framework.utils.FirebaseUtil
+import io.aethibo.fireshare.ui.utils.startBounceAnimation
 
 class ProfilePostAdapter :
         PagingDataAdapter<Post, ProfilePostAdapter.ProfilePostViewHolder>(Companion) {
@@ -29,13 +35,22 @@ class ProfilePostAdapter :
     }
 
     inner class ProfilePostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivPostImage: ImageView = itemView.findViewById(R.id.profilePostImage)
+        val avatar: ImageView = itemView.findViewById(R.id.postAvatar)
+        val username: TextView = itemView.findViewById(R.id.postUsername)
+        val timestamp: TextView = itemView.findViewById(R.id.postDate)
+        val caption: TextView = itemView.findViewById(R.id.postDescription)
+        val image: ImageView = itemView.findViewById(R.id.postImage)
+        val likeButton: ImageButton = itemView.findViewById(R.id.postLikeButton)
+        val likeCount: TextView = itemView.findViewById(R.id.postLikeCountTxt)
+        val commentButton: ImageButton = itemView.findViewById(R.id.postCommentButton)
+        val commentCount: TextView = itemView.findViewById(R.id.postCommentCountTxt)
+        val menu: ImageButton = itemView.findViewById(R.id.postMenu)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfilePostViewHolder =
             ProfilePostViewHolder(
                     LayoutInflater.from(parent.context)
-                            .inflate(R.layout.layout_item_profile_post, parent, false)
+                            .inflate(R.layout.item_profile_post, parent, false)
             )
 
     override fun onBindViewHolder(holder: ProfilePostViewHolder, position: Int) {
@@ -43,9 +58,21 @@ class ProfilePostAdapter :
 
         holder.apply {
 
-            ivPostImage.load(post.imageUrl) {
+            menu.isVisible = FirebaseUtil.auth.uid == post.ownerId
+
+            username.text = post.authorUsername
+            timestamp.text = DateUtils.getRelativeTimeSpanString(post.timestamp)
+            caption.text = post.caption
+
+            avatar.load(post.authorProfilePictureUrl) {
                 crossfade(true)
-                transformations(RoundedCornersTransformation(30.0f))
+                transformations(CircleCropTransformation())
+                placeholder(R.mipmap.ic_launcher_round)
+                error(R.mipmap.ic_launcher_round)
+            }
+
+            image.load(post.imageUrl) {
+                crossfade(true)
                 placeholder(R.drawable.ic_launcher_foreground)
                 error(R.drawable.ic_launcher_foreground)
             }
@@ -53,9 +80,16 @@ class ProfilePostAdapter :
             /**
              * Click listeners
              */
-            ivPostImage.setOnClickListener {
-                onProfilePostClickListener?.let { click ->
-                    click(post, position)
+            likeButton.setOnClickListener {
+                onLikeClickListener?.let { click ->
+                    it.startBounceAnimation()
+                    click(post, absoluteAdapterPosition)
+                }
+            }
+
+            menu.setOnClickListener {
+                onMenuClickListener?.let { click ->
+                    click(post, absoluteAdapterPosition)
                 }
             }
         }
@@ -64,9 +98,14 @@ class ProfilePostAdapter :
     /**
      * Click listeners
      */
-    private var onProfilePostClickListener: ((Post, Int) -> Unit)? = null
+    private var onLikeClickListener: ((Post, Int) -> Unit)? = null
+    private var onMenuClickListener: ((Post, Int) -> Unit)? = null
 
-    fun setOnProfilePostClickListener(listener: (Post, Int) -> Unit) {
-        onProfilePostClickListener = listener
+    fun setOnLikeClickListener(listener: (Post, Int) -> Unit) {
+        onLikeClickListener = listener
+    }
+
+    fun setOnMenuClickListener(listener: (Post, Int) -> Unit) {
+        onMenuClickListener = listener
     }
 }
