@@ -29,6 +29,9 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun deletePost(post: Post): Resource<Post> =
             mainRemote.deletePost(post)
 
+    override suspend fun toggleLikeForPost(post: Post): Resource<Boolean> =
+            mainRemote.toggleLikeForPost(post)
+
     /**
      * User handler
      */

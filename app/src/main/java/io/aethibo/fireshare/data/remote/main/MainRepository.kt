@@ -19,6 +19,7 @@ interface MainRepository {
     suspend fun createPost(body: PostRequestBody): Resource<Any>
     suspend fun updatePost(body: PostToUpdateBody): Resource<Any>
     suspend fun deletePost(post: Post): Resource<Post>
+    suspend fun toggleLikeForPost(post: Post): Resource<Boolean>
 
     // User
     suspend fun getSingleUser(uid: String): Resource<User>

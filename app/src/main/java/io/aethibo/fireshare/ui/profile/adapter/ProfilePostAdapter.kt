@@ -21,6 +21,7 @@ import coil.transform.CircleCropTransformation
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.framework.utils.FirebaseUtil
+import io.aethibo.fireshare.ui.utils.formatLargeNumber
 import io.aethibo.fireshare.ui.utils.startBounceAnimation
 
 class ProfilePostAdapter :
@@ -64,6 +65,9 @@ class ProfilePostAdapter :
             timestamp.text = DateUtils.getRelativeTimeSpanString(post.timestamp)
             caption.text = post.caption
 
+            val likesSze = post.likedBy.size
+            likeCount.text = formatLargeNumber(likesSze)
+
             avatar.load(post.authorProfilePictureUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
@@ -77,13 +81,17 @@ class ProfilePostAdapter :
                 error(R.drawable.ic_launcher_foreground)
             }
 
+            likeButton.setImageResource(if (post.isLiked) R.drawable.ic_like else R.drawable.ic_unlike)
+
             /**
              * Click listeners
              */
             likeButton.setOnClickListener {
                 onLikeClickListener?.let { click ->
-                    it.startBounceAnimation()
-                    click(post, absoluteAdapterPosition)
+                    if (!post.isLiking) {
+                        click(post, absoluteAdapterPosition)
+                        it.startBounceAnimation()
+                    }
                 }
             }
 

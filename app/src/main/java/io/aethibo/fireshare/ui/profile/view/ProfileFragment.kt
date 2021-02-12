@@ -22,6 +22,7 @@ import io.aethibo.fireshare.databinding.FragmentProfileBinding
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.framework.utils.Resource
+import io.aethibo.fireshare.ui.base.BasePostViewModel
 import io.aethibo.fireshare.ui.base.BaseProfilePostFragment
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.view.SettingsFragment
@@ -38,7 +39,15 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
     }
 
     private val binding: FragmentProfileBinding by viewBinding()
-    private val viewModel: ProfileViewModel by viewModel()
+
+    override val baseViewModel: BasePostViewModel
+        get() {
+            val viewModel: ProfileViewModel by viewModel()
+            return viewModel
+        }
+
+    protected val viewModel: ProfileViewModel
+        get() = baseViewModel as ProfileViewModel
 
     protected val uid: String
         get() = auth.uid!!
@@ -54,7 +63,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) =
-        inflater.inflate(R.menu.profile_menu, menu)
+            inflater.inflate(R.menu.profile_menu, menu)
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -76,7 +85,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
             profilePostAdapter.loadStateFlow.collectLatest {
                 if (lifecycle.currentState == Lifecycle.State.RESUMED) {
                     binding.profileProgressBar.isVisible =
-                        it.refresh is LoadState.Loading || it.append is LoadState.Loading
+                            it.refresh is LoadState.Loading || it.append is LoadState.Loading
                 }
             }
         }
@@ -115,7 +124,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
         }
         binding.profileHeader.tvProfileName.text = data.displayName
         binding.profileHeader.tvProfileUsername.text =
-            getString(R.string.label_username, data.username)
+                getString(R.string.label_username, data.username)
         binding.profileHeader.tvProfileBio.text = data.bio
         binding.profileHeader.tvProfileLocation.text = data.location
     }

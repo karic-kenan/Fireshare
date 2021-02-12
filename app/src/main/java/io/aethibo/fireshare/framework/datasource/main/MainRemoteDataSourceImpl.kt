@@ -93,6 +93,30 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
+    override suspend fun toggleLikeForPost(post: Post): Resource<Boolean> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            var isLiked = false
+
+            firestore.runTransaction { transaction ->
+                val uid = auth.uid!!
+                val postResult = transaction.get(posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id))
+                val currentLikes = postResult.toObject(Post::class.java)?.likedBy ?: emptyList()
+
+                transaction.update(
+                        posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id), "likedBy",
+                        if (uid in currentLikes)
+                            currentLikes - uid
+                        else {
+                            isLiked = true
+                            currentLikes + uid
+                        })
+            }.await()
+
+            Resource.Success(isLiked)
+        }
+    }
+
     override suspend fun getSingleUser(uid: String): Resource<User> = withContext(Dispatchers.IO) {
         safeCall {
             val user = users.document(uid).get().await().toObject(User::class.java)

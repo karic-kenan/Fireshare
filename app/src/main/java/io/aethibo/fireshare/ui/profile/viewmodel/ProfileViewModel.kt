@@ -7,7 +7,6 @@ package io.aethibo.fireshare.ui.profile.viewmodel
 
 import android.content.Context
 import android.view.LayoutInflater
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -19,42 +18,23 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.Post
-import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.datasource.main.ProfilePostsPagingSource
 import io.aethibo.fireshare.framework.utils.AppConst
-import io.aethibo.fireshare.framework.utils.Resource
+import io.aethibo.fireshare.ui.base.BasePostViewModel
 import io.aethibo.fireshare.usecases.GetSingleUserUseCase
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
+import io.aethibo.fireshare.usecases.LikePostUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ProfileViewModel(
-    private val getSingleUser: GetSingleUserUseCase,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
-) : ViewModel() {
-
-    private val _profileMeta: MutableStateFlow<Resource<User>> = MutableStateFlow(Resource.Init())
-    val profileMeta: StateFlow<Resource<User>>
-        get() = _profileMeta
+        getSingleUser: GetSingleUserUseCase,
+        likePostUseCase: LikePostUseCase
+) : BasePostViewModel(getSingleUser, likePostUseCase) {
 
     fun getPagingFlow(uid: String): Flow<PagingData<Post>> {
         val pagingSource = ProfilePostsPagingSource(FirebaseFirestore.getInstance(), uid)
 
         return Pager(PagingConfig(AppConst.PAGE_SIZE)) { pagingSource }.flow.cachedIn(viewModelScope)
-    }
-
-    fun loadProfile(uid: String) {
-        _profileMeta.value = Resource.Loading()
-
-        viewModelScope.launch(dispatcher) {
-            val result: Resource<User> = getSingleUser.invoke(uid)
-
-            _profileMeta.value = result
-        }
     }
 
     fun singlePostOptionsMenuClicked(

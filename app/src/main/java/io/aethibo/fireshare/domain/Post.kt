@@ -19,7 +19,7 @@ data class Post(
         var isLiked: Boolean = false,
         @get:Exclude
         var isLiking: Boolean = false,
-        val likedBy: List<String> = emptyList(),
+        var likedBy: List<String> = emptyList(),
         val location: String = "",
         val imageUrl: String = "",
         val timestamp: Long = 0L,

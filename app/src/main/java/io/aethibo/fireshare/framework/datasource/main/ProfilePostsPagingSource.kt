@@ -46,6 +46,7 @@ class ProfilePostsPagingSource(private val db: FirebaseFirestore, private val ui
 
                         post.authorProfilePictureUrl = user.photoUrl
                         post.authorUsername = user.username
+                        post.isLiked = uid in post.likedBy
                     },
                     null,
                     nextPage
