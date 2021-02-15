@@ -8,6 +8,7 @@ package io.aethibo.fireshare.framework.datasource.main
 import android.net.Uri
 import com.google.firebase.firestore.Query
 import io.aethibo.fireshare.data.remote.main.MainRemoteDataSource
+import io.aethibo.fireshare.domain.Comment
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.PostToUpdateBody
 import io.aethibo.fireshare.domain.User
@@ -155,5 +156,61 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                 ?.reference
                 ?.downloadUrl
                 ?.await()
+    }
+
+    override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val commentsForPost = comments
+                    .document(postId)
+                    .collection(AppConst.postCommentsCollection)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .get()
+                    .await()
+                    .toObjects(Comment::class.java)
+                    .onEach { comment ->
+                        val user = getSingleUser(comment.userId).data!!
+
+                        comment.authorUsername = user.username
+                        comment.authorProfilePictureUrl = user.photoUrl
+                    }
+
+            Resource.Success(commentsForPost)
+        }
+    }
+
+    override suspend fun createComment(postId: String, commentText: String): Resource<Comment> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val uid = auth.uid!!
+            val user = getSingleUser(uid).data!!
+            val commentId = UUID.randomUUID().toString()
+
+            val comment = Comment(
+                    id = commentId,
+                    userId = uid,
+                    postId = postId,
+                    comment = commentText,
+                    authorUsername = user.username,
+                    authorProfilePictureUrl = user.photoUrl)
+
+            comments.document(postId).collection(AppConst.postCommentsCollection).document(commentId).set(comment).await()
+
+            Resource.Success(comment)
+        }
+    }
+
+    override suspend fun deleteComment(comment: Comment): Resource<Comment> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            comments
+                    .document(comment.postId)
+                    .collection(AppConst.postCommentsCollection)
+                    .document(comment.id)
+                    .delete()
+                    .await()
+
+            Resource.Success(comment)
+        }
     }
 }

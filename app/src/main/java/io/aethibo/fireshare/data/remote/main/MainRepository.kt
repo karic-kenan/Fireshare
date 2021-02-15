@@ -5,6 +5,7 @@
 
 package io.aethibo.fireshare.data.remote.main
 
+import io.aethibo.fireshare.domain.Comment
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.PostToUpdateBody
 import io.aethibo.fireshare.domain.User
@@ -24,4 +25,9 @@ interface MainRepository {
     // User
     suspend fun getSingleUser(uid: String): Resource<User>
     suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any>
+
+    // Comments
+    suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
+    suspend fun createComment(postId: String, comment: String): Resource<Comment>
+    suspend fun deleteComment(comment: Comment): Resource<Comment>
 }

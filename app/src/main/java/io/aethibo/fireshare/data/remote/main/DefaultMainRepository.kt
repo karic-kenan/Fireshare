@@ -5,6 +5,7 @@
 
 package io.aethibo.fireshare.data.remote.main
 
+import io.aethibo.fireshare.domain.Comment
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.PostToUpdateBody
 import io.aethibo.fireshare.domain.User
@@ -40,4 +41,16 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
 
     override suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any> =
             mainRemote.updateUserProfile(body)
+
+    /**
+     * Comments handler
+     */
+    override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> =
+            mainRemote.getCommentsForPost(postId)
+
+    override suspend fun createComment(postId: String, comment: String): Resource<Comment> =
+            mainRemote.createComment(postId, comment)
+
+    override suspend fun deleteComment(comment: Comment): Resource<Comment> =
+            mainRemote.deleteComment(comment)
 }

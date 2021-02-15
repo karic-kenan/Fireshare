@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.framework.utils.Resource
+import io.aethibo.fireshare.ui.comments.view.CommentsFragment
 import io.aethibo.fireshare.ui.profile.adapter.ProfilePostAdapter
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
@@ -52,6 +53,10 @@ abstract class BaseProfilePostFragment(layoutId: Int) : Fragment(layoutId) {
 
         profilePostAdapter.setOnMenuClickListener { post, position ->
             viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post, navigator)
+        }
+
+        profilePostAdapter.setOnCommentClickListener { postId, position ->
+            navigator.addFragment(CommentsFragment.newInstance(postId))
         }
     }
 

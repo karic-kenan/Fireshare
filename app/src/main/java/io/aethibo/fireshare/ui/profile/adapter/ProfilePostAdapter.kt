@@ -100,6 +100,10 @@ class ProfilePostAdapter :
                     click(post, absoluteAdapterPosition)
                 }
             }
+
+            commentButton.setOnClickListener {
+                onCommentClickListener?.let { click -> click(post.id, absoluteAdapterPosition) }
+            }
         }
     }
 
@@ -107,6 +111,7 @@ class ProfilePostAdapter :
      * Click listeners
      */
     private var onLikeClickListener: ((Post, Int) -> Unit)? = null
+    private var onCommentClickListener: ((String, Int) -> Unit)? = null
     private var onMenuClickListener: ((Post, Int) -> Unit)? = null
 
     fun setOnLikeClickListener(listener: (Post, Int) -> Unit) {
@@ -115,5 +120,9 @@ class ProfilePostAdapter :
 
     fun setOnMenuClickListener(listener: (Post, Int) -> Unit) {
         onMenuClickListener = listener
+    }
+
+    fun setOnCommentClickListener(listener: (String, Int) -> Unit) {
+        onCommentClickListener = listener
     }
 }

@@ -6,6 +6,7 @@
 package io.aethibo.fireshare.data.remote.main
 
 import android.net.Uri
+import io.aethibo.fireshare.domain.Comment
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.PostToUpdateBody
 import io.aethibo.fireshare.domain.User
@@ -29,4 +30,11 @@ interface MainRemoteDataSource {
     suspend fun getSingleUser(uid: String): Resource<User>
     suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any>
     suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri?
+
+    /**
+     * Comments handler
+     */
+    suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
+    suspend fun createComment(postId: String, comment: String): Resource<Comment>
+    suspend fun deleteComment(comment: Comment): Resource<Comment>
 }
