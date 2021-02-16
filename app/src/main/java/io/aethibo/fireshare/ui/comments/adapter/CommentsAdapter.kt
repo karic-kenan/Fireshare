@@ -70,7 +70,7 @@ class CommentsAdapter : ListAdapter<Comment, CommentsAdapter.CommentsViewHolder>
             }
 
             commentMenu.setOnClickListener {
-                onDeleteCommentListener?.let { click -> click(item) }
+                onCommentMenuListener?.let { click -> click(item) }
             }
         }
     }
@@ -79,13 +79,13 @@ class CommentsAdapter : ListAdapter<Comment, CommentsAdapter.CommentsViewHolder>
      * Click listeners
      */
     private var onUserClickListener: ((Comment) -> Unit)? = null
-    private var onDeleteCommentListener: ((Comment) -> Unit)? = null
+    private var onCommentMenuListener: ((Comment) -> Unit)? = null
 
     fun setOnUserClickListener(listener: (Comment) -> Unit) {
         onUserClickListener = listener
     }
 
-    fun setOnDeleteCommentClickListener(listener: (Comment) -> Unit) {
-        onDeleteCommentListener = listener
+    fun setOnCommentMenuClickListener(listener: (Comment) -> Unit) {
+        onCommentMenuListener = listener
     }
 }

@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentCommentsBinding
 import io.aethibo.fireshare.domain.Comment
@@ -52,6 +53,7 @@ class CommentsFragment : Fragment(R.layout.fragment_comments), View.OnClickListe
         viewModel.getCommentsForPost(postId)
 
         setOnClickListeners()
+        setupCommentRefreshListener()
         subscribeToObservers()
     }
 
@@ -120,6 +122,13 @@ class CommentsFragment : Fragment(R.layout.fragment_comments), View.OnClickListe
         }
     }
 
+    private fun setupCommentRefreshListener() =
+            binding.commentsRefreshLayout.setOnRefreshListener {
+                viewModel.getCommentsForPost(postId).also {
+                    binding.commentsRefreshLayout.isRefreshing = false
+                }
+            }
+
     private fun setOnClickListeners() {
         binding.ibAddComment.setOnClickListener(this)
 
@@ -134,11 +143,7 @@ class CommentsFragment : Fragment(R.layout.fragment_comments), View.OnClickListe
             // TODO: Navigate to other user profile
         }
 
-        commentsAdapter.setOnDeleteCommentClickListener { comment ->
-            // TODO: Show pop-up menu to editing/deleting the comment
-
-            viewModel.deleteComment(comment)
-        }
+        commentsAdapter.setOnCommentMenuClickListener { comment -> viewModel.showCommentContextMenu(requireContext(), layoutInflater, BottomNavigator.provide(requireActivity()), comment) }
     }
 
     private fun setupAdapter(data: List<Comment>) {

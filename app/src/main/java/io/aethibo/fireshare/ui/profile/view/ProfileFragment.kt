@@ -128,4 +128,9 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
         binding.profileHeader.tvProfileBio.text = data.bio
         binding.profileHeader.tvProfileLocation.text = data.location
     }
+
+    override fun onDestroy() {
+        Timber.d("FragmentProfile is destroyed")
+        super.onDestroy()
+    }
 }
