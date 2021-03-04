@@ -7,6 +7,7 @@ package io.aethibo.fireshare.ui.profile.viewmodel
 
 import android.content.Context
 import android.view.LayoutInflater
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -20,16 +21,28 @@ import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.framework.datasource.main.ProfilePostsPagingSource
 import io.aethibo.fireshare.framework.utils.AppConst
+import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.base.BasePostViewModel
+import io.aethibo.fireshare.usecases.DeletePostUseCase
 import io.aethibo.fireshare.usecases.GetSingleUserUseCase
 import io.aethibo.fireshare.usecases.LikePostUseCase
+import io.aethibo.fireshare.usecases.UpdatePostUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ProfileViewModel(
         getSingleUser: GetSingleUserUseCase,
-        likePostUseCase: LikePostUseCase
+        likePostUseCase: LikePostUseCase,
+        updatePost: UpdatePostUseCase,
+        private val deletePost: DeletePostUseCase
 ) : BasePostViewModel(getSingleUser, likePostUseCase) {
+
+    private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
+    val deletePostStatus: StateFlow<Resource<Post>>
+        get() = _deletePostStatus
 
     fun getPagingFlow(uid: String): Flow<PagingData<Post>> {
         val pagingSource = ProfilePostsPagingSource(FirebaseFirestore.getInstance(), uid)
@@ -54,7 +67,7 @@ class ProfileViewModel(
 
         deleteButton.setOnClickListener {
             Timber.i("Post ${post.id} deleted")
-            // deletePost(context, post)
+            deletePost(context, post)
             builder.dismiss()
         }
 
@@ -68,6 +81,22 @@ class ProfileViewModel(
             Timber.i("Post ${post.id} shared")
             builder.dismiss()
         }
+    }
+
+    private fun deletePost(context: Context, post: Post) {
+        AlertDialog.Builder(context)
+                .setTitle("Delete post")
+                .setMessage("Are you sure you want to delete this post?")
+                .setNegativeButton("Cancel") { _, _ -> }
+                .setPositiveButton("Delete") { _, _ ->
+                    _deletePostStatus.value = Resource.Loading()
+
+                    viewModelScope.launch(dispatcher) {
+                        val result: Resource<Post> = deletePost.invoke(post)
+                        _deletePostStatus.value = result
+                    }
+                }
+                .show()
     }
 
     fun logout() {

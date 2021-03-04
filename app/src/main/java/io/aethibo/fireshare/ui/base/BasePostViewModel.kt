@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class BasePostViewModel(private val getSingleUser: GetSingleUserUseCase, private val likePost: LikePostUseCase, private val dispatcher: CoroutineDispatcher = Dispatchers.Main) : ViewModel() {
+abstract class BasePostViewModel(private val getSingleUser: GetSingleUserUseCase, private val likePost: LikePostUseCase, val dispatcher: CoroutineDispatcher = Dispatchers.Main) : ViewModel() {
 
     private val _profileMeta: MutableStateFlow<Resource<User>> = MutableStateFlow(Resource.Init())
     val profileMeta: StateFlow<Resource<User>>

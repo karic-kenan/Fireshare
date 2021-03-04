@@ -24,15 +24,15 @@ ext.versions = [
         /**
          * Build
          */
-        kotlinVersion             : '1.4.30',
+        kotlinVersion             : '1.4.31',
         gradleToolsVersion        : '4.1.2',
 
         /**
          * Android
          */
         appCompatVersion          : '1.2.0',
-        activityKtxVersion        : '1.2.0-rc01',
-        fragmentKtxVersion        : '1.3.0-rc02',
+        activityKtxVersion        : '1.3.0-alpha03',
+        fragmentKtxVersion        : '1.3.0',
         coreKtxVersion            : '1.3.2',
         constraintLayoutVersion   : '2.0.4',
 
@@ -51,15 +51,15 @@ ext.versions = [
         /**
          * Architecture components
          */
-        viewModelVersion          : '2.2.0',
-        liveDataVersion           : '2.2.0',
-        lifeCycleVersion          : '2.2.0',
+        viewModelVersion          : '2.3.0',
+        liveDataVersion           : '2.3.0',
+        lifeCycleVersion          : '2.3.0',
 
         /**
          * Firebase
          */
-        authVersion               : '20.0.2',
-        firestoreVersion          : '22.0.2',
+        authVersion               : '20.0.3',
+        firestoreVersion          : '22.1.1',
         storageVersion            : '19.2.1',
         firebaseCoroutinesVersion : '1.1.1',
 
@@ -85,7 +85,7 @@ ext.versions = [
          * Testing
          */
         coroutinesTestVersion     : '1.3.7',
-        junitTestVersion          : '4.13.1',
+        junitTestVersion          : '4.13.2',
         extJunitTetVersion        : '1.1.2',
         espressoTestVersion       : '3.3.0',
         okhttpTestVersion         : '5.0.0-alpha.2',

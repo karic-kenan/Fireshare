@@ -19,6 +19,7 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentProfileBinding
+import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.framework.utils.Resource
@@ -111,6 +112,34 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
                         snackBar(resource.message ?: "Unknown error occurred")
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+
+            viewModel.deletePostStatus.collectLatest { resource: Resource<Post> ->
+                when (resource) {
+                    is Resource.Init -> Timber.d("Init post deletion")
+                    is Resource.Loading -> binding.profileProgressBar.isVisible = true
+                    is Resource.Success -> {
+                        binding.profileProgressBar.isVisible = false
+
+                        snackBar("Post removed")
+
+                        /**
+                         * Refreshing the adapter for doesn't work
+                         * so we're re-fetching the data
+                         * Given it uses DiffUtil, it'll only load changes
+                         */
+                        viewModel.getPagingFlow(uid).collect {
+                            profilePostAdapter.submitData(it)
+                        }
+                    }
+                    is Resource.Failure -> {
+                        binding.profileProgressBar.isVisible = false
+                        snackBar(resource.message ?: "Unknown error occurred!")
                     }
                 }
             }

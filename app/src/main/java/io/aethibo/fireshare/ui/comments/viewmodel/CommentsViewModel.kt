@@ -24,7 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class CommentsViewModel(private val getComments: GetCommentsForPostUseCase,
                         private val createComment: CreateCommentUseCase,
@@ -87,18 +86,18 @@ class CommentsViewModel(private val getComments: GetCommentsForPostUseCase,
     ) {
         val builder = BottomSheetDialog(context)
         val dialogView = layoutInflater.inflate(R.layout.item_comment_options_menu, null)
-        val editButton = dialogView.findViewById<MaterialButton>(R.id.option_edit_comment_button)
+        // val editButton = dialogView.findViewById<MaterialButton>(R.id.option_edit_comment_button)
         val deleteButton =
                 dialogView.findViewById<MaterialButton>(R.id.option_delete_comment_button)
 
         builder.setContentView(dialogView)
         builder.show()
 
-        editButton.setOnClickListener {
+        /*editButton.setOnClickListener {
             Timber.d("Comment ${comment.id} edited")
             openCommentDialog(navigator, comment)
             builder.dismiss()
-        }
+        }*/
 
         deleteButton.setOnClickListener {
             AlertDialog.Builder(context)
