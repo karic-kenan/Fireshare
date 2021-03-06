@@ -158,6 +158,19 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                 ?.await()
     }
 
+    override suspend fun searchUsers(query: String): Resource<List<User>> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val userResults = users
+                    .whereGreaterThanOrEqualTo("username", query.toLowerCase(Locale.getDefault()))
+                    .get()
+                    .await()
+                    .toObjects(User::class.java)
+
+            Resource.Success(userResults)
+        }
+    }
+
     override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> = withContext(Dispatchers.IO) {
         safeCall {
 

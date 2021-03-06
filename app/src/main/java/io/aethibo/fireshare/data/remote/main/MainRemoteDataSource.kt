@@ -30,6 +30,7 @@ interface MainRemoteDataSource {
     suspend fun getSingleUser(uid: String): Resource<User>
     suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any>
     suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri?
+    suspend fun searchUsers(query: String): Resource<List<User>>
 
     /**
      * Comments handler

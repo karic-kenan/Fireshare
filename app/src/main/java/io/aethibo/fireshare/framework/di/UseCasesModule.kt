@@ -29,6 +29,7 @@ val useCasesModule = module {
      */
     single<GetSingleUserUseCase> { GetSingleUserUseCaseImpl(get()) }
     single<UpdateUserProfileUseCase> { UpdateUserProfileUseCaseImpl(get()) }
+    single<SearchUserUseCase> { SearchUserUseCaseImpl(get()) }
 
     /**
      * Main - Comments handler

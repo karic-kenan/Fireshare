@@ -8,6 +8,7 @@ package io.aethibo.fireshare.framework.di
 import io.aethibo.fireshare.ui.auth.shared.AuthViewModel
 import io.aethibo.fireshare.ui.comments.viewmodel.CommentsViewModel
 import io.aethibo.fireshare.ui.createpost.viewmodel.CreatePostViewModel
+import io.aethibo.fireshare.ui.discovery.viewmodel.DiscoveryViewModel
 import io.aethibo.fireshare.ui.postdetail.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.viewmodel.SettingsViewModel
@@ -21,4 +22,5 @@ val viewModelsModule = module {
     viewModel { DetailPostViewModel() }
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { CommentsViewModel(get(), get(), get()) }
+    viewModel { DiscoveryViewModel(get()) }
 }

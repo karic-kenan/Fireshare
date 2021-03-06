@@ -42,6 +42,9 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any> =
             mainRemote.updateUserProfile(body)
 
+    override suspend fun searchUsers(query: String): Resource<List<User>> =
+            mainRemote.searchUsers(query)
+
     /**
      * Comments handler
      */

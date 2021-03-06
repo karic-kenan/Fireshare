@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.ui.createpost.view.CreatePostFragment
-import io.aethibo.fireshare.ui.discovery.DiscoveryFragment
+import io.aethibo.fireshare.ui.discovery.view.DiscoveryFragment
 import io.aethibo.fireshare.ui.notificationsfeed.NotificationsFeedFragment
 import io.aethibo.fireshare.ui.profile.view.ProfileFragment
 import io.aethibo.fireshare.ui.timeline.TimelineFragment
