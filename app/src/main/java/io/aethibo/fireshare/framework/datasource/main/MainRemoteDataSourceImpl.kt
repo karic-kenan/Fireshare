@@ -101,11 +101,11 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
 
             firestore.runTransaction { transaction ->
                 val uid = auth.uid!!
-                val postResult = transaction.get(posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id))
+                val postResult = transaction.get(posts.document(post.ownerId).collection(AppConst.usersPostsCollection).document(post.id))
                 val currentLikes = postResult.toObject(Post::class.java)?.likedBy ?: emptyList()
 
                 transaction.update(
-                        posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id), "likedBy",
+                        posts.document(post.ownerId).collection(AppConst.usersPostsCollection).document(post.id), "likedBy",
                         if (uid in currentLikes)
                             currentLikes - uid
                         else {

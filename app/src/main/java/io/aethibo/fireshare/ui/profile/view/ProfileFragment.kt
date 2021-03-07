@@ -50,7 +50,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
     protected val viewModel: ProfileViewModel
         get() = baseViewModel as ProfileViewModel
 
-    protected val uid: String
+    protected open val uid: String
         get() = auth.uid!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

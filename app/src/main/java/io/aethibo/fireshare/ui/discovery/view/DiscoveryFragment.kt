@@ -5,6 +5,7 @@
 
 package io.aethibo.fireshare.ui.discovery.view
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -14,12 +15,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentDiscoveryBinding
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.discovery.adapter.UserAdapter
 import io.aethibo.fireshare.ui.discovery.viewmodel.DiscoveryViewModel
+import io.aethibo.fireshare.ui.othersprofile.view.OthersProfileFragment
 import io.aethibo.fireshare.ui.utils.hideKeyboard
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.Job
@@ -35,9 +38,16 @@ class DiscoveryFragment : Fragment(R.layout.fragment_discovery), SearchView.OnQu
 
     private val userAdapter: UserAdapter by lazy { UserAdapter() }
     private var searchJob: Job? = null
+    private lateinit var navigator: BottomNavigator
 
     companion object {
         fun newInstance() = DiscoveryFragment()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        navigator = BottomNavigator.provide(requireActivity())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,9 +65,7 @@ class DiscoveryFragment : Fragment(R.layout.fragment_discovery), SearchView.OnQu
     }
 
     private fun setupAdapterClickListeners() {
-        userAdapter.setOnUserClickListener { user ->
-            Timber.d("Clicked on ${user.username}")
-        }
+        userAdapter.setOnUserClickListener { navigator.addFragment(OthersProfileFragment.newInstance(it.uid)) }
     }
 
     private fun subscribeToObservers() {
