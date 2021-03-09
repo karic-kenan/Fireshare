@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -54,6 +55,18 @@
         android:gravity="center"
         android:textColor="?android:attr/textColorSecondary"
         tools:text="Location" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnProfileFollow"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:backgroundTint="@color/pink_main"
+        android:text="Follow"
+        android:textAllCaps="false"
+        app:cornerRadius="15dp" />
+
 
     <View
         android:layout_width="match_parent"

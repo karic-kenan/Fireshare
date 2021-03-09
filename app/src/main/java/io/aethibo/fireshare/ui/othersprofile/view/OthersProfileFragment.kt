@@ -8,17 +8,23 @@ package io.aethibo.fireshare.ui.othersprofile.view
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import by.kirich1409.viewbindingdelegate.viewBinding
+import io.aethibo.fireshare.R
+import io.aethibo.fireshare.databinding.FragmentProfileBinding
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.profile.view.ProfileFragment
 import io.aethibo.fireshare.ui.utils.snackBar
+import kotlinx.android.synthetic.main.layout_profile_header.*
 import kotlinx.coroutines.flow.collect
 import timber.log.Timber
 
-class OthersProfileFragment : ProfileFragment() {
+class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
 
     private lateinit var userId: String
+    private val binding: FragmentProfileBinding by viewBinding()
 
     override val uid: String
         get() = userId
@@ -43,6 +49,10 @@ class OthersProfileFragment : ProfileFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         subscribeToObservers()
+
+        btnProfileFollow?.setOnClickListener {
+            viewModel.toggleFollowUser(uid)
+        }
     }
 
     private fun subscribeToObservers() {
@@ -52,6 +62,7 @@ class OthersProfileFragment : ProfileFragment() {
                     is Resource.Init -> Timber.d("Fetching user metadata")
                     is Resource.Loading -> Timber.d("Loading user metadata fetch")
                     is Resource.Success -> {
+                        binding.profileHeader.btnProfileFollow.isVisible = true
                         val data = value.data as User
                         Timber.d("User fetched: ${data.username}")
                     }
@@ -61,6 +72,30 @@ class OthersProfileFragment : ProfileFragment() {
                     }
                 }
             }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.followStatus.collect { value: Resource<Boolean> ->
+                when (value) {
+                    is Resource.Init -> Timber.d("Init follow user")
+                    is Resource.Loading -> Timber.d("Loading follow user")
+                    is Resource.Success -> {
+
+                        val data = value.data as Boolean
+                        Timber.d("User follow is: $data")
+                    }
+                    is Resource.Failure -> {
+                        Timber.e("Error: ${value.message}")
+                        snackBar(value.message ?: "Unknown error occurred!")
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onClick(view: View?) {
+        when (view?.id) {
+            R.id.btnProfileFollow -> viewModel.toggleFollowUser(uid)
         }
     }
 }

@@ -26,6 +26,7 @@ interface MainRepository {
     suspend fun getSingleUser(uid: String): Resource<User>
     suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any>
     suspend fun searchUsers(query: String): Resource<List<User>>
+    suspend fun toggleFollowForUser(uid: String): Resource<Boolean>
 
     // Comments
     suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>

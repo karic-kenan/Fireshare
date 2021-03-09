@@ -45,6 +45,9 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun searchUsers(query: String): Resource<List<User>> =
             mainRemote.searchUsers(query)
 
+    override suspend fun toggleFollowForUser(uid: String): Resource<Boolean> =
+            mainRemote.toggleFollowForUser(uid)
+
     /**
      * Comments handler
      */

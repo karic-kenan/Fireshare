@@ -23,10 +23,7 @@ import io.aethibo.fireshare.framework.datasource.main.ProfilePostsPagingSource
 import io.aethibo.fireshare.framework.utils.AppConst
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.base.BasePostViewModel
-import io.aethibo.fireshare.usecases.DeletePostUseCase
-import io.aethibo.fireshare.usecases.GetSingleUserUseCase
-import io.aethibo.fireshare.usecases.LikePostUseCase
-import io.aethibo.fireshare.usecases.UpdatePostUseCase
+import io.aethibo.fireshare.usecases.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,12 +34,17 @@ class ProfileViewModel(
         getSingleUser: GetSingleUserUseCase,
         likePostUseCase: LikePostUseCase,
         updatePost: UpdatePostUseCase,
-        private val deletePost: DeletePostUseCase
+        private val deletePost: DeletePostUseCase,
+        private val followUser: FollowUserUseCase,
 ) : BasePostViewModel(getSingleUser, likePostUseCase) {
 
     private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
     val deletePostStatus: StateFlow<Resource<Post>>
         get() = _deletePostStatus
+
+    private val _followStatus: MutableStateFlow<Resource<Boolean>> = MutableStateFlow(Resource.Init())
+    val followStatus: StateFlow<Resource<Boolean>>
+        get() = _followStatus
 
     fun getPagingFlow(uid: String): Flow<PagingData<Post>> {
         val pagingSource = ProfilePostsPagingSource(FirebaseFirestore.getInstance(), uid)
@@ -97,6 +99,16 @@ class ProfileViewModel(
                     }
                 }
                 .show()
+    }
+
+    fun toggleFollowUser(uid: String) {
+        _followStatus.value = Resource.Loading()
+
+        viewModelScope.launch(dispatcher) {
+            val result: Resource<Boolean> = followUser.invoke(uid)
+
+            _followStatus.value = result
+        }
     }
 
     fun logout() {

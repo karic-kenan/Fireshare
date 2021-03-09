@@ -57,6 +57,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
 
+        binding.profileHeader.btnProfileFollow.isVisible = false
         viewModel.loadProfile(uid)
 
         subscribeToObservers()

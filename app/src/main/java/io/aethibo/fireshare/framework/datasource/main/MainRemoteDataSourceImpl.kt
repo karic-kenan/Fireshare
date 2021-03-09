@@ -30,6 +30,8 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
     private val posts = firestore.collection(AppConst.postsCollection)
     private val users = firestore.collection(AppConst.usersCollection)
     private val comments = firestore.collection(AppConst.commentsCollection)
+    private val followers = firestore.collection(AppConst.followersCollection)
+    private val following = firestore.collection(AppConst.followingCollection)
 
     override suspend fun getPostsForProfile(uid: String) = withContext(Dispatchers.IO) {
         safeCall {
@@ -168,6 +170,36 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                     .toObjects(User::class.java)
 
             Resource.Success(userResults)
+        }
+    }
+
+    override suspend fun toggleFollowForUser(uid: String): Resource<Boolean> = withContext(Dispatchers.IO) {
+        safeCall {
+            val currentUserId: String = auth.uid!!
+
+            /**
+             * followers collection -> other user -> userFollowers -> current user
+             */
+            val followersRef = followers.document(uid).collection(AppConst.userFollowersCollection).document(currentUserId)
+
+            /**
+             * following collection -> current user -> user following -> other user
+             */
+            val followingRef = following.document(currentUserId).collection(AppConst.userFollowingCollection).document(uid)
+
+            val userFollowers = followersRef.get().await()
+            // remove follower
+            if (userFollowers.exists()) userFollowers.reference.delete().await()
+            // Make auth user follower of THAT user (update THEIR followers collection)
+            else followersRef.set(emptyMap<Any, Any>()).await()
+
+            val userFollowing = followingRef.get().await()
+            // remove following
+            if (userFollowing.exists()) userFollowing.reference.delete().await()
+            // Put THAT user on YOUR following collection (update your following collection)
+            else followingRef.set(emptyMap<Any, Any>()).await()
+
+            Resource.Success(true)
         }
     }
 
