@@ -175,7 +175,9 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
 
     override suspend fun toggleFollowForUser(uid: String): Resource<Boolean> = withContext(Dispatchers.IO) {
         safeCall {
+            // TODO: Elaborate on the usage and update variables names to provide better context
             val currentUserId: String = auth.uid!!
+            var isFollowing: Boolean?
 
             /**
              * followers collection -> other user -> userFollowers -> current user
@@ -189,17 +191,31 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
 
             val userFollowers = followersRef.get().await()
             // remove follower
-            if (userFollowers.exists()) userFollowers.reference.delete().await()
+            if (userFollowers.exists()) userFollowers.reference.delete().await().also { isFollowing = false }
             // Make auth user follower of THAT user (update THEIR followers collection)
-            else followersRef.set(emptyMap<Any, Any>()).await()
+            else followersRef.set(emptyMap<Any, Any>()).await().also { isFollowing = true }
 
             val userFollowing = followingRef.get().await()
             // remove following
-            if (userFollowing.exists()) userFollowing.reference.delete().await()
+            if (userFollowing.exists()) userFollowing.reference.delete().await().also { isFollowing = false }
             // Put THAT user on YOUR following collection (update your following collection)
-            else followingRef.set(emptyMap<Any, Any>()).await()
+            else followingRef.set(emptyMap<Any, Any>()).await().also { isFollowing = true }
 
-            Resource.Success(true)
+            Resource.Success(isFollowing!!)
+        }
+    }
+
+    override suspend fun checkIfFollowing(uid: String): Resource<Boolean> = withContext(Dispatchers.IO) {
+        safeCall {
+            val currentUserId: String = auth.uid!!
+
+            var isFollowing: Boolean = false
+
+            val followersRef = followers.document(uid).collection(AppConst.userFollowersCollection).document(currentUserId).get().await()
+
+            if (followersRef.exists()) isFollowing = true
+
+            Resource.Success(isFollowing)
         }
     }
 

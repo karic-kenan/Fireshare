@@ -36,6 +36,7 @@ class ProfileViewModel(
         updatePost: UpdatePostUseCase,
         private val deletePost: DeletePostUseCase,
         private val followUser: FollowUserUseCase,
+        private val isFollowing: CheckIsFollowingUseCase
 ) : BasePostViewModel(getSingleUser, likePostUseCase) {
 
     private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
@@ -45,6 +46,10 @@ class ProfileViewModel(
     private val _followStatus: MutableStateFlow<Resource<Boolean>> = MutableStateFlow(Resource.Init())
     val followStatus: StateFlow<Resource<Boolean>>
         get() = _followStatus
+
+    private val _isFollowingStatus: MutableStateFlow<Resource<Boolean>> = MutableStateFlow(Resource.Init())
+    val isFollowingStatus: StateFlow<Resource<Boolean>>
+        get() = _isFollowingStatus
 
     fun getPagingFlow(uid: String): Flow<PagingData<Post>> {
         val pagingSource = ProfilePostsPagingSource(FirebaseFirestore.getInstance(), uid)
@@ -108,6 +113,16 @@ class ProfileViewModel(
             val result: Resource<Boolean> = followUser.invoke(uid)
 
             _followStatus.value = result
+        }
+    }
+
+    fun checkIsFollowing(uid: String) {
+        _isFollowingStatus.value = Resource.Loading()
+
+        viewModelScope.launch(dispatcher) {
+            val result: Resource<Boolean> = isFollowing.invoke(uid)
+
+            _isFollowingStatus.value = result
         }
     }
 

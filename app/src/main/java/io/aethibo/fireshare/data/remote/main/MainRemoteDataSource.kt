@@ -32,6 +32,7 @@ interface MainRemoteDataSource {
     suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri?
     suspend fun searchUsers(query: String): Resource<List<User>>
     suspend fun toggleFollowForUser(uid: String): Resource<Boolean>
+    suspend fun checkIfFollowing(uid: String): Resource<Boolean>
 
     /**
      * Comments handler

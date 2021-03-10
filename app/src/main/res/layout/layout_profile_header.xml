@@ -63,8 +63,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
         android:backgroundTint="@color/pink_main"
+        android:fontFamily="@font/open_sans_regular"
         android:text="Follow"
         android:textAllCaps="false"
+        android:textColor="@color/white"
         app:cornerRadius="15dp" />
 
 

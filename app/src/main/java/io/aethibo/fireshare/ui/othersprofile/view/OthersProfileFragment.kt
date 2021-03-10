@@ -19,6 +19,7 @@ import io.aethibo.fireshare.ui.profile.view.ProfileFragment
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.android.synthetic.main.layout_profile_header.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
 class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
@@ -48,6 +49,8 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.checkIsFollowing(uid)
+
         subscribeToObservers()
 
         btnProfileFollow?.setOnClickListener {
@@ -75,21 +78,48 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
         }
 
         lifecycleScope.launchWhenResumed {
-            viewModel.followStatus.collect { value: Resource<Boolean> ->
-                when (value) {
-                    is Resource.Init -> Timber.d("Init follow user")
-                    is Resource.Loading -> Timber.d("Loading follow user")
-                    is Resource.Success -> {
+            viewModel.followStatus.collect { handleFollowUi(it) }
+        }
 
-                        val data = value.data as Boolean
-                        Timber.d("User follow is: $data")
-                    }
-                    is Resource.Failure -> {
-                        Timber.e("Error: ${value.message}")
-                        snackBar(value.message ?: "Unknown error occurred!")
-                    }
-                }
+        lifecycleScope.launchWhenResumed {
+            viewModel.isFollowingStatus.collectLatest { handleFollowUi(it) }
+        }
+    }
+
+    // TODO: Handle UI properly
+    private fun handleFollowUi(value: Resource<Boolean>) {
+        when (value) {
+            is Resource.Init -> Timber.d("Init follow user")
+            is Resource.Loading -> binding.profileProgressBar.isVisible = true
+            is Resource.Success -> {
+                binding.profileProgressBar.isVisible = false
+                val isFollowing = value.data as Boolean
+
+                if (isFollowing)
+                    setupFollowUi()
+                else
+                    setupUnFollowUi()
+
+                Timber.d("User follow is: $isFollowing")
             }
+            is Resource.Failure -> {
+                binding.profileProgressBar.isVisible = false
+                snackBar(value.message ?: "Unknown error occurred!")
+            }
+        }
+    }
+
+    private fun setupUnFollowUi() {
+        binding.profileHeader.btnProfileFollow.apply {
+            text = "Follow"
+            setTextColor(resources.getColor(R.color.white, null))
+        }
+    }
+
+    private fun setupFollowUi() {
+        binding.profileHeader.btnProfileFollow.apply {
+            text = "Unfollow"
+            setTextColor(resources.getColor(R.color.white, null))
         }
     }
 
