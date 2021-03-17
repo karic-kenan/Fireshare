@@ -23,6 +23,7 @@ val useCasesModule = module {
     single<UpdatePostUseCase> { UpdatePostUseCaseImpl(get()) }
     single<DeletePostUseCase> { DeletePostUseCaseImpl(get()) }
     single<LikePostUseCase> { LikePostUseCaseImpl(get()) }
+    single<GetTimelineUseCase> { GetTimelineUseCaseImpl(get()) }
 
     /**
      * Main - Users handler

@@ -12,6 +12,7 @@ import io.aethibo.fireshare.ui.discovery.viewmodel.DiscoveryViewModel
 import io.aethibo.fireshare.ui.postdetail.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.viewmodel.SettingsViewModel
+import io.aethibo.fireshare.ui.timeline.viewmodel.TimelineViewModel
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -23,4 +24,5 @@ val viewModelsModule = module {
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { CommentsViewModel(get(), get(), get()) }
     viewModel { DiscoveryViewModel(get()) }
+    viewModel { TimelineViewModel(get()) }
 }

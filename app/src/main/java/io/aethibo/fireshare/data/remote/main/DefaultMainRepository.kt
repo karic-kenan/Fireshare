@@ -33,6 +33,9 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun toggleLikeForPost(post: Post): Resource<Boolean> =
             mainRemote.toggleLikeForPost(post)
 
+    override suspend fun getTimeline(): Resource<List<Post>> =
+        mainRemote.getTimeline()
+
     /**
      * User handler
      */
