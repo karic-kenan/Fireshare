@@ -6,7 +6,6 @@
 package io.aethibo.fireshare.framework.datasource.main
 
 import android.net.Uri
-import androidx.lifecycle.MutableLiveData
 import com.google.firebase.firestore.Query
 import io.aethibo.fireshare.data.remote.main.MainRemoteDataSource
 import io.aethibo.fireshare.domain.Comment
@@ -33,8 +32,6 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
     private val comments = firestore.collection(AppConst.commentsCollection)
     private val followers = firestore.collection(AppConst.followersCollection)
     private val following = firestore.collection(AppConst.followingCollection)
-
-    private val _userIdsStatus: MutableLiveData<String> = MutableLiveData<String>()
 
     override suspend fun getPostsForProfile(uid: String) = withContext(Dispatchers.IO) {
         safeCall {

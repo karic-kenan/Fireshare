@@ -22,20 +22,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/open_sans_bold"
-        android:text="John Doe"
         app:layout_constraintStart_toEndOf="@+id/postAvatar"
-        app:layout_constraintTop_toTopOf="@+id/postAvatar" />
+        app:layout_constraintTop_toTopOf="@+id/postAvatar"
+        tools:text="John Doe" />
 
     <TextView
         android:id="@+id/postDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/open_sans_light"
-        android:text="4th July, 2020"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/postAvatar"
         app:layout_constraintStart_toStartOf="@+id/postUsername"
-        app:layout_constraintTop_toBottomOf="@+id/postUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/postUsername"
+        tools:text="4th July, 2020" />
 
     <ImageButton
         android:id="@+id/postMenu"
@@ -82,7 +82,7 @@
         android:tint="@color/pink_main"
         app:layout_constraintStart_toStartOf="@+id/postImage"
         app:layout_constraintTop_toBottomOf="@+id/postImage"
-        app:srcCompat="@drawable/ic_unlike" />
+        tools:srcCompat="@drawable/ic_unlike" />
 
     <TextView
         android:id="@+id/postLikeCountTxt"
@@ -90,10 +90,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/open_sans_regular"
-        android:text="132"
         app:layout_constraintBottom_toBottomOf="@+id/postLikeButton"
         app:layout_constraintStart_toEndOf="@+id/postLikeButton"
-        app:layout_constraintTop_toTopOf="@+id/postLikeButton" />
+        app:layout_constraintTop_toTopOf="@+id/postLikeButton"
+        tools:text="132" />
 
     <ImageButton
         android:id="@+id/postCommentButton"
@@ -112,10 +112,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/open_sans_regular"
-        android:text="64"
         app:layout_constraintBottom_toBottomOf="@+id/postCommentButton"
         app:layout_constraintStart_toEndOf="@+id/postCommentButton"
-        app:layout_constraintTop_toTopOf="@+id/postCommentButton" />
+        app:layout_constraintTop_toTopOf="@+id/postCommentButton"
+        tools:text="64" />
 
     <View
         android:id="@+id/postDivider"

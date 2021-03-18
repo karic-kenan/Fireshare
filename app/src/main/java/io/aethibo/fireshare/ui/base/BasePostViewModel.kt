@@ -47,5 +47,4 @@ abstract class BasePostViewModel(private val getSingleUser: GetSingleUserUseCase
             _likePostStatus.value = result
         }
     }
-
 }

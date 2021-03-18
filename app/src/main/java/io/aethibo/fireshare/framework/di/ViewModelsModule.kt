@@ -24,5 +24,5 @@ val viewModelsModule = module {
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { CommentsViewModel(get(), get(), get()) }
     viewModel { DiscoveryViewModel(get()) }
-    viewModel { TimelineViewModel(get()) }
+    viewModel { TimelineViewModel(get(), get()) }
 }

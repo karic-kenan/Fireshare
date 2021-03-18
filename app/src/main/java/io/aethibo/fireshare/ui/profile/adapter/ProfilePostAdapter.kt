@@ -66,7 +66,6 @@ class ProfilePostAdapter :
             timestamp.text = DateUtils.getRelativeTimeSpanString(post.timestamp)
             caption.text = post.caption
 
-            Timber.d("Likes count: ${post.likedBy.size}")
             val likesSze = post.likedBy.size
             likeCount.text = formatLargeNumber(likesSze)
 
