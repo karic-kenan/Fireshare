@@ -24,6 +24,7 @@ interface MainRemoteDataSource {
     suspend fun deletePost(post: Post): Resource<Post>
     suspend fun toggleLikeForPost(post: Post): Resource<Boolean>
     suspend fun getTimeline(): Resource<List<Post>>
+    suspend fun getPostsCount(uid: String): Resource<Int>
 
     /**
      * Users handler
@@ -34,6 +35,8 @@ interface MainRemoteDataSource {
     suspend fun searchUsers(query: String): Resource<List<User>>
     suspend fun toggleFollowForUser(uid: String): Resource<Boolean>
     suspend fun checkIfFollowing(uid: String): Resource<Boolean>
+    suspend fun getFollowingCount(uid: String): Resource<Int>
+    suspend fun getFollowersCount(uid: String): Resource<Int>
 
     /**
      * Comments handler

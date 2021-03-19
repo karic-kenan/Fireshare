@@ -34,7 +34,10 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
             mainRemote.toggleLikeForPost(post)
 
     override suspend fun getTimeline(): Resource<List<Post>> =
-        mainRemote.getTimeline()
+            mainRemote.getTimeline()
+
+    override suspend fun getPostsCount(uid: String): Resource<Int> =
+            mainRemote.getPostsCount(uid)
 
     /**
      * User handler
@@ -53,6 +56,12 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
 
     override suspend fun checkIfFollowing(uid: String): Resource<Boolean> =
             mainRemote.checkIfFollowing(uid)
+
+    override suspend fun getFollowingCount(uid: String): Resource<Int> =
+            mainRemote.getFollowingCount(uid)
+
+    override suspend fun getFollowersCount(uid: String): Resource<Int> =
+            mainRemote.getFollowersCount(uid)
 
     /**
      * Comments handler

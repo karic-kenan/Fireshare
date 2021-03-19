@@ -27,6 +27,7 @@ import io.aethibo.fireshare.ui.base.BasePostViewModel
 import io.aethibo.fireshare.ui.base.BaseProfilePostFragment
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.view.SettingsFragment
+import io.aethibo.fireshare.ui.utils.formatLargeNumber
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -59,6 +60,9 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
 
         binding.profileHeader.btnProfileFollow.isVisible = false
         viewModel.loadProfile(uid)
+        viewModel.getPostsCount(uid)
+        viewModel.getFollowingCount(uid)
+        viewModel.getFollowersCount(uid)
 
         subscribeToObservers()
         setupAdapter()
@@ -141,6 +145,60 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
                         snackBar(resource.message ?: "Unknown error occurred!")
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.postsCountStatus.collectLatest { value: Resource<Int> ->
+                when (value) {
+                    is Resource.Loading -> binding.profileProgressBar.isVisible = true
+                    is Resource.Success -> {
+                        binding.profileProgressBar.isVisible = false
+                        val result = value.data as Int
+
+                        binding.profileHeader.tvProfilePostCount.text = formatLargeNumber(result)
+                    }
+                    is Resource.Failure -> {
+                        binding.profileProgressBar.isVisible = false
+                        snackBar(value.message ?: "Unknown error occurred!")
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.followingCountStatus.collectLatest { value: Resource<Int> ->
+                when (value) {
+                    is Resource.Loading -> binding.profileProgressBar.isVisible = true
+                    is Resource.Success -> {
+                        binding.profileProgressBar.isVisible = false
+                        val result = value.data as Int
+
+                        binding.profileHeader.tvProfileFollowingCount.text = formatLargeNumber(result)
+                    }
+                    is Resource.Failure -> {
+                        binding.profileProgressBar.isVisible = false
+                        snackBar(value.message ?: "Unknown error occurred!")
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenResumed {
+            viewModel.followersCountStatus.collectLatest { value: Resource<Int> ->
+                when (value) {
+                    is Resource.Loading -> binding.profileProgressBar.isVisible = true
+                    is Resource.Success -> {
+                        binding.profileProgressBar.isVisible = false
+                        val result = value.data as Int
+
+                        binding.profileHeader.tvProfileFollowersCount.text = formatLargeNumber(result)
+                    }
+                    is Resource.Failure -> {
+                        binding.profileProgressBar.isVisible = false
+                        snackBar(value.message ?: "Unknown error occurred!")
                     }
                 }
             }

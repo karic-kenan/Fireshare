@@ -24,6 +24,7 @@ val useCasesModule = module {
     single<DeletePostUseCase> { DeletePostUseCaseImpl(get()) }
     single<LikePostUseCase> { LikePostUseCaseImpl(get()) }
     single<GetTimelineUseCase> { GetTimelineUseCaseImpl(get()) }
+    single<GetPostsCountUseCase> { GetPostsCountUseCaseImpl(get()) }
 
     /**
      * Main - Users handler
@@ -33,6 +34,8 @@ val useCasesModule = module {
     single<SearchUserUseCase> { SearchUserUseCaseImpl(get()) }
     single<FollowUserUseCase> { FollowUserUseCaseImpl(get()) }
     single<CheckIsFollowingUseCase> { CheckIsFollowingUseCaseImpl(get()) }
+    single<GetFollowingCountUseCase> { GetFollowingCountUseCaseImpl(get()) }
+    single<GetFollowersCountUseCase> { GetFollowersCountUseCaseImpl(get()) }
 
     /**
      * Main - Comments handler

@@ -166,6 +166,20 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
+    override suspend fun getPostsCount(uid: String): Resource<Int> = withContext(Dispatchers.IO) {
+        safeCall {
+            val result: Int = posts
+                    .document(uid)
+                    .collection(AppConst.usersPostsCollection)
+                    .get()
+                    .await()
+                    .documents
+                    .size
+
+            Resource.Success(result)
+        }
+    }
+
     override suspend fun getSingleUser(uid: String): Resource<User> = withContext(Dispatchers.IO) {
         safeCall {
             val user = users.document(uid).get().await().toObject(User::class.java)
@@ -282,6 +296,34 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                     Resource.Success(isFollowing)
                 }
             }
+
+    override suspend fun getFollowingCount(uid: String): Resource<Int> = withContext(Dispatchers.IO) {
+        safeCall {
+            val result: Int = following
+                    .document(uid)
+                    .collection(AppConst.userFollowingCollection)
+                    .get()
+                    .await()
+                    .documents
+                    .size
+
+            Resource.Success(result)
+        }
+    }
+
+    override suspend fun getFollowersCount(uid: String): Resource<Int> = withContext(Dispatchers.IO) {
+        safeCall {
+            val result: Int = followers
+                    .document(uid)
+                    .collection(AppConst.userFollowersCollection)
+                    .get()
+                    .await()
+                    .documents
+                    .size
+
+            Resource.Success(result)
+        }
+    }
 
     override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> =
             withContext(Dispatchers.IO) {

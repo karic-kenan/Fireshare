@@ -36,7 +36,10 @@ class ProfileViewModel(
         updatePost: UpdatePostUseCase,
         private val deletePost: DeletePostUseCase,
         private val followUser: FollowUserUseCase,
-        private val isFollowing: CheckIsFollowingUseCase
+        private val isFollowing: CheckIsFollowingUseCase,
+        private val postsCount: GetPostsCountUseCase,
+        private val followingCount: GetFollowingCountUseCase,
+        private val followersCount: GetFollowersCountUseCase
 ) : BasePostViewModel(getSingleUser, likePostUseCase) {
 
     private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
@@ -50,6 +53,18 @@ class ProfileViewModel(
     private val _isFollowingStatus: MutableStateFlow<Resource<Boolean>> = MutableStateFlow(Resource.Init())
     val isFollowingStatus: StateFlow<Resource<Boolean>>
         get() = _isFollowingStatus
+
+    private val _postsCountStatus: MutableStateFlow<Resource<Int>> = MutableStateFlow(Resource.Loading())
+    val postsCountStatus: StateFlow<Resource<Int>>
+        get() = _postsCountStatus
+
+    private val _followingCountStatus: MutableStateFlow<Resource<Int>> = MutableStateFlow(Resource.Loading())
+    val followingCountStatus: StateFlow<Resource<Int>>
+        get() = _followingCountStatus
+
+    private val _followersCountStatus: MutableStateFlow<Resource<Int>> = MutableStateFlow(Resource.Loading())
+    val followersCountStatus: StateFlow<Resource<Int>>
+        get() = _followersCountStatus
 
     fun getPagingFlow(uid: String): Flow<PagingData<Post>> {
         val pagingSource = ProfilePostsPagingSource(FirebaseFirestore.getInstance(), uid)
@@ -123,6 +138,30 @@ class ProfileViewModel(
             val result: Resource<Boolean> = isFollowing.invoke(uid)
 
             _isFollowingStatus.value = result
+        }
+    }
+
+    fun getPostsCount(uid: String) {
+        viewModelScope.launch(dispatcher) {
+            val result: Resource<Int> = postsCount.invoke(uid)
+
+            _postsCountStatus.value = result
+        }
+    }
+
+    fun getFollowingCount(uid: String) {
+        viewModelScope.launch(dispatcher) {
+            val result: Resource<Int> = followingCount.invoke(uid)
+
+            _followingCountStatus.value = result
+        }
+    }
+
+    fun getFollowersCount(uid: String) {
+        viewModelScope.launch(dispatcher) {
+            val result: Resource<Int> = followersCount.invoke(uid)
+
+            _followersCountStatus.value = result
         }
     }
 
