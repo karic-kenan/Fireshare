@@ -5,10 +5,13 @@
 
 package io.aethibo.fireshare.domain
 
+import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
+import kotlinx.android.parcel.Parcelize
 
 @IgnoreExtraProperties
+@Parcelize
 data class LikeFeed(
         val postId: String = "",
         val userId: String = "",
@@ -17,6 +20,15 @@ data class LikeFeed(
         @get:Exclude
         var authorProfilePictureUrl: String = "",
         val imageUrl: String = "",
-        val type: FeedType = FeedType.LIKE,
-        val timestamp: Long = 0L
-)
+        val type: String = FeedType.LIKE.name,
+        val timestamp: Long = System.currentTimeMillis()
+) : Parcelable {
+
+    override fun toString(): String = """
+                PostId: $postId
+                UserId: $userId
+                Image url: $imageUrl
+                Type: $type
+                Timestamp: $timestamp
+        """.trimIndent()
+}

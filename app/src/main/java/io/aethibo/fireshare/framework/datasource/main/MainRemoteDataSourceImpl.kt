@@ -8,10 +8,7 @@ package io.aethibo.fireshare.framework.datasource.main
 import android.net.Uri
 import com.google.firebase.firestore.Query
 import io.aethibo.fireshare.data.remote.main.MainRemoteDataSource
-import io.aethibo.fireshare.domain.Comment
-import io.aethibo.fireshare.domain.Post
-import io.aethibo.fireshare.domain.PostToUpdateBody
-import io.aethibo.fireshare.domain.User
+import io.aethibo.fireshare.domain.*
 import io.aethibo.fireshare.domain.request.PostRequestBody
 import io.aethibo.fireshare.domain.request.ProfileUpdateRequestBody
 import io.aethibo.fireshare.framework.utils.AppConst
@@ -32,6 +29,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
     private val comments = firestore.collection(AppConst.commentsCollection)
     private val followers = firestore.collection(AppConst.followersCollection)
     private val following = firestore.collection(AppConst.followingCollection)
+    private val feed = firestore.collection(AppConst.feedCollection)
 
     override suspend fun getPostsForProfile(uid: String) = withContext(Dispatchers.IO) {
         safeCall {
@@ -119,10 +117,12 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                         transaction.update(
                                 posts.document(post.ownerId).collection(AppConst.usersPostsCollection)
                                         .document(post.id), "likedBy",
-                                if (uid in currentLikes)
+                                if (uid in currentLikes) {
                                     currentLikes - uid
-                                else {
+                                    // TODO: remove like from feed
+                                } else {
                                     isLiked = true
+                                    // TODO: add like to feed
                                     currentLikes + uid
                                 }
                         )
@@ -186,6 +186,21 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                     ?: throw IllegalStateException()
 
             Resource.Success(user)
+        }
+    }
+
+    private suspend fun getSinglePost(postId: String): Resource<Post> = withContext(Dispatchers.IO) {
+        safeCall {
+            val currentUserId = auth.uid!!
+
+            val post = posts.document(currentUserId).collection(AppConst.usersPostsCollection)
+                    .document(postId)
+                    .get()
+                    .await()
+                    .toObject(Post::class.java)
+                    ?: throw IllegalStateException()
+
+            Resource.Success(post)
         }
     }
 
@@ -385,4 +400,100 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                     Resource.Success(comment)
                 }
             }
+
+    /**
+     * Notification feed
+     */
+    private suspend fun addLikeToFeed(ownerId: String, postId: String, postImage: String): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+            val currentUserId = auth.uid!!
+            val currentUser = getSingleUser(currentUserId).data!!
+
+            val likeFeed = LikeFeed(
+                    postId,
+                    currentUserId,
+                    currentUser.username,
+                    currentUser.photoUrl,
+                    postImage)
+
+            if (currentUserId != ownerId) {
+                feed.document(ownerId)
+                        .collection(AppConst.userFeedCollection)
+                        .document(postId)
+                        .set(likeFeed)
+                        .await()
+            }
+
+            Resource.Success(Any())
+        }
+    }
+
+    private suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val currentUserId = auth.uid!!
+
+            if (currentUserId != ownerId) {
+
+                val feedCollectionRef = feed.document(ownerId)
+                        .collection(AppConst.userFeedCollection)
+                        .document(postId)
+                        .get()
+                        .await()
+
+                if (feedCollectionRef.exists())
+                    feedCollectionRef.reference.delete().await()
+            }
+
+            Resource.Success(Any())
+        }
+    }
+
+    private suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String) = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val currentUserId = auth.uid!!
+            val currentUser = getSingleUser(currentUserId).data!!
+
+            val isNotPostOwner = ownerId != currentUserId
+
+            val commentFeed = CommentFeed(
+                    postId,
+                    currentUserId,
+                    currentUser.username,
+                    currentUser.photoUrl,
+                    postImage,
+                    comment
+            )
+
+            if (isNotPostOwner) {
+                feed.document(ownerId)
+                        .collection(AppConst.userFeedCollection)
+                        .document(commentId)
+                        .set(commentFeed)
+                        .await()
+            }
+
+            Resource.Success(Any())
+        }
+    }
+
+    private suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String) = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val post = getSinglePost(postId).data!!
+
+            if (post.id == null) {
+                feed.document(ownerId)
+                        .collection(AppConst.userFeedCollection)
+                        .document(commentId)
+                        .get()
+                        .await()
+                        .reference
+                        .delete()
+            }
+
+            Resource.Success(Any())
+        }
+    }
 }
