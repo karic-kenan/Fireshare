@@ -123,7 +123,6 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
         }
 
         lifecycleScope.launchWhenResumed {
-
             viewModel.deletePostStatus.collectLatest { resource: Resource<Post> ->
                 when (resource) {
                     is Resource.Init -> Timber.d("Init post deletion")

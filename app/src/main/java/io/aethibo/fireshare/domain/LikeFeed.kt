@@ -22,13 +22,4 @@ data class LikeFeed(
         val imageUrl: String = "",
         val type: String = FeedType.LIKE.name,
         val timestamp: Long = System.currentTimeMillis()
-) : Parcelable {
-
-    override fun toString(): String = """
-                PostId: $postId
-                UserId: $userId
-                Image url: $imageUrl
-                Type: $type
-                Timestamp: $timestamp
-        """.trimIndent()
-}
+) : Parcelable

@@ -25,6 +25,7 @@ val useCasesModule = module {
     single<LikePostUseCase> { LikePostUseCaseImpl(get()) }
     single<GetTimelineUseCase> { GetTimelineUseCaseImpl(get()) }
     single<GetPostsCountUseCase> { GetPostsCountUseCaseImpl(get()) }
+    single<GetSinglePostUseCase> { GetSinglePostUseCaseImpl(get()) }
 
     /**
      * Main - Users handler
@@ -43,4 +44,10 @@ val useCasesModule = module {
     single<GetCommentsForPostUseCase> { GetCommentsForPostUseCaseImpl(get()) }
     single<CreateCommentUseCase> { CreateCommentUseCaseImpl(get()) }
     single<DeleteCommentUseCase> { DeleteCommentUseCaseImpl(get()) }
+
+    /**
+     * Main - Notifications handler
+     */
+    single<FeedAddLikeUseCase> { FeedAddLikeUseCaseImpl(get()) }
+    single<FeedRemoveLikeUseCase> { FeedRemoveLikeUseCaseImpl(get()) }
 }

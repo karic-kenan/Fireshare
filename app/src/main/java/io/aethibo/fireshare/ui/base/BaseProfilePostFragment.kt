@@ -77,6 +77,8 @@ abstract class BaseProfilePostFragment(layoutId: Int) : Fragment(layoutId) {
                             this.isLiked = isLiked
                             isLiking = false
 
+                            viewModel.handleLikeFeed(isLiked, this.id, this.ownerId, this.imageUrl)
+
                             if (isLiked) likedBy += uid else likedBy -= uid
                         }
 

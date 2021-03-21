@@ -39,6 +39,9 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun getPostsCount(uid: String): Resource<Int> =
             mainRemote.getPostsCount(uid)
 
+    override suspend fun getSinglePost(postId: String): Resource<Post> =
+            mainRemote.getSinglePost(postId)
+
     /**
      * User handler
      */
@@ -74,4 +77,19 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
 
     override suspend fun deleteComment(comment: Comment): Resource<Comment> =
             mainRemote.deleteComment(comment)
+
+    /**
+     * Notifications handler
+     */
+    override suspend fun addLikeToFeed(ownerId: String, postId: String, postImage: String): Resource<Any> =
+            mainRemote.addLikeToFeed(ownerId, postId, postImage)
+
+    override suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any> =
+            mainRemote.removeLikeFromFeed(ownerId, postId)
+
+    override suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String): Resource<Any> =
+            mainRemote.addCommentToFeed(postId, commentId, ownerId, comment, postImage)
+
+    override suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any> =
+            mainRemote.removeCommentFromFeed(postId, ownerId, commentId)
 }

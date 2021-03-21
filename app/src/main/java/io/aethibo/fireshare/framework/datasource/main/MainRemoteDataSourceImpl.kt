@@ -31,155 +31,9 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
     private val following = firestore.collection(AppConst.followingCollection)
     private val feed = firestore.collection(AppConst.feedCollection)
 
-    override suspend fun getPostsForProfile(uid: String) = withContext(Dispatchers.IO) {
-        safeCall {
-            val profilePosts = posts.whereEqualTo("ownerId", uid)
-                    .orderBy("timestamp", Query.Direction.DESCENDING)
-                    .get()
-                    .await()
-                    .toObjects(Post::class.java)
-                    .onEach { post ->
-                        val user: User = getSingleUser(post.ownerId).data!!
-                        post.authorProfilePictureUrl = user.photoUrl
-                        post.authorUsername = user.username
-                    }
-
-            Resource.Success(profilePosts)
-        }
-    }
-
-    override suspend fun createPost(body: PostRequestBody): Resource<Any> =
-            withContext(Dispatchers.IO) {
-                safeCall {
-                    val uid = auth.uid!!
-                    val postId = UUID.randomUUID().toString()
-                    val imageUploadResult = storage.getReference(postId).putFile(body.imageUri).await()
-                    val imageUrl =
-                            imageUploadResult?.metadata?.reference?.downloadUrl?.await().toString()
-
-                    val post = Post(
-                            id = postId,
-                            ownerId = uid,
-                            caption = body.caption,
-                            imageUrl = imageUrl,
-                            timestamp = System.currentTimeMillis()
-                    )
-
-                    posts.document(uid).collection(AppConst.usersPostsCollection).document(postId)
-                            .set(post).await()
-
-                    Resource.Success(Any())
-                }
-            }
-
-    override suspend fun updatePost(body: PostToUpdateBody): Resource<Any> =
-            withContext(Dispatchers.IO) {
-                safeCall {
-                    val uid = auth.uid!!
-                    val map = mutableMapOf("caption" to body.caption)
-
-                    posts
-                            .document(uid)
-                            .collection(AppConst.usersPostsCollection)
-                            .document(body.postIdToUpdate)
-                            .update(map.toMap())
-                            .await()
-
-                    Resource.Success(Any())
-                }
-            }
-
-    override suspend fun deletePost(post: Post): Resource<Post> = withContext(Dispatchers.IO) {
-        safeCall {
-            val uid = auth.uid!!
-            posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id).delete()
-                    .await()
-            storage.getReferenceFromUrl(post.imageUrl).delete().await()
-            Resource.Success(post)
-        }
-    }
-
-    override suspend fun toggleLikeForPost(post: Post): Resource<Boolean> =
-            withContext(Dispatchers.IO) {
-                safeCall {
-
-                    var isLiked = false
-
-                    firestore.runTransaction { transaction ->
-                        val uid = auth.uid!!
-                        val postResult = transaction.get(
-                                posts.document(post.ownerId).collection(AppConst.usersPostsCollection)
-                                        .document(post.id)
-                        )
-                        val currentLikes = postResult.toObject(Post::class.java)?.likedBy
-                                ?: emptyList()
-
-                        transaction.update(
-                                posts.document(post.ownerId).collection(AppConst.usersPostsCollection)
-                                        .document(post.id), "likedBy",
-                                if (uid in currentLikes) {
-                                    currentLikes - uid
-                                    // TODO: remove like from feed
-                                } else {
-                                    isLiked = true
-                                    // TODO: add like to feed
-                                    currentLikes + uid
-                                }
-                        )
-                    }.await()
-
-                    Resource.Success(isLiked)
-                }
-            }
-
-    override suspend fun getTimeline(): Resource<List<Post>> = withContext(Dispatchers.IO) {
-        safeCall {
-
-            val currentUserId = auth.uid!!
-
-            val listOfUserIds: List<String> =
-                    following
-                            .document(currentUserId)
-                            .collection(AppConst.userFollowingCollection)
-                            .get()
-                            .await()
-                            .documents
-                            .map { it.id }
-
-            val posts: List<Post> = listOfUserIds.flatMap { uid ->
-                posts
-                        .document(uid)
-                        .collection(AppConst.usersPostsCollection)
-                        .orderBy("timestamp", Query.Direction.DESCENDING)
-                        .get()
-                        .await()
-                        .toObjects(Post::class.java)
-                        .onEach { post ->
-                            val user = getSingleUser(post.ownerId).data!!
-                            post.authorUsername = user.username
-                            post.authorProfilePictureUrl = user.photoUrl
-                            post.isLiked = currentUserId in post.likedBy
-                        }
-            }
-
-            Resource.Success(posts)
-        }
-    }
-
-    override suspend fun getPostsCount(uid: String): Resource<Int> = withContext(Dispatchers.IO) {
-        safeCall {
-            val result: Int = posts
-                    .document(uid)
-                    .collection(AppConst.usersPostsCollection)
-                    .get()
-                    .await()
-                    .documents
-                    .size
-
-            Resource.Success(result)
-        }
-    }
-
+    /**
+     * User
+     */
     override suspend fun getSingleUser(uid: String): Resource<User> = withContext(Dispatchers.IO) {
         safeCall {
             val user = users.document(uid).get().await().toObject(User::class.java)
@@ -188,59 +42,6 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
             Resource.Success(user)
         }
     }
-
-    private suspend fun getSinglePost(postId: String): Resource<Post> = withContext(Dispatchers.IO) {
-        safeCall {
-            val currentUserId = auth.uid!!
-
-            val post = posts.document(currentUserId).collection(AppConst.usersPostsCollection)
-                    .document(postId)
-                    .get()
-                    .await()
-                    .toObject(Post::class.java)
-                    ?: throw IllegalStateException()
-
-            Resource.Success(post)
-        }
-    }
-
-    override suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any> =
-            withContext(Dispatchers.IO) {
-                safeCall {
-
-                    val imageUrl = body.photoUrl?.let { uri ->
-                        updateProfilePicture(
-                                body.uidToUpdate,
-                                uri
-                        ).toString()
-                    }
-
-                    val map = mutableMapOf("username" to body.username, "bio" to body.bio)
-
-                    imageUrl?.let { uri -> map["photoUrl"] = uri }
-
-                    users.document(body.uidToUpdate).update(map.toMap()).await()
-
-                    Resource.Success(Any())
-                }
-            }
-
-    override suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri? =
-            withContext(Dispatchers.IO) {
-
-                val storageRef = storage.getReference(uid)
-                val user = getSingleUser(uid).data as User
-
-                if (user.photoUrl != AppConst.DEFAULT_PROFILE_PICTURE_URL)
-                    storage.getReferenceFromUrl(user.photoUrl).delete().await()
-
-                storageRef.putFile(imageUri)
-                        .await()
-                        .metadata
-                        ?.reference
-                        ?.downloadUrl
-                        ?.await()
-            }
 
     override suspend fun searchUsers(query: String): Resource<List<User>> =
             withContext(Dispatchers.IO) {
@@ -340,6 +141,219 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
+    override suspend fun getPostsCount(uid: String): Resource<Int> = withContext(Dispatchers.IO) {
+        safeCall {
+            val result: Int = posts
+                    .document(uid)
+                    .collection(AppConst.usersPostsCollection)
+                    .get()
+                    .await()
+                    .documents
+                    .size
+
+            Resource.Success(result)
+        }
+    }
+
+    /**
+     * Settings
+     */
+    override suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any> =
+            withContext(Dispatchers.IO) {
+                safeCall {
+
+                    val imageUrl = body.photoUrl?.let { uri ->
+                        updateProfilePicture(
+                                body.uidToUpdate,
+                                uri
+                        ).toString()
+                    }
+
+                    val map = mutableMapOf("username" to body.username, "bio" to body.bio)
+
+                    imageUrl?.let { uri -> map["photoUrl"] = uri }
+
+                    users.document(body.uidToUpdate).update(map.toMap()).await()
+
+                    Resource.Success(Any())
+                }
+            }
+
+    override suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri? =
+            withContext(Dispatchers.IO) {
+
+                val storageRef = storage.getReference(uid)
+                val user = getSingleUser(uid).data as User
+
+                if (user.photoUrl != AppConst.DEFAULT_PROFILE_PICTURE_URL)
+                    storage.getReferenceFromUrl(user.photoUrl).delete().await()
+
+                storageRef.putFile(imageUri)
+                        .await()
+                        .metadata
+                        ?.reference
+                        ?.downloadUrl
+                        ?.await()
+            }
+
+    /**
+     * Timeline
+     */
+    override suspend fun getTimeline(): Resource<List<Post>> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val currentUserId = auth.uid!!
+
+            val listOfUserIds: List<String> =
+                    following
+                            .document(currentUserId)
+                            .collection(AppConst.userFollowingCollection)
+                            .limit(30) // TODO: Introduce pagination
+                            .get()
+                            .await()
+                            .documents
+                            .map { it.id }
+
+            val posts: List<Post> = listOfUserIds.flatMap { uid ->
+                posts
+                        .document(uid)
+                        .collection(AppConst.usersPostsCollection)
+                        .orderBy("timestamp", Query.Direction.DESCENDING)
+                        .get()
+                        .await()
+                        .toObjects(Post::class.java)
+                        .onEach { post ->
+                            val user = getSingleUser(post.ownerId).data!!
+                            post.authorUsername = user.username
+                            post.authorProfilePictureUrl = user.photoUrl
+                            post.isLiked = currentUserId in post.likedBy
+                        }
+            }
+
+            Resource.Success(posts)
+        }
+    }
+
+    /**
+     * Posts
+     */
+    override suspend fun getPostsForProfile(uid: String) = withContext(Dispatchers.IO) {
+        safeCall {
+            val profilePosts = posts.whereEqualTo("ownerId", uid)
+                    .orderBy("timestamp", Query.Direction.DESCENDING)
+                    .get()
+                    .await()
+                    .toObjects(Post::class.java)
+                    .onEach { post ->
+                        val user: User = getSingleUser(post.ownerId).data!!
+                        post.authorProfilePictureUrl = user.photoUrl
+                        post.authorUsername = user.username
+                    }
+
+            Resource.Success(profilePosts)
+        }
+    }
+
+    override suspend fun getSinglePost(postId: String): Resource<Post> = withContext(Dispatchers.IO) {
+        safeCall {
+            val currentUserId = auth.uid!!
+
+            val post = posts.document(currentUserId).collection(AppConst.usersPostsCollection)
+                    .document(postId)
+                    .get()
+                    .await()
+                    .toObject(Post::class.java)
+                    ?: throw IllegalStateException()
+
+            Resource.Success(post)
+        }
+    }
+
+    override suspend fun createPost(body: PostRequestBody): Resource<Any> =
+            withContext(Dispatchers.IO) {
+                safeCall {
+                    val uid = auth.uid!!
+                    val postId = UUID.randomUUID().toString()
+                    val imageUploadResult = storage.getReference(postId).putFile(body.imageUri).await()
+                    val imageUrl =
+                            imageUploadResult?.metadata?.reference?.downloadUrl?.await().toString()
+
+                    val post = Post(
+                            id = postId,
+                            ownerId = uid,
+                            caption = body.caption,
+                            imageUrl = imageUrl,
+                            timestamp = System.currentTimeMillis()
+                    )
+
+                    posts.document(uid).collection(AppConst.usersPostsCollection).document(postId)
+                            .set(post).await()
+
+                    Resource.Success(Any())
+                }
+            }
+
+    override suspend fun updatePost(body: PostToUpdateBody): Resource<Any> =
+            withContext(Dispatchers.IO) {
+                safeCall {
+                    val uid = auth.uid!!
+                    val map = mutableMapOf("caption" to body.caption)
+
+                    posts
+                            .document(uid)
+                            .collection(AppConst.usersPostsCollection)
+                            .document(body.postIdToUpdate)
+                            .update(map.toMap())
+                            .await()
+
+                    Resource.Success(Any())
+                }
+            }
+
+    override suspend fun deletePost(post: Post): Resource<Post> = withContext(Dispatchers.IO) {
+        safeCall {
+            val uid = auth.uid!!
+            posts.document(uid).collection(AppConst.usersPostsCollection).document(post.id).delete()
+                    .await()
+            storage.getReferenceFromUrl(post.imageUrl).delete().await()
+            Resource.Success(post)
+        }
+    }
+
+    override suspend fun toggleLikeForPost(post: Post): Resource<Boolean> =
+            withContext(Dispatchers.IO) {
+                safeCall {
+
+                    var isLiked = false
+
+                    firestore.runTransaction { transaction ->
+                        val uid = auth.uid!!
+                        val postResult = transaction.get(
+                                posts.document(post.ownerId).collection(AppConst.usersPostsCollection)
+                                        .document(post.id)
+                        )
+                        val currentLikes = postResult.toObject(Post::class.java)?.likedBy
+                                ?: emptyList()
+
+                        transaction.update(
+                                posts.document(post.ownerId).collection(AppConst.usersPostsCollection)
+                                        .document(post.id), "likedBy",
+                                if (uid in currentLikes) {
+                                    currentLikes - uid
+                                } else {
+                                    isLiked = true
+                                    currentLikes + uid
+                                }
+                        )
+                    }.await()
+
+                    Resource.Success(isLiked)
+                }
+            }
+
+    /**
+     * Comments
+     */
     override suspend fun getCommentsForPost(postId: String): Resource<List<Comment>> =
             withContext(Dispatchers.IO) {
                 safeCall {
@@ -404,7 +418,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
     /**
      * Notification feed
      */
-    private suspend fun addLikeToFeed(ownerId: String, postId: String, postImage: String): Resource<Any> = withContext(Dispatchers.IO) {
+    override suspend fun addLikeToFeed(ownerId: String, postId: String, postImage: String): Resource<Any> = withContext(Dispatchers.IO) {
         safeCall {
             val currentUserId = auth.uid!!
             val currentUser = getSingleUser(currentUserId).data!!
@@ -428,7 +442,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
-    private suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any> = withContext(Dispatchers.IO) {
+    override suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any> = withContext(Dispatchers.IO) {
         safeCall {
 
             val currentUserId = auth.uid!!
@@ -449,7 +463,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
-    private suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String) = withContext(Dispatchers.IO) {
+    override suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String): Resource<Any> = withContext(Dispatchers.IO) {
         safeCall {
 
             val currentUserId = auth.uid!!
@@ -478,7 +492,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
-    private suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String) = withContext(Dispatchers.IO) {
+    override suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any> = withContext(Dispatchers.IO) {
         safeCall {
 
             val post = getSinglePost(postId).data!!

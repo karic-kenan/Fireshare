@@ -25,6 +25,7 @@ interface MainRemoteDataSource {
     suspend fun toggleLikeForPost(post: Post): Resource<Boolean>
     suspend fun getTimeline(): Resource<List<Post>>
     suspend fun getPostsCount(uid: String): Resource<Int>
+    suspend fun getSinglePost(postId: String): Resource<Post>
 
     /**
      * Users handler
@@ -44,4 +45,12 @@ interface MainRemoteDataSource {
     suspend fun getCommentsForPost(postId: String): Resource<List<Comment>>
     suspend fun createComment(postId: String, comment: String): Resource<Comment>
     suspend fun deleteComment(comment: Comment): Resource<Comment>
+
+    /**
+     * Notifications feed
+     */
+    suspend fun addLikeToFeed(ownerId: String, postId: String, postImage: String): Resource<Any>
+    suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any>
+    suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String): Resource<Any>
+    suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any>
 }

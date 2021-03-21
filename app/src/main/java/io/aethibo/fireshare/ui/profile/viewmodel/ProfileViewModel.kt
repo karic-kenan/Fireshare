@@ -39,8 +39,10 @@ class ProfileViewModel(
         private val isFollowing: CheckIsFollowingUseCase,
         private val postsCount: GetPostsCountUseCase,
         private val followingCount: GetFollowingCountUseCase,
-        private val followersCount: GetFollowersCountUseCase
-) : BasePostViewModel(getSingleUser, likePostUseCase) {
+        private val followersCount: GetFollowersCountUseCase,
+        addLike: FeedAddLikeUseCase,
+        removeLike: FeedRemoveLikeUseCase,
+) : BasePostViewModel(getSingleUser, likePostUseCase, addLike, removeLike) {
 
     private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
     val deletePostStatus: StateFlow<Resource<Post>>

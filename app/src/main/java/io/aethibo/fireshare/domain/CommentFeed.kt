@@ -5,10 +5,13 @@
 
 package io.aethibo.fireshare.domain
 
+import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
+import kotlinx.android.parcel.Parcelize
 
 @IgnoreExtraProperties
+@Parcelize
 data class CommentFeed(
         val postId: String = "",
         val userId: String = "",
@@ -20,4 +23,4 @@ data class CommentFeed(
         val comment: String = "",
         val type: String = FeedType.COMMENT.name,
         val timestamp: Long = System.currentTimeMillis()
-)
+): Parcelable
