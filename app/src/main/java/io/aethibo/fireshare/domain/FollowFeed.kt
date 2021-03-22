@@ -5,10 +5,13 @@
 
 package io.aethibo.fireshare.domain
 
+import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
+import kotlinx.android.parcel.Parcelize
 
 @IgnoreExtraProperties
+@Parcelize
 data class FollowFeed(
         val ownerId: String = "",
         val userId: String = "",
@@ -18,4 +21,4 @@ data class FollowFeed(
         var authorProfilePictureUrl: String = "",
         val timestamp: Long = System.currentTimeMillis(),
         val type: FeedType = FeedType.FOLLOW
-)
+) : Parcelable
