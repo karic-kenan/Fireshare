@@ -57,7 +57,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                 }
             }
 
-    override suspend fun toggleFollowForUser(uid: String): Resource<Boolean> =
+    override suspend fun toggleFollowForUser(uid: String): Resource<FollowResponseBody> =
             withContext(Dispatchers.IO) {
                 safeCall {
                     // TODO: Elaborate on the usage and update variables names to provide better context
@@ -92,11 +92,13 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                     // Put THAT user on YOUR following collection (update your following collection)
                     else followingRef.set(emptyMap<Any, Any>()).await().also { isFollowing = true }
 
-                    Resource.Success(isFollowing!!)
+                    val followResponse = FollowResponseBody(uid, isFollowing)
+
+                    Resource.Success(followResponse)
                 }
             }
 
-    override suspend fun checkIfFollowing(uid: String): Resource<Boolean> =
+    override suspend fun checkIfFollowing(uid: String): Resource<FollowResponseBody> =
             withContext(Dispatchers.IO) {
                 safeCall {
                     val currentUserId: String = auth.uid!!
@@ -109,7 +111,9 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
 
                     if (followersRef.exists()) isFollowing = true
 
-                    Resource.Success(isFollowing)
+                    val followResponse = FollowResponseBody(uid, isFollowing)
+
+                    Resource.Success(followResponse)
                 }
             }
 
@@ -506,6 +510,49 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                         .reference
                         .delete()
             }
+
+            Resource.Success(Any())
+        }
+    }
+
+    override suspend fun addFollowToFeed(ownerId: String): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val currentUserId = auth.uid!!
+            val currentUser = getSingleUser(currentUserId).data!!
+
+            val followFeed = FollowFeed(
+                    ownerId,
+                    currentUserId,
+                    currentUser.username,
+                    currentUser.photoUrl
+            )
+
+            feed.document(ownerId)
+                    .collection(AppConst.userFeedCollection)
+                    .document(currentUserId)
+                    .set(followFeed)
+                    .await()
+
+
+            Resource.Success(Any())
+        }
+    }
+
+    override suspend fun removeFollowFromFeed(ownerId: String): Resource<Any> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val currentUserId = auth.uid!!
+
+            feed.document(ownerId)
+                    .collection(AppConst.userFeedCollection)
+                    .document(currentUserId)
+                    .get()
+                    .await()
+                    .run {
+                        if (this.exists())
+                            this.reference.delete().await()
+                    }
 
             Resource.Success(Any())
         }

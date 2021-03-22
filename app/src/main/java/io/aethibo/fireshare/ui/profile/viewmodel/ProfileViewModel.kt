@@ -18,6 +18,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
+import io.aethibo.fireshare.domain.FollowResponseBody
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.framework.datasource.main.ProfilePostsPagingSource
 import io.aethibo.fireshare.framework.utils.AppConst
@@ -42,18 +43,20 @@ class ProfileViewModel(
         private val followersCount: GetFollowersCountUseCase,
         addLike: FeedAddLikeUseCase,
         removeLike: FeedRemoveLikeUseCase,
-) : BasePostViewModel(getSingleUser, likePostUseCase, addLike, removeLike) {
+        addFollow: FeedAddFollowUseCase,
+        removeFollow: FeedRemoveFollowUseCase
+) : BasePostViewModel(getSingleUser, likePostUseCase, addLike, removeLike, addFollow, removeFollow) {
 
     private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
     val deletePostStatus: StateFlow<Resource<Post>>
         get() = _deletePostStatus
 
-    private val _followStatus: MutableStateFlow<Resource<Boolean>> = MutableStateFlow(Resource.Init())
-    val followStatus: StateFlow<Resource<Boolean>>
+    private val _followStatus: MutableStateFlow<Resource<FollowResponseBody>> = MutableStateFlow(Resource.Init())
+    val followStatus: StateFlow<Resource<FollowResponseBody>>
         get() = _followStatus
 
-    private val _isFollowingStatus: MutableStateFlow<Resource<Boolean>> = MutableStateFlow(Resource.Init())
-    val isFollowingStatus: StateFlow<Resource<Boolean>>
+    private val _isFollowingStatus: MutableStateFlow<Resource<FollowResponseBody>> = MutableStateFlow(Resource.Init())
+    val isFollowingStatus: StateFlow<Resource<FollowResponseBody>>
         get() = _isFollowingStatus
 
     private val _postsCountStatus: MutableStateFlow<Resource<Int>> = MutableStateFlow(Resource.Loading())
@@ -127,7 +130,7 @@ class ProfileViewModel(
         _followStatus.value = Resource.Loading()
 
         viewModelScope.launch(dispatcher) {
-            val result: Resource<Boolean> = followUser.invoke(uid)
+            val result: Resource<FollowResponseBody> = followUser.invoke(uid)
 
             _followStatus.value = result
         }
@@ -137,7 +140,7 @@ class ProfileViewModel(
         _isFollowingStatus.value = Resource.Loading()
 
         viewModelScope.launch(dispatcher) {
-            val result: Resource<Boolean> = isFollowing.invoke(uid)
+            val result: Resource<FollowResponseBody> = isFollowing.invoke(uid)
 
             _isFollowingStatus.value = result
         }

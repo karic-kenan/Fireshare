@@ -7,13 +7,11 @@ package io.aethibo.fireshare.ui.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.aethibo.fireshare.domain.FollowResponseBody
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.Resource
-import io.aethibo.fireshare.usecases.FeedAddLikeUseCase
-import io.aethibo.fireshare.usecases.FeedRemoveLikeUseCase
-import io.aethibo.fireshare.usecases.GetSingleUserUseCase
-import io.aethibo.fireshare.usecases.LikePostUseCase
+import io.aethibo.fireshare.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +23,8 @@ abstract class BasePostViewModel(
         private val likePost: LikePostUseCase,
         private val addLike: FeedAddLikeUseCase,
         private val removeLike: FeedRemoveLikeUseCase,
+        private val addFollow: FeedAddFollowUseCase,
+        private val removeFollow: FeedRemoveFollowUseCase,
         val dispatcher: CoroutineDispatcher = Dispatchers.Main) : ViewModel() {
 
     private val _profileMeta: MutableStateFlow<Resource<User>> = MutableStateFlow(Resource.Init())
@@ -62,6 +62,17 @@ abstract class BasePostViewModel(
             }
             else -> viewModelScope.launch(dispatcher) {
                 removeLike.invoke(ownerId, id)
+            }
+        }
+    }
+
+    fun handleFollowFeed(result: FollowResponseBody) {
+        when {
+            result.isFollowing!! -> viewModelScope.launch(dispatcher) {
+                addFollow.invoke(result.userId!!)
+            }
+            else -> viewModelScope.launch(dispatcher) {
+                removeFollow.invoke(result.userId!!)
             }
         }
     }

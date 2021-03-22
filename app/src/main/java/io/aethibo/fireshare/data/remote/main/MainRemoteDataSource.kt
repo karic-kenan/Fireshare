@@ -6,10 +6,7 @@
 package io.aethibo.fireshare.data.remote.main
 
 import android.net.Uri
-import io.aethibo.fireshare.domain.Comment
-import io.aethibo.fireshare.domain.Post
-import io.aethibo.fireshare.domain.PostToUpdateBody
-import io.aethibo.fireshare.domain.User
+import io.aethibo.fireshare.domain.*
 import io.aethibo.fireshare.domain.request.PostRequestBody
 import io.aethibo.fireshare.domain.request.ProfileUpdateRequestBody
 import io.aethibo.fireshare.framework.utils.Resource
@@ -34,8 +31,8 @@ interface MainRemoteDataSource {
     suspend fun updateUserProfile(body: ProfileUpdateRequestBody): Resource<Any>
     suspend fun updateProfilePicture(uid: String, imageUri: Uri): Uri?
     suspend fun searchUsers(query: String): Resource<List<User>>
-    suspend fun toggleFollowForUser(uid: String): Resource<Boolean>
-    suspend fun checkIfFollowing(uid: String): Resource<Boolean>
+    suspend fun toggleFollowForUser(uid: String): Resource<FollowResponseBody>
+    suspend fun checkIfFollowing(uid: String): Resource<FollowResponseBody>
     suspend fun getFollowingCount(uid: String): Resource<Int>
     suspend fun getFollowersCount(uid: String): Resource<Int>
 
@@ -53,4 +50,6 @@ interface MainRemoteDataSource {
     suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any>
     suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String): Resource<Any>
     suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any>
+    suspend fun addFollowToFeed(ownerId: String): Resource<Any>
+    suspend fun removeFollowFromFeed(ownerId: String): Resource<Any>
 }

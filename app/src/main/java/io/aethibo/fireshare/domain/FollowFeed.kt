@@ -12,10 +12,10 @@ import com.google.firebase.firestore.IgnoreExtraProperties
 data class FollowFeed(
         val ownerId: String = "",
         val userId: String = "",
-        val type: FeedType = FeedType.FOLLOW,
         @get:Exclude
         var authorUsername: String = "",
         @get:Exclude
         var authorProfilePictureUrl: String = "",
-        val timestamp: Long = 0L
+        val timestamp: Long = System.currentTimeMillis(),
+        val type: FeedType = FeedType.FOLLOW
 )

@@ -20,6 +20,6 @@ data class LikeFeed(
         @get:Exclude
         var authorProfilePictureUrl: String = "",
         val imageUrl: String = "",
-        val type: String = FeedType.LIKE.name,
+        val type: FeedType = FeedType.LIKE,
         val timestamp: Long = System.currentTimeMillis()
 ) : Parcelable

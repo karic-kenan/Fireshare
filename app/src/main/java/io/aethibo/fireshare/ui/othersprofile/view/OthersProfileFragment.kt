@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentProfileBinding
+import io.aethibo.fireshare.domain.FollowResponseBody
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.profile.view.ProfileFragment
@@ -88,20 +89,22 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
     }
 
     // TODO: Handle UI properly
-    private fun handleFollowUi(value: Resource<Boolean>) {
+    private fun handleFollowUi(value: Resource<FollowResponseBody>) {
         when (value) {
             is Resource.Init -> Timber.d("Init follow user")
             is Resource.Loading -> binding.profileProgressBar.isVisible = true
             is Resource.Success -> {
                 binding.profileProgressBar.isVisible = false
-                val isFollowing = value.data as Boolean
+                val result = value.data as FollowResponseBody
 
-                if (isFollowing)
+                viewModel.handleFollowFeed(result)
+
+                if (result.isFollowing!!)
                     setupFollowUi()
                 else
                     setupUnFollowUi()
 
-                Timber.d("User follow is: $isFollowing")
+                Timber.d("User follow ${result.userId} is: ${result.isFollowing}")
             }
             is Resource.Failure -> {
                 binding.profileProgressBar.isVisible = false

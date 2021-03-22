@@ -50,4 +50,6 @@ val useCasesModule = module {
      */
     single<FeedAddLikeUseCase> { FeedAddLikeUseCaseImpl(get()) }
     single<FeedRemoveLikeUseCase> { FeedRemoveLikeUseCaseImpl(get()) }
+    single<FeedAddFollowUseCase> { FeedAddFollowUseCaseImpl(get()) }
+    single<FeedRemoveFollowUseCase> { FeedRemoveFollowUseCaseImpl(get()) }
 }

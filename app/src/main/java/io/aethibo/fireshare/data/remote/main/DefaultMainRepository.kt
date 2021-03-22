@@ -5,10 +5,7 @@
 
 package io.aethibo.fireshare.data.remote.main
 
-import io.aethibo.fireshare.domain.Comment
-import io.aethibo.fireshare.domain.Post
-import io.aethibo.fireshare.domain.PostToUpdateBody
-import io.aethibo.fireshare.domain.User
+import io.aethibo.fireshare.domain.*
 import io.aethibo.fireshare.domain.request.PostRequestBody
 import io.aethibo.fireshare.domain.request.ProfileUpdateRequestBody
 import io.aethibo.fireshare.framework.utils.Resource
@@ -54,10 +51,10 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun searchUsers(query: String): Resource<List<User>> =
             mainRemote.searchUsers(query)
 
-    override suspend fun toggleFollowForUser(uid: String): Resource<Boolean> =
+    override suspend fun toggleFollowForUser(uid: String): Resource<FollowResponseBody> =
             mainRemote.toggleFollowForUser(uid)
 
-    override suspend fun checkIfFollowing(uid: String): Resource<Boolean> =
+    override suspend fun checkIfFollowing(uid: String): Resource<FollowResponseBody> =
             mainRemote.checkIfFollowing(uid)
 
     override suspend fun getFollowingCount(uid: String): Resource<Int> =
@@ -92,4 +89,10 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
 
     override suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any> =
             mainRemote.removeCommentFromFeed(postId, ownerId, commentId)
+
+    override suspend fun addFollowToFeed(ownerId: String): Resource<Any> =
+            mainRemote.addFollowToFeed(ownerId)
+
+    override suspend fun removeFollowFromFeed(ownerId: String): Resource<Any> =
+            mainRemote.removeFollowFromFeed(ownerId)
 }
