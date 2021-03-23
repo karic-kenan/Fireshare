@@ -77,4 +77,9 @@
     <string name="comments_dialog_edit_comment">Edit comment</string>
     <string name="comments_dialog_delete_comment">Delete comment</string>
 
+    <!-- Notification feed item -->
+    <string name="labelFeedItemTitle"><![CDATA[<b>%s</b> %s]]></string>
+    <string name="labelFeedItemLikePlaceholder">liked your post</string>
+    <string name="labelFeedItemFollowPlaceholder">is following you</string>
+
 </resources>

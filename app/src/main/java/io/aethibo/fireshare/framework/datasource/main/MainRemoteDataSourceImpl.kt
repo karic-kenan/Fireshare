@@ -557,4 +557,21 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
             Resource.Success(Any())
         }
     }
+
+    override suspend fun getNotificationFeed(): Resource<List<ActivityFeedItem>> = withContext(Dispatchers.IO) {
+        safeCall {
+
+            val currentUserId = auth.uid!!
+
+            val result: List<ActivityFeedItem> = feed.document(currentUserId).collection(AppConst.userFeedCollection).get().await()
+                    .toObjects(ActivityFeedItem::class.java)
+                    .onEach { feedItem ->
+                        val user = getSingleUser(feedItem.userId).data!!
+                        feedItem.username = user.username
+                        feedItem.avatar = user.photoUrl
+                    }.toList()
+
+            Resource.Success(result)
+        }
+    }
 }

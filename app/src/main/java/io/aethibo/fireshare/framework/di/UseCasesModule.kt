@@ -52,4 +52,5 @@ val useCasesModule = module {
     single<FeedRemoveLikeUseCase> { FeedRemoveLikeUseCaseImpl(get()) }
     single<FeedAddFollowUseCase> { FeedAddFollowUseCaseImpl(get()) }
     single<FeedRemoveFollowUseCase> { FeedRemoveFollowUseCaseImpl(get()) }
+    single<GetNotificationFeedUseCase> { GetNotificationFeedUseCaseImpl(get()) }
 }

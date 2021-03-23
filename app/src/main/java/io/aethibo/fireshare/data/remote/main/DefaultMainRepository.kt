@@ -95,4 +95,7 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
 
     override suspend fun removeFollowFromFeed(ownerId: String): Resource<Any> =
             mainRemote.removeFollowFromFeed(ownerId)
+
+    override suspend fun getNotificationFeed(): Resource<List<ActivityFeedItem>> =
+            mainRemote.getNotificationFeed()
 }
