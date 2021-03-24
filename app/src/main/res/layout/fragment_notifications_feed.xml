@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateTint="@color/pink_main"
-        android:progressTint="@color/pink_main" />
+        android:indeterminateTint="@color/colorSecondary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvFeedList"

@@ -12,4 +12,9 @@
     <color name="blue_main">#3F5EFB</color>
     <color name="light_background">#808080</color>
     <color name="colorWhiteAlpha30">#4de4e4e4</color>
+
+    <color name="colorPrimaryDark">#155263</color>
+    <color name="colorPrimary">#ff6f3c</color>
+    <color name="colorSecondary">#ff9a3c</color>
+    <color name="colorAccent">#ffc93c</color>
 </resources>

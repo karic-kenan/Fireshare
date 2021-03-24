@@ -45,7 +45,6 @@ class ProfilePostAdapter :
         val likeButton: ImageButton = itemView.findViewById(R.id.postLikeButton)
         val likeCount: TextView = itemView.findViewById(R.id.postLikeCountTxt)
         val commentButton: ImageButton = itemView.findViewById(R.id.postCommentButton)
-        val commentCount: TextView = itemView.findViewById(R.id.postCommentCountTxt)
         val menu: ImageButton = itemView.findViewById(R.id.postMenu)
     }
 

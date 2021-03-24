@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="14dp"
-        android:backgroundTint="@color/pink_main"
+        android:backgroundTint="@color/colorSecondary"
         android:fontFamily="@font/open_sans_regular"
         android:text="Follow"
         android:textAllCaps="false"

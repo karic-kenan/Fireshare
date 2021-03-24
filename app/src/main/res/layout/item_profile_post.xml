@@ -113,18 +113,9 @@
             android:id="@+id/postCommentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="12dp"
             android:background="@null"
             app:srcCompat="@drawable/ic_comment" />
-
-        <TextView
-            android:id="@+id/postCommentCountTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/open_sans_regular"
-            android:textColor="?android:attr/textColorTertiary"
-            tools:text="64" />
     </LinearLayout>
 
     <View

@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"
-        android:indeterminateTint="@color/pink_main"
+        android:indeterminateTint="@color/colorSecondary"
         android:visibility="gone"
         app:layout_anchorGravity="top"
         tools:visibility="visible" />

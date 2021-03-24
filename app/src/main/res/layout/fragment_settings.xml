@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:indeterminateTint="@color/pink_main"
+            android:indeterminateTint="@color/colorSecondary"
             android:visibility="gone"
             tools:visibility="visible" />
 
@@ -76,7 +76,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="32dp"
-            android:backgroundTint="@color/pink_main"
+            android:backgroundTint="@color/colorSecondary"
             android:enabled="false"
             android:fontFamily="@font/open_sans_regular"
             android:paddingTop="15dp"

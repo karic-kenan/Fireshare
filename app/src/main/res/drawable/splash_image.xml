@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Created by Karic Kenan on 24.3.2021
+  ~ Copyright (c) 2021 . All rights reserved.
+  -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@color/black" />
+    <item
+        android:width="70dp"
+        android:height="70dp"
+        android:drawable="@drawable/ic_flame"
+        android:gravity="center" />
+</layer-list>
