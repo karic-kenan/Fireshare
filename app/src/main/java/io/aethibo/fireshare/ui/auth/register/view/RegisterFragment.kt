@@ -5,15 +5,19 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.firebase.auth.AuthResult
 import io.aethibo.fireshare.MainActivity
 import io.aethibo.fireshare.R
-import io.aethibo.fireshare.framework.utils.EventObserver
 import io.aethibo.fireshare.databinding.FragmentRegisterBinding
+import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.auth.shared.AuthViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class RegisterFragment : Fragment(R.layout.fragment_register), View.OnClickListener {
 
@@ -28,25 +32,27 @@ class RegisterFragment : Fragment(R.layout.fragment_register), View.OnClickListe
     }
 
     private fun subscribeToObservers() {
-        viewModel.registerStatus.observe(viewLifecycleOwner, EventObserver(
-                onLoading = {
-                    binding.signUpProgressBar.isVisible = true
-                },
+        lifecycleScope.launchWhenResumed {
+            viewModel.registerStatus.collectLatest { value: Resource<AuthResult> ->
+                when (value) {
+                    is Resource.Init -> Timber.d("Register screen")
+                    is Resource.Loading -> binding.signUpProgressBar.isVisible = true
+                    is Resource.Success -> {
+                        binding.signUpProgressBar.isVisible = false
+                        snackBar(getString(R.string.success_registration))
 
-                onSuccess = {
-                    binding.signUpProgressBar.isVisible = false
-                    snackBar(getString(R.string.success_registration))
-
-                    Intent(requireContext(), MainActivity::class.java).also {
-                        startActivity(it)
-                        requireActivity().finish()
+                        Intent(requireContext(), MainActivity::class.java).also {
+                            startActivity(it)
+                            requireActivity().finish()
+                        }
                     }
-                },
-                onError = {
-                    binding.signUpProgressBar.isVisible = true
-                    snackBar(it)
+                    is Resource.Failure -> {
+                        binding.signUpProgressBar.isVisible = false
+                        snackBar(value.message ?: "Unknown error occurred!")
+                    }
                 }
-        ))
+            }
+        }
     }
 
     private fun setupButtonClickListeners() {
