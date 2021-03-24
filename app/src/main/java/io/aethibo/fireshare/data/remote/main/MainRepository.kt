@@ -22,7 +22,6 @@ interface MainRepository {
     suspend fun toggleLikeForPost(post: Post): Resource<Boolean>
     suspend fun getTimeline(): Resource<List<Post>>
     suspend fun getPostsCount(uid: String): Resource<Int>
-    suspend fun getSinglePost(postId: String): Resource<Post>
 
     /**
      * User

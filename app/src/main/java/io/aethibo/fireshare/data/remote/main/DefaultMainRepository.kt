@@ -36,9 +36,6 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun getPostsCount(uid: String): Resource<Int> =
             mainRemote.getPostsCount(uid)
 
-    override suspend fun getSinglePost(postId: String): Resource<Post> =
-            mainRemote.getSinglePost(postId)
-
     /**
      * User handler
      */

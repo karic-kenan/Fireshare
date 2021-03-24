@@ -25,7 +25,6 @@ val useCasesModule = module {
     single<LikePostUseCase> { LikePostUseCaseImpl(get()) }
     single<GetTimelineUseCase> { GetTimelineUseCaseImpl(get()) }
     single<GetPostsCountUseCase> { GetPostsCountUseCaseImpl(get()) }
-    single<GetSinglePostUseCase> { GetSinglePostUseCaseImpl(get()) }
 
     /**
      * Main - Users handler

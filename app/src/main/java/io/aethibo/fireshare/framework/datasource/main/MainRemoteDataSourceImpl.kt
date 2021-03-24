@@ -258,21 +258,6 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
-    override suspend fun getSinglePost(postId: String): Resource<Post> = withContext(Dispatchers.IO) {
-        safeCall {
-            val currentUserId = auth.uid!!
-
-            val post = posts.document(currentUserId).collection(AppConst.usersPostsCollection)
-                    .document(postId)
-                    .get()
-                    .await()
-                    .toObject(Post::class.java)
-                    ?: throw IllegalStateException()
-
-            Resource.Success(post)
-        }
-    }
-
     override suspend fun createPost(body: PostRequestBody): Resource<Any> =
             withContext(Dispatchers.IO) {
                 safeCall {
