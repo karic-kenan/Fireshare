@@ -496,20 +496,16 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
         }
     }
 
-    override suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any> = withContext(Dispatchers.IO) {
+    override suspend fun removeCommentFromFeed(ownerId: String, commentId: String): Resource<Any> = withContext(Dispatchers.IO) {
         safeCall {
 
-            val post = getSinglePost(postId).data!!
-
-            if (post.id == null) {
-                feed.document(ownerId)
-                        .collection(AppConst.userFeedCollection)
-                        .document(commentId)
-                        .get()
-                        .await()
-                        .reference
-                        .delete()
-            }
+            feed.document(ownerId)
+                    .collection(AppConst.userFeedCollection)
+                    .document(commentId)
+                    .get()
+                    .await()
+                    .reference
+                    .delete()
 
             Resource.Success(Any())
         }

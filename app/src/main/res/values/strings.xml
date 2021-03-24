@@ -81,5 +81,6 @@
     <string name="labelFeedItemTitle"><![CDATA[<b>%s</b> %s]]></string>
     <string name="labelFeedItemLikePlaceholder">liked your post</string>
     <string name="labelFeedItemFollowPlaceholder">is following you</string>
+    <string name="labelFeedItemCommentPlaceholder">replied: "%s"</string>
 
 </resources>

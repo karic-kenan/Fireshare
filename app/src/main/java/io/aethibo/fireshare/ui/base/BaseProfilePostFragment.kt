@@ -10,6 +10,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.pandora.bottomnavigator.BottomNavigator
+import io.aethibo.fireshare.domain.PostToCommentModel
 import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.comments.view.CommentsFragment
@@ -55,8 +56,9 @@ abstract class BaseProfilePostFragment(layoutId: Int) : Fragment(layoutId) {
             viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post, navigator)
         }
 
-        profilePostAdapter.setOnCommentClickListener { postId, position ->
-            navigator.addFragment(CommentsFragment.newInstance(postId))
+        profilePostAdapter.setOnCommentClickListener { postId, imageUrl, ownerId, position ->
+            val tempPost = PostToCommentModel(postId, imageUrl, ownerId)
+            navigator.addFragment(CommentsFragment.newInstance(tempPost))
         }
     }
 

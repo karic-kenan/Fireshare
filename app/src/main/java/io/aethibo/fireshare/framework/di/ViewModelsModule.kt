@@ -23,7 +23,7 @@ val viewModelsModule = module {
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
     viewModel { DetailPostViewModel() }
     viewModel { SettingsViewModel(get(), get()) }
-    viewModel { CommentsViewModel(get(), get(), get()) }
+    viewModel { CommentsViewModel(get(), get(), get(), get(), get()) }
     viewModel { DiscoveryViewModel(get()) }
     viewModel { TimelineViewModel(get(), get()) }
     viewModel { FeedViewModel(get()) }

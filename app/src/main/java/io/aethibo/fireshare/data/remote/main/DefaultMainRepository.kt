@@ -87,8 +87,8 @@ class DefaultMainRepository(private val mainRemote: MainRemoteDataSource) : Main
     override suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String): Resource<Any> =
             mainRemote.addCommentToFeed(postId, commentId, ownerId, comment, postImage)
 
-    override suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any> =
-            mainRemote.removeCommentFromFeed(postId, ownerId, commentId)
+    override suspend fun removeCommentFromFeed(ownerId: String, commentId: String): Resource<Any> =
+            mainRemote.removeCommentFromFeed(ownerId, commentId)
 
     override suspend fun addFollowToFeed(ownerId: String): Resource<Any> =
             mainRemote.addFollowToFeed(ownerId)

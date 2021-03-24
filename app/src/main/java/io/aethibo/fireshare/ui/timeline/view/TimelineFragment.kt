@@ -16,6 +16,7 @@ import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentTimelineBinding
 import io.aethibo.fireshare.domain.Post
+import io.aethibo.fireshare.domain.PostToCommentModel
 import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.comments.view.CommentsFragment
@@ -127,8 +128,9 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                 navigator.addFragment(OthersProfileFragment.newInstance(userId))
             }
 
-            setOnCommentClickListener { postId ->
-                navigator.addFragment(CommentsFragment.newInstance(postId))
+            setOnCommentClickListener { postId, ownerId, imageUrl ->
+                val postToComment = PostToCommentModel(postId, imageUrl, ownerId)
+                navigator.addFragment(CommentsFragment.newInstance(postToComment))
             }
 
             setOnMenuClickListener { post, position ->

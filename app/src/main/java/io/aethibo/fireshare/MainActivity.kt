@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.ui.createpost.view.CreatePostFragment
 import io.aethibo.fireshare.ui.discovery.view.DiscoveryFragment
-import io.aethibo.fireshare.ui.notificationsfeed.view.NotificationsFeedFragment
+import io.aethibo.fireshare.ui.notificationsfeed.view.FeedFragment
 import io.aethibo.fireshare.ui.profile.view.ProfileFragment
 import io.aethibo.fireshare.ui.timeline.view.TimelineFragment
 
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
                         R.id.timeline to { TimelineFragment.newInstance() },
                         R.id.discovery to { DiscoveryFragment.newInstance() },
                         R.id.add to { CreatePostFragment.newInstance() },
-                        R.id.feed to { NotificationsFeedFragment.newInstance() },
+                        R.id.feed to { FeedFragment.newInstance() },
                         R.id.profile to { ProfileFragment.newInstance() }
                 ),
                 defaultTab = R.id.timeline,

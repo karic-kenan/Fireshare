@@ -71,6 +71,11 @@ class FeedAdapter : ListAdapter<ActivityFeedItem, FeedAdapter.FeedViewHolder>(Co
                     title.text = HtmlCompat.fromHtml(itemView.context.getString(R.string.labelFeedItemTitle, feedItem.username, itemView.context.getString(R.string.labelFeedItemFollowPlaceholder)), HtmlCompat.FROM_HTML_MODE_LEGACY)
                 }
                 FeedType.COMMENT.name -> {
+                    title.text = HtmlCompat.fromHtml(itemView.context.getString(R.string.labelFeedItemTitle, feedItem.username, itemView.context.getString(R.string.labelFeedItemCommentPlaceholder, feedItem.comment)), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    image.load(feedItem.imageUrl) {
+                        crossfade(true)
+                        transformations(RoundedCornersTransformation(15f))
+                    }
                 }
                 else -> {
                 }

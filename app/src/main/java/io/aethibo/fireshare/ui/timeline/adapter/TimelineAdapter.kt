@@ -96,7 +96,7 @@ class TimelineAdapter : ListAdapter<Post, TimelineAdapter.TimelineViewHolder>(Co
             }
 
             commentButton.setOnClickListener {
-                onCommentClickListener?.let { click -> click(post.id) }
+                onCommentClickListener?.let { click -> click(post.id, post.ownerId, post.imageUrl) }
             }
         }
     }
@@ -106,7 +106,7 @@ class TimelineAdapter : ListAdapter<Post, TimelineAdapter.TimelineViewHolder>(Co
      */
     private var onLikeClickListener: ((Post, Int) -> Unit)? = null
     private var onUserClickListener: ((String) -> Unit)? = null
-    private var onCommentClickListener: ((String) -> Unit)? = null
+    private var onCommentClickListener: ((String, String, String) -> Unit)? = null
     private var onMenuClickListener: ((Post, Int) -> Unit)? = null
 
     fun setOnLikeClickListener(listener: (Post, Int) -> Unit) {
@@ -121,7 +121,7 @@ class TimelineAdapter : ListAdapter<Post, TimelineAdapter.TimelineViewHolder>(Co
         onMenuClickListener = listener
     }
 
-    fun setOnCommentClickListener(listener: (String) -> Unit) {
+    fun setOnCommentClickListener(listener: (String, String, String) -> Unit) {
         onCommentClickListener = listener
     }
 }

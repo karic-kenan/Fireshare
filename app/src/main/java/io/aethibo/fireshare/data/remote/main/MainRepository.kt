@@ -48,7 +48,7 @@ interface MainRepository {
     suspend fun addLikeToFeed(ownerId: String, postId: String, postImage: String): Resource<Any>
     suspend fun removeLikeFromFeed(ownerId: String, postId: String): Resource<Any>
     suspend fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String): Resource<Any>
-    suspend fun removeCommentFromFeed(postId: String, ownerId: String, commentId: String): Resource<Any>
+    suspend fun removeCommentFromFeed(ownerId: String, commentId: String): Resource<Any>
     suspend fun addFollowToFeed(ownerId: String): Resource<Any>
     suspend fun removeFollowFromFeed(ownerId: String): Resource<Any>
     suspend fun getNotificationFeed(): Resource<List<ActivityFeedItem>>

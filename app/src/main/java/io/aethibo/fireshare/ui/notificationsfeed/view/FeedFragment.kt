@@ -22,14 +22,14 @@ import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class NotificationsFeedFragment : Fragment(R.layout.fragment_notifications_feed) {
+class FeedFragment : Fragment(R.layout.fragment_notifications_feed) {
 
     private val viewModel: FeedViewModel by viewModel()
     private val binding: FragmentNotificationsFeedBinding by viewBinding()
     private val feedAdapter: FeedAdapter by lazy { FeedAdapter() }
 
     companion object {
-        fun newInstance() = NotificationsFeedFragment()
+        fun newInstance() = FeedFragment()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

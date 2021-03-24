@@ -16,6 +16,6 @@ data class ActivityFeedItem(
         val imageUrl: String = "",
         val postId: String = "",
         var avatar: String = "",
-        val commentData: String = "",
+        val comment: String = "",
         val timestamp: Long = 0L
 ) : Parcelable

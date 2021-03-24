@@ -16,9 +16,7 @@ import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.Comment
 import io.aethibo.fireshare.framework.utils.Resource
-import io.aethibo.fireshare.usecases.CreateCommentUseCase
-import io.aethibo.fireshare.usecases.DeleteCommentUseCase
-import io.aethibo.fireshare.usecases.GetCommentsForPostUseCase
+import io.aethibo.fireshare.usecases.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,6 +26,8 @@ import kotlinx.coroutines.launch
 class CommentsViewModel(private val getComments: GetCommentsForPostUseCase,
                         private val createComment: CreateCommentUseCase,
                         private val deleteComment: DeleteCommentUseCase,
+                        private val addCommentToFeed: FeedAddCommentUseCase,
+                        private val removeCommentFromFeed: FeedRemoveCommentUseCase,
                         private val dispatcher: CoroutineDispatcher = Dispatchers.Main) : ViewModel() {
 
     private val _commentsForPosts: MutableStateFlow<Resource<List<Comment>>> =
@@ -64,7 +64,19 @@ class CommentsViewModel(private val getComments: GetCommentsForPostUseCase,
         }
     }
 
-    fun deleteComment(comment: Comment) {
+    fun addCommentToFeed(postId: String, commentId: String, ownerId: String, comment: String, postImage: String) {
+        viewModelScope.launch(dispatcher) {
+            addCommentToFeed.invoke(postId, commentId, ownerId, comment, postImage)
+        }
+    }
+
+    fun removeCommentFromFeed(ownerId: String, commentId: String) {
+        viewModelScope.launch(dispatcher) {
+            removeCommentFromFeed.invoke(ownerId, commentId)
+        }
+    }
+
+    private fun deleteComment(comment: Comment) {
         _deleteCommentStatus.value = Resource.Loading()
 
         viewModelScope.launch(dispatcher) {
