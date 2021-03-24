@@ -10,7 +10,6 @@ import io.aethibo.fireshare.ui.comments.viewmodel.CommentsViewModel
 import io.aethibo.fireshare.ui.createpost.viewmodel.CreatePostViewModel
 import io.aethibo.fireshare.ui.discovery.viewmodel.DiscoveryViewModel
 import io.aethibo.fireshare.ui.notificationsfeed.viewmodel.FeedViewModel
-import io.aethibo.fireshare.ui.postdetail.viewmodel.DetailPostViewModel
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.viewmodel.SettingsViewModel
 import io.aethibo.fireshare.ui.timeline.viewmodel.TimelineViewModel
@@ -21,7 +20,6 @@ val viewModelsModule = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { CreatePostViewModel(get()) }
     viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
-    viewModel { DetailPostViewModel() }
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { CommentsViewModel(get(), get(), get(), get(), get()) }
     viewModel { DiscoveryViewModel(get()) }
