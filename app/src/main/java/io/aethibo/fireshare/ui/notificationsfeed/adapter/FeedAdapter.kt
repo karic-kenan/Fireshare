@@ -27,16 +27,23 @@ class FeedAdapter : ListAdapter<ActivityFeedItem, FeedAdapter.FeedViewHolder>(Co
 
     companion object : DiffUtil.ItemCallback<ActivityFeedItem>() {
 
-        override fun areItemsTheSame(oldItem: ActivityFeedItem, newItem: ActivityFeedItem): Boolean =
-                oldItem.userId == newItem.userId
+        override fun areItemsTheSame(
+            oldItem: ActivityFeedItem,
+            newItem: ActivityFeedItem
+        ): Boolean =
+            oldItem.userId == newItem.userId
 
-        override fun areContentsTheSame(oldItem: ActivityFeedItem, newItem: ActivityFeedItem): Boolean =
-                oldItem.hashCode() == newItem.hashCode()
+        override fun areContentsTheSame(
+            oldItem: ActivityFeedItem,
+            newItem: ActivityFeedItem
+        ): Boolean =
+            oldItem.hashCode() == newItem.hashCode()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder = FeedViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder =
+        FeedViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_feed, parent, false)
-    )
+        )
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         holder.bind(getItem(position) ?: return)
@@ -56,22 +63,52 @@ class FeedAdapter : ListAdapter<ActivityFeedItem, FeedAdapter.FeedViewHolder>(Co
                 crossfade(true)
                 transformations(CircleCropTransformation())
             }
-            subtitle.text = DateUtils.getRelativeTimeSpanString(feedItem.timestamp)
+
+            val notificationTimestamp = DateUtils.getRelativeTimeSpanString(feedItem.timestamp)
+
+            val formattedDate = when {
+                notificationTimestamp.contains("0 minutes ago") -> "A moment ago"
+                DateUtils.isToday(feedItem.timestamp) -> "Today"
+                else -> notificationTimestamp
+            }
+
+            subtitle.text = formattedDate
             image.isVisible = feedItem.imageUrl.isNotEmpty()
 
             when (feedItem.type) {
                 FeedType.LIKE.name -> {
-                    title.text = HtmlCompat.fromHtml(itemView.context.getString(R.string.labelFeedItemTitle, feedItem.username, itemView.context.getString(R.string.labelFeedItemLikePlaceholder)), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    title.text = HtmlCompat.fromHtml(
+                        itemView.context.getString(
+                            R.string.labelFeedItemTitle,
+                            feedItem.username,
+                            itemView.context.getString(R.string.labelFeedItemLikePlaceholder)
+                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
                     image.load(feedItem.imageUrl) {
                         crossfade(true)
                         transformations(RoundedCornersTransformation(15f))
                     }
                 }
                 FeedType.FOLLOW.name -> {
-                    title.text = HtmlCompat.fromHtml(itemView.context.getString(R.string.labelFeedItemTitle, feedItem.username, itemView.context.getString(R.string.labelFeedItemFollowPlaceholder)), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    title.text = HtmlCompat.fromHtml(
+                        itemView.context.getString(
+                            R.string.labelFeedItemTitle,
+                            feedItem.username,
+                            itemView.context.getString(R.string.labelFeedItemFollowPlaceholder)
+                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
                 }
                 FeedType.COMMENT.name -> {
-                    title.text = HtmlCompat.fromHtml(itemView.context.getString(R.string.labelFeedItemTitle, feedItem.username, itemView.context.getString(R.string.labelFeedItemCommentPlaceholder, feedItem.comment)), HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    title.text = HtmlCompat.fromHtml(
+                        itemView.context.getString(
+                            R.string.labelFeedItemTitle,
+                            feedItem.username,
+                            itemView.context.getString(
+                                R.string.labelFeedItemCommentPlaceholder,
+                                feedItem.comment
+                            )
+                        ), HtmlCompat.FROM_HTML_MODE_LEGACY
+                    )
                     image.load(feedItem.imageUrl) {
                         crossfade(true)
                         transformations(RoundedCornersTransformation(15f))

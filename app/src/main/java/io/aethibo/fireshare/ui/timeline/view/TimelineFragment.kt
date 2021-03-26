@@ -132,10 +132,6 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                 val postToComment = PostToCommentModel(postId, imageUrl, ownerId)
                 navigator.addFragment(CommentsFragment.newInstance(postToComment))
             }
-
-            setOnMenuClickListener { post, position ->
-
-            }
         }
     }
 }

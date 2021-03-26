@@ -26,14 +26,14 @@ import io.aethibo.fireshare.ui.utils.startBounceAnimation
 import timber.log.Timber
 
 class ProfilePostAdapter :
-        PagingDataAdapter<Post, ProfilePostAdapter.ProfilePostViewHolder>(Companion) {
+    PagingDataAdapter<Post, ProfilePostAdapter.ProfilePostViewHolder>(Companion) {
 
     companion object : DiffUtil.ItemCallback<Post>() {
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem.id == newItem.id
+            oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-                oldItem.hashCode() == newItem.hashCode()
+            oldItem.hashCode() == newItem.hashCode()
     }
 
     inner class ProfilePostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -49,10 +49,10 @@ class ProfilePostAdapter :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProfilePostViewHolder =
-            ProfilePostViewHolder(
-                    LayoutInflater.from(parent.context)
-                            .inflate(R.layout.item_profile_post, parent, false)
-            )
+        ProfilePostViewHolder(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_profile_post, parent, false)
+        )
 
     override fun onBindViewHolder(holder: ProfilePostViewHolder, position: Int) {
         val post = getItem(position) ?: return
@@ -61,8 +61,16 @@ class ProfilePostAdapter :
 
             menu.isVisible = FirebaseUtil.auth.uid == post.ownerId
 
+            val postTimestamp = DateUtils.getRelativeTimeSpanString(post.timestamp)
+
+            val formattedDate = when {
+                postTimestamp.contains("0 minutes ago") -> "A moment ago"
+                DateUtils.isToday(post.timestamp) -> "Today"
+                else -> postTimestamp
+            }
+
             username.text = post.authorUsername
-            timestamp.text = DateUtils.getRelativeTimeSpanString(post.timestamp)
+            timestamp.text = formattedDate
             caption.text = post.caption
 
             val likesSze = post.likedBy.size
@@ -104,7 +112,14 @@ class ProfilePostAdapter :
             }
 
             commentButton.setOnClickListener {
-                onCommentClickListener?.let { click -> click(post.id, post.imageUrl, post.ownerId, absoluteAdapterPosition) }
+                onCommentClickListener?.let { click ->
+                    click(
+                        post.id,
+                        post.imageUrl,
+                        post.ownerId,
+                        absoluteAdapterPosition
+                    )
+                }
             }
         }
     }

@@ -5,21 +5,18 @@
 
 package io.aethibo.fireshare.ui.createpost.view
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.pandora.bottomnavigator.BottomNavigator
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentCreatePostBinding
 import io.aethibo.fireshare.domain.request.PostRequestBody
@@ -43,32 +40,7 @@ class CreatePostFragment : Fragment(R.layout.fragment_create_post), View.OnClick
         fun newInstance() = CreatePostFragment()
     }
 
-    private lateinit var cropContent: ActivityResultLauncher<Any?>
-
-    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
-
-        override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity()
-                .setGuidelines(CropImageView.Guidelines.ON)
-                .getIntent(requireContext())
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            return CropImage.getActivityResult(intent)?.uri
-        }
-    }
-
     private var currentImageUri: Uri? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        cropContent = registerForActivityResult(cropActivityResultContract) {
-            it?.let {
-                viewModel.setCurrentImageUri(it)
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -130,9 +102,16 @@ class CreatePostFragment : Fragment(R.layout.fragment_create_post), View.OnClick
         binding.btnPost.setOnClickListener(this)
     }
 
+    private fun launchImagePicker() {
+        ImagePicker.with(this)
+            .crop()
+            .compress(2048)
+            .start()
+    }
+
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.btnSetPostImage, R.id.ivPostImage -> cropContent.launch(null)
+            R.id.btnSetPostImage, R.id.ivPostImage -> launchImagePicker()
             R.id.btnPost -> currentImageUri?.let { uri ->
                 val body = PostRequestBody(
                     caption = binding.etPostDescription.text.toString(),
@@ -140,6 +119,22 @@ class CreatePostFragment : Fragment(R.layout.fragment_create_post), View.OnClick
                 )
                 viewModel.createPost(body)
             } ?: snackBar(getString(R.string.error_no_image_chosen))
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val fileUri: Uri? = data?.data
+
+                fileUri?.let {
+                    binding.ivPostImage.load(it)
+                    viewModel.setCurrentImageUri(it)
+                }
+            }
+            ImagePicker.RESULT_ERROR -> snackBar(ImagePicker.getError(data))
+            else -> snackBar("Task cancelled!")
         }
     }
 }

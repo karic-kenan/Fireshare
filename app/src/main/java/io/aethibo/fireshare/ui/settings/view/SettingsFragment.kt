@@ -5,13 +5,12 @@
 
 package io.aethibo.fireshare.ui.settings.view
 
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -19,8 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import by.kirich1409.viewbindingdelegate.viewBinding
 import coil.load
 import coil.transform.CircleCropTransformation
-import com.theartofdev.edmodo.cropper.CropImage
-import com.theartofdev.edmodo.cropper.CropImageView
+import com.github.dhaval2404.imagepicker.ImagePicker
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentSettingsBinding
 import io.aethibo.fireshare.domain.User
@@ -44,32 +42,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
 
     companion object {
         fun newInstance() = SettingsFragment()
-    }
-
-    private val cropActivityResultContract = object : ActivityResultContract<Any?, Uri?>() {
-
-        override fun createIntent(context: Context, input: Any?): Intent {
-            return CropImage.activity()
-                    .setAspectRatio(1, 1)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .getIntent(requireContext())
-        }
-
-        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
-            return CropImage.getActivityResult(intent)?.uri
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        cropContent = registerForActivityResult(cropActivityResultContract) { uri ->
-            uri?.let {
-                viewModel.setCurrentImageUri(it)
-
-                binding.btnUpdateProfile.isEnabled = true
-            }
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -173,10 +145,33 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
         viewModel.updateProfile(body)
     }
 
+    private fun launchImagePicker() {
+        ImagePicker.with(this)
+            .crop()
+            .compress(2048)
+            .start()
+    }
+
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.btnUpdateProfile -> updateUserProfileInfo()
-            R.id.ivProfileImage -> cropContent.launch(null)
+            R.id.ivProfileImage -> launchImagePicker()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val fileUri: Uri? = data?.data
+
+                fileUri?.let {
+                    viewModel.setCurrentImageUri(it)
+                    binding.btnUpdateProfile.isEnabled = true
+                }
+            }
+            ImagePicker.RESULT_ERROR -> snackBar(ImagePicker.getError(data))
+            else -> snackBar("Task cancelled!")
         }
     }
 }

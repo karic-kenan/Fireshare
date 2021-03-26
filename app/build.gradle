@@ -59,7 +59,8 @@ dependencies {
     implementation libs.parallaxImageView
     implementation libs.timber
     implementation libs.swipeRefreshLayout
-    api libs.imageCropper
+    implementation libs.imagePicker
+    implementation libs.activityResult
 
     // Firebase
     implementation libs.firebaseAuth

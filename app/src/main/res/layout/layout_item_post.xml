@@ -37,17 +37,6 @@
         app:layout_constraintTop_toBottomOf="@+id/postUsername"
         tools:text="4th July, 2020" />
 
-    <ImageButton
-        android:id="@+id/postMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:background="@null"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_menu_horizontal" />
-
     <com.github.abdularis.piv.VerticalScrollParallaxImageView
         android:id="@+id/postImage"
         android:layout_width="0dp"
