@@ -169,9 +169,4 @@ class ProfileViewModel(
             _followersCountStatus.value = result
         }
     }
-
-    fun logout() {
-        // Log out user
-        // Navigate back to auth fragment
-    }
 }

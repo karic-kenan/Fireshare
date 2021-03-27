@@ -5,11 +5,13 @@
 
 package io.aethibo.fireshare.ui.profile.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +25,7 @@ import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.framework.utils.Resource
+import io.aethibo.fireshare.ui.auth.AuthActivity
 import io.aethibo.fireshare.ui.base.BasePostViewModel
 import io.aethibo.fireshare.ui.base.BaseProfilePostFragment
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
@@ -74,8 +77,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_settings -> navigator.addFragment(SettingsFragment.newInstance())
-            R.id.menu_sign_out -> {
-            } // TODO: Log out user
+            R.id.menu_sign_out -> showLogoutDialog()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -116,7 +118,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     }
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
-                        snackBar(resource.message ?: "Unknown error occurred")
+                        snackBar(resource.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -143,7 +145,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     }
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
-                        snackBar(resource.message ?: "Unknown error occurred!")
+                        snackBar(resource.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -161,7 +163,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     }
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
-                        snackBar(value.message ?: "Unknown error occurred!")
+                        snackBar(value.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -179,7 +181,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     }
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
-                        snackBar(value.message ?: "Unknown error occurred!")
+                        snackBar(value.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -197,7 +199,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                     }
                     is Resource.Failure -> {
                         binding.profileProgressBar.isVisible = false
-                        snackBar(value.message ?: "Unknown error occurred!")
+                        snackBar(value.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -216,5 +218,22 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                 ?: getString(R.string.no_description)
         binding.profileHeader.tvProfileLocation.text = data.location.takeIf { it.isNotEmpty() }
                 ?: getString(R.string.no_location)
+    }
+
+    private fun showLogoutDialog() = AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.logoutDialogTitle))
+            .setMessage(getString(R.string.logoutDialogSubtitle))
+            .setPositiveButton(getString(R.string.actionYes)) { _, _ -> logout() }
+            .setNegativeButton(getString(R.string.actionCancel)) { _, _ -> }
+            .create()
+            .show()
+
+    private fun logout() {
+        auth.signOut().also {
+            Intent(requireContext(), AuthActivity::class.java).also {
+                startActivity(it)
+                requireActivity().finish()
+            }
+        }
     }
 }

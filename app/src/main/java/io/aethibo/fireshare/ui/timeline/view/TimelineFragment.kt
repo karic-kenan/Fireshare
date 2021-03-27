@@ -60,7 +60,10 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private fun setupAdapter() {
-        rvTimeline.adapter = timelineAdapter
+        rvTimeline.apply {
+            itemAnimator = null
+            adapter = timelineAdapter
+        }
     }
 
     private fun subscribeToObservers() {

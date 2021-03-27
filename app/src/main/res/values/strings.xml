@@ -4,6 +4,7 @@
     <!-- Misc -->
     <string name="actionDelete">Delete</string>
     <string name="actionCancel">Cancel</string>
+    <string name="actionYes">Yes</string>
     <string name="unknown_error">Unknown error occurred</string>
 
     <!-- Main menu -->
@@ -55,6 +56,10 @@
     <string name="profile_updated">Profile updated</string>
     <string name="update_profile">Update profile</string>
     <string name="label_username">\u0040%s</string>
+
+    <!-- Log out dialog -->
+    <string name="logoutDialogTitle">Log out</string>
+    <string name="logoutDialogSubtitle">Are you sure you want to log out?</string>
 
     <!-- Single post detail -->
     <string name="single_post_no_likes">No likes</string>
