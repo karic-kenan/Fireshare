@@ -62,6 +62,8 @@ class FeedAdapter : ListAdapter<ActivityFeedItem, FeedAdapter.FeedViewHolder>(Co
             avatar.load(feedItem.avatar) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
+                placeholder(R.drawable.default_user_image)
+                error(R.drawable.default_user_image)
             }
 
             val notificationTimestamp = DateUtils.getRelativeTimeSpanString(feedItem.timestamp)

@@ -28,16 +28,16 @@ class TimelineAdapter : ListAdapter<Post, TimelineAdapter.TimelineViewHolder>(Co
     companion object : DiffUtil.ItemCallback<Post>() {
 
         override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean =
-            oldItem.id == newItem.id
+                oldItem.id == newItem.id
 
         override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean =
-            oldItem.hashCode() == newItem.hashCode()
+                oldItem.hashCode() == newItem.hashCode()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TimelineViewHolder =
-        TimelineViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_item_post, parent, false)
-        )
+            TimelineViewHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.layout_item_post, parent, false)
+            )
 
     override fun onBindViewHolder(holder: TimelineViewHolder, position: Int) {
         holder.bind(getItem(position) ?: return)
@@ -61,7 +61,10 @@ class TimelineAdapter : ListAdapter<Post, TimelineAdapter.TimelineViewHolder>(Co
             avatar.load(post.authorProfilePictureUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
+                placeholder(R.drawable.default_user_image)
+                error(R.drawable.default_user_image)
             }
+
             image.load(post.imageUrl) {
                 crossfade(true)
                 transformations(RoundedCornersTransformation(10f))

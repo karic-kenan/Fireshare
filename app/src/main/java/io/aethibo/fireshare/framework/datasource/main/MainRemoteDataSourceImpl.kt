@@ -6,6 +6,7 @@
 package io.aethibo.fireshare.framework.datasource.main
 
 import android.net.Uri
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import io.aethibo.fireshare.data.remote.main.MainRemoteDataSource
 import io.aethibo.fireshare.domain.*
@@ -13,7 +14,6 @@ import io.aethibo.fireshare.domain.request.PostRequestBody
 import io.aethibo.fireshare.domain.request.ProfileUpdateRequestBody
 import io.aethibo.fireshare.framework.utils.AppConst
 import io.aethibo.fireshare.framework.utils.FirebaseUtil.auth
-import io.aethibo.fireshare.framework.utils.FirebaseUtil.firestore
 import io.aethibo.fireshare.framework.utils.FirebaseUtil.storage
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.framework.utils.safeCall
@@ -24,12 +24,12 @@ import java.util.*
 
 class MainRemoteDataSourceImpl : MainRemoteDataSource {
 
-    private val posts = firestore.collection(AppConst.postsCollection)
-    private val users = firestore.collection(AppConst.usersCollection)
-    private val comments = firestore.collection(AppConst.commentsCollection)
-    private val followers = firestore.collection(AppConst.followersCollection)
-    private val following = firestore.collection(AppConst.followingCollection)
-    private val feed = firestore.collection(AppConst.feedCollection)
+    private val posts = FirebaseFirestore.getInstance().collection(AppConst.postsCollection)
+    private val users = FirebaseFirestore.getInstance().collection(AppConst.usersCollection)
+    private val comments = FirebaseFirestore.getInstance().collection(AppConst.commentsCollection)
+    private val followers = FirebaseFirestore.getInstance().collection(AppConst.followersCollection)
+    private val following = FirebaseFirestore.getInstance().collection(AppConst.followingCollection)
+    private val feed = FirebaseFirestore.getInstance().collection(AppConst.feedCollection)
 
     /**
      * User
@@ -315,7 +315,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
 
                     var isLiked = false
 
-                    firestore.runTransaction { transaction ->
+                    FirebaseFirestore.getInstance().runTransaction { transaction ->
                         val uid = auth.uid!!
                         val postResult = transaction.get(
                                 posts.document(post.ownerId).collection(AppConst.usersPostsCollection)

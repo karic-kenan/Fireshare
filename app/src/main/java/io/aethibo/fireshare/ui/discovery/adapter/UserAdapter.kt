@@ -34,7 +34,10 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallba
             ivProfileAvatar.load(item.photoUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
+                placeholder(R.drawable.default_user_image)
+                error(R.drawable.default_user_image)
             }
+
             tvUsername.text = item.username
 
             this.setOnClickListener {

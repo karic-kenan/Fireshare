@@ -5,12 +5,12 @@
 
 package io.aethibo.fireshare.framework.datasource.auth
 
+import com.google.firebase.firestore.FirebaseFirestore
 import io.aethibo.fireshare.data.remote.auth.AuthRemoteDataSource
 import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.domain.request.LoginRequestBody
 import io.aethibo.fireshare.domain.request.RegisterRequestBody
 import io.aethibo.fireshare.framework.utils.AppConst
-import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.framework.utils.FirebaseUtil.auth
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.framework.utils.safeCall
@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 class AuthenticationDataSourceImpl : AuthRemoteDataSource {
 
     private val usersCollection =
-            FirebaseUtil.firestore.collection(AppConst.usersCollection)
+            FirebaseFirestore.getInstance().collection(AppConst.usersCollection)
 
     override suspend fun login(body: LoginRequestBody) = withContext(Dispatchers.IO) {
         safeCall {

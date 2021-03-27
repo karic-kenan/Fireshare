@@ -94,17 +94,6 @@
         app:layout_constraintTop_toTopOf="@+id/postLikeCountTxt"
         app:srcCompat="@drawable/ic_comment" />
 
-    <TextView
-        android:id="@+id/postCommentCountTxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:fontFamily="@font/open_sans_regular"
-        app:layout_constraintBottom_toBottomOf="@+id/postCommentButton"
-        app:layout_constraintStart_toEndOf="@+id/postCommentButton"
-        app:layout_constraintTop_toTopOf="@+id/postCommentButton"
-        tools:text="64" />
-
     <View
         android:id="@+id/postDivider"
         android:layout_width="match_parent"

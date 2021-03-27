@@ -78,8 +78,8 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                     }
                     is Resource.Failure -> {
                         binding.pbTimeline.isVisible = false
-                        Timber.e("Error: ${value.message ?: "Unknown error occurred!"}")
-                        snackBar("Error: ${value.message ?: "Unknown error occurred!"}")
+                        Timber.e("Error: ${value.message ?: getString(R.string.unknown_error)}")
+                        snackBar("Error: ${value.message ?: getString(R.string.unknown_error)}")
                     }
                 }
             }
@@ -92,9 +92,17 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                     is Resource.Loading -> currentLikedIndex?.let {
                     }
                     is Resource.Success -> currentLikedIndex?.let {
+                        /**
+                         * Todo: Needs pagination.
+                         * In this case, notify item changed will update our like button
+                         * and getting timeline will perform diff utils, that is
+                         * only load items that changed. In this case it's single post
+                         */
+                        timelineAdapter.notifyItemChanged(it)
+                        viewModel.getTimeline()
                     }
                     is Resource.Failure -> currentLikedIndex?.let {
-                        snackBar(value.message ?: "Unknown error occurred!")
+                        snackBar(value.message ?:getString(R.string.unknown_error))
                     }
                 }
             }

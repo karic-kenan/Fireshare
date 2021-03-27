@@ -11,7 +11,6 @@ object AppConst {
     const val followingCollection: String = "following"
     const val commentsCollection: String = "comments"
     const val feedCollection: String = "feed"
-    const val timelineCollection: String = "timeline"
 
     /**
      * Sub-collections
@@ -21,7 +20,6 @@ object AppConst {
     const val userFollowersCollection: String = "userFollowers"
     const val userFollowingCollection: String = "userFollowing"
     const val userFeedCollection: String = "feedItems"
-    const val userTimelineCollection: String = "timelinePosts"
 
     const val MAX_USERNAME_LENGTH = 8
     const val MIN_USERNAME_LENGTH = 3
@@ -29,6 +27,5 @@ object AppConst {
 
     const val PAGE_SIZE = 5
 
-    const val DEFAULT_PROFILE_PICTURE_URL =
-            "https://firebasestorage.googleapis.com/v0/b/fireshare-b942b.appspot.com/o/img_avatar.png?alt=media&token=ad03014d-d81e-4691-9b84-8e3a4548ceb7"
+    const val DEFAULT_PROFILE_PICTURE_URL = "https://firebasestorage.googleapis.com/v0/b/fireshare-b942b.appspot.com/o/default_user_image.png?alt=media&token=4bb13702-7f87-47a4-a975-5b04df6fc729"
 }

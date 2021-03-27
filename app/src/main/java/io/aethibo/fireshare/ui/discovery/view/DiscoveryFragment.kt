@@ -87,7 +87,7 @@ class DiscoveryFragment : Fragment(R.layout.fragment_discovery), SearchView.OnQu
                     is Resource.Failure -> {
                         binding.searchProgressBar.isVisible = false
                         binding.tvSearchPlaceholder.isVisible = true
-                        snackBar(value.message ?: "Unknown error occurred")
+                        snackBar(value.message ?: getString(R.string.unknown_error))
                     }
                 }
             }

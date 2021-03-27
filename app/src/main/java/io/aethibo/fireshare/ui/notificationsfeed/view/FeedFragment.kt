@@ -42,7 +42,10 @@ class FeedFragment : Fragment(R.layout.fragment_notifications_feed) {
     }
 
     private fun setupAdapter() {
-        binding.rvFeedList.adapter = feedAdapter
+        binding.rvFeedList.apply {
+            itemAnimator = null
+            adapter = feedAdapter
+        }
     }
 
     private fun subscribeToObservers() {
