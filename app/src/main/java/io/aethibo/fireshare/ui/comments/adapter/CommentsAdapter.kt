@@ -56,8 +56,16 @@ class CommentsAdapter : ListAdapter<Comment, CommentsAdapter.CommentsViewHolder>
                 transformations(CircleCropTransformation())
             }
 
+            val commentTimestamp = DateUtils.getRelativeTimeSpanString(item.timestamp)
+
+            val formattedDate = when {
+                commentTimestamp.contains("0 minutes ago") -> "A moment ago"
+                DateUtils.isToday(item.timestamp) -> "Today"
+                else -> commentTimestamp
+            }
+
             username.text = item.authorUsername
-            date.text = DateUtils.getRelativeTimeSpanString(item.timestamp)
+            date.text = formattedDate
             commentText.text = item.comment
 
             commentMenu.isVisible = item.userId == FirebaseAuth.getInstance().uid
