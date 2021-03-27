@@ -19,7 +19,20 @@ import org.koin.dsl.module
 val viewModelsModule = module {
     viewModel { AuthViewModel(get(), get()) }
     viewModel { CreatePostViewModel(get()) }
-    viewModel { ProfileViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { ProfileViewModel(
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get(),
+        get()
+    ) }
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { CommentsViewModel(get(), get(), get(), get(), get()) }
     viewModel { DiscoveryViewModel(get()) }

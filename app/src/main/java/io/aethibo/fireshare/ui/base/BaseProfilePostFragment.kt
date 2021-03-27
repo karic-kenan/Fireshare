@@ -52,11 +52,11 @@ abstract class BaseProfilePostFragment(layoutId: Int) : Fragment(layoutId) {
             baseViewModel.toggleLikeForPost(post)
         }
 
-        profilePostAdapter.setOnMenuClickListener { post, position ->
-            viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post, navigator)
+        profilePostAdapter.setOnMenuClickListener { post, _ ->
+            viewModel.singlePostOptionsMenuClicked(requireContext(), layoutInflater, post)
         }
 
-        profilePostAdapter.setOnCommentClickListener { postId, imageUrl, ownerId, position ->
+        profilePostAdapter.setOnCommentClickListener { postId, imageUrl, ownerId, _ ->
             val tempPost = PostToCommentModel(postId, imageUrl, ownerId)
             navigator.addFragment(CommentsFragment.newInstance(tempPost))
         }

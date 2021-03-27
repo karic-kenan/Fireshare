@@ -16,7 +16,6 @@ import androidx.paging.cachedIn
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.firestore.FirebaseFirestore
-import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.FollowResponseBody
 import io.aethibo.fireshare.domain.Post
@@ -32,19 +31,18 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class ProfileViewModel(
-        getSingleUser: GetSingleUserUseCase,
-        likePostUseCase: LikePostUseCase,
-        updatePost: UpdatePostUseCase,
-        private val deletePost: DeletePostUseCase,
-        private val followUser: FollowUserUseCase,
-        private val isFollowing: CheckIsFollowingUseCase,
-        private val postsCount: GetPostsCountUseCase,
-        private val followingCount: GetFollowingCountUseCase,
-        private val followersCount: GetFollowersCountUseCase,
-        addLike: FeedAddLikeUseCase,
-        removeLike: FeedRemoveLikeUseCase,
-        addFollow: FeedAddFollowUseCase,
-        removeFollow: FeedRemoveFollowUseCase
+    getSingleUser: GetSingleUserUseCase,
+    likePostUseCase: LikePostUseCase,
+    private val deletePost: DeletePostUseCase,
+    private val followUser: FollowUserUseCase,
+    private val isFollowing: CheckIsFollowingUseCase,
+    private val postsCount: GetPostsCountUseCase,
+    private val followingCount: GetFollowingCountUseCase,
+    private val followersCount: GetFollowersCountUseCase,
+    addLike: FeedAddLikeUseCase,
+    removeLike: FeedRemoveLikeUseCase,
+    addFollow: FeedAddFollowUseCase,
+    removeFollow: FeedRemoveFollowUseCase
 ) : BasePostViewModel(getSingleUser, likePostUseCase, addLike, removeLike, addFollow, removeFollow) {
 
     private val _deletePostStatus: MutableStateFlow<Resource<Post>> = MutableStateFlow(Resource.Init())
@@ -78,10 +76,9 @@ class ProfileViewModel(
     }
 
     fun singlePostOptionsMenuClicked(
-            context: Context,
-            layoutInflater: LayoutInflater,
-            post: Post,
-            navigator: BottomNavigator
+        context: Context,
+        layoutInflater: LayoutInflater,
+        post: Post
     ) {
         val builder = BottomSheetDialog(context)
         val dialogView = layoutInflater.inflate(R.layout.single_post_options_menu, null)

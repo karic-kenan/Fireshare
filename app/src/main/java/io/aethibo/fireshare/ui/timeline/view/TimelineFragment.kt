@@ -17,7 +17,6 @@ import io.aethibo.fireshare.R
 import io.aethibo.fireshare.databinding.FragmentTimelineBinding
 import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.domain.PostToCommentModel
-import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.comments.view.CommentsFragment
 import io.aethibo.fireshare.ui.othersprofile.view.OthersProfileFragment
@@ -90,27 +89,11 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
             viewModel.likePostStatus.collect { value: Resource<Boolean> ->
                 when (value) {
                     is Resource.Init -> Timber.d("Initialized post liking")
-                    is Resource.Loading -> currentLikedIndex?.let { index ->
-//                        profilePostAdapter.peek(index)?.isLiking = true
-//                        profilePostAdapter.notifyItemChanged(index)
+                    is Resource.Loading -> currentLikedIndex?.let {
                     }
-                    is Resource.Success -> currentLikedIndex?.let { index ->
-                        val uid = FirebaseUtil.auth.uid!!
-                        val isLiked = value.data as Boolean
-
-                        /*profilePostAdapter.peek(index)?.apply {
-                            this.isLiked = isLiked
-                            isLiking = false
-
-                            if (isLiked) likedBy += uid else likedBy -= uid
-                        }
-
-                        profilePostAdapter.notifyItemChanged(index)*/
+                    is Resource.Success -> currentLikedIndex?.let {
                     }
-                    is Resource.Failure -> currentLikedIndex?.let { index ->
-//                        profilePostAdapter.peek(index)?.isLiking = false
-//                        profilePostAdapter.notifyItemChanged(index)
-
+                    is Resource.Failure -> currentLikedIndex?.let {
                         snackBar(value.message ?: "Unknown error occurred!")
                     }
                 }

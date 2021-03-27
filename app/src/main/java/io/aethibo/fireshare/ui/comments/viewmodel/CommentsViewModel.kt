@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import com.pandora.bottomnavigator.BottomNavigator
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.Comment
 import io.aethibo.fireshare.framework.utils.Resource
@@ -86,30 +85,18 @@ class CommentsViewModel(private val getComments: GetCommentsForPostUseCase,
         }
     }
 
-    private fun openCommentDialog(navigator: BottomNavigator, comment: Comment) {
-        // TODO: Add comment dialog if user should update comment?
-    }
-
     fun showCommentContextMenu(
-            context: Context,
-            layoutInflater: LayoutInflater,
-            navigator: BottomNavigator,
-            comment: Comment
+        context: Context,
+        layoutInflater: LayoutInflater,
+        comment: Comment
     ) {
         val builder = BottomSheetDialog(context)
         val dialogView = layoutInflater.inflate(R.layout.item_comment_options_menu, null)
-        // val editButton = dialogView.findViewById<MaterialButton>(R.id.option_edit_comment_button)
         val deleteButton =
                 dialogView.findViewById<MaterialButton>(R.id.option_delete_comment_button)
 
         builder.setContentView(dialogView)
         builder.show()
-
-        /*editButton.setOnClickListener {
-            Timber.d("Comment ${comment.id} edited")
-            openCommentDialog(navigator, comment)
-            builder.dismiss()
-        }*/
 
         deleteButton.setOnClickListener {
             AlertDialog.Builder(context)

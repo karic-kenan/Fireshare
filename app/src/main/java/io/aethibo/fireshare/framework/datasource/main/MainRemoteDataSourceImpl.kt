@@ -365,7 +365,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                 }
             }
 
-    override suspend fun createComment(postId: String, commentText: String): Resource<Comment> =
+    override suspend fun createComment(postId: String, comment: String): Resource<Comment> =
             withContext(Dispatchers.IO) {
                 safeCall {
 
@@ -373,19 +373,19 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                     val user = getSingleUser(uid).data!!
                     val commentId = UUID.randomUUID().toString()
 
-                    val comment = Comment(
+                    val commentRequestBody = Comment(
                             id = commentId,
                             userId = uid,
                             postId = postId,
-                            comment = commentText,
+                            comment = comment,
                             authorUsername = user.username,
                             authorProfilePictureUrl = user.photoUrl
                     )
 
                     comments.document(postId).collection(AppConst.postCommentsCollection)
-                            .document(commentId).set(comment).await()
+                            .document(commentId).set(commentRequestBody).await()
 
-                    Resource.Success(comment)
+                    Resource.Success(commentRequestBody)
                 }
             }
 
