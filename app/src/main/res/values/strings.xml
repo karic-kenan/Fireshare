@@ -4,6 +4,7 @@
     <!-- Misc -->
     <string name="actionDelete">Delete</string>
     <string name="actionCancel">Cancel</string>
+    <string name="unknown_error">Unknown error occurred</string>
 
     <!-- Main menu -->
     <string name="timeline">Timeline</string>
@@ -37,6 +38,8 @@
     <string name="register_subtitle">Sign up to continue</string>
     <string name="full_name">Enter your full name</string>
     <string name="username">Enter your username</string>
+    <string name="location">Enter your location</string>
+    <string name="bio">Enter your bio</string>
     <string name="repeated_password">Confirm your password</string>
     <string name="success_registration">Successfully registered account</string>
 
@@ -50,6 +53,7 @@
     <string name="no_description">No Description</string>
     <string name="no_location">No Location</string>
     <string name="profile_updated">Profile updated</string>
+    <string name="update_profile">Update profile</string>
     <string name="label_username">\u0040%s</string>
 
     <!-- Single post detail -->

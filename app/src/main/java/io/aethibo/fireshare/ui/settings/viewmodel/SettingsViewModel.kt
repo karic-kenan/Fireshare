@@ -23,18 +23,18 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
-    private val updateUserInfo: UpdateUserProfileUseCase,
-    private val getSingleUser: GetSingleUserUseCase,
-    private val dispatcher: CoroutineDispatcher = Dispatchers.Main
+        private val updateUserInfo: UpdateUserProfileUseCase,
+        private val getSingleUser: GetSingleUserUseCase,
+        private val dispatcher: CoroutineDispatcher = Dispatchers.Main
 ) : ViewModel() {
 
     private val _updateProfileStatus: MutableStateFlow<Resource<Any>> =
-        MutableStateFlow(Resource.Init())
+            MutableStateFlow(Resource.Init())
     val updateProfileStatus: StateFlow<Resource<Any>>
         get() = _updateProfileStatus
 
     private val _getUserStatus: MutableStateFlow<Resource<User>> =
-        MutableStateFlow(Resource.Loading())
+            MutableStateFlow(Resource.Loading())
     val getUserStatus: StateFlow<Resource<User>>
         get() = _getUserStatus
 
@@ -44,14 +44,14 @@ class SettingsViewModel(
 
     fun updateProfile(body: ProfileUpdateRequestBody) {
         when {
-            body.username.isEmpty() or body.bio.isEmpty() -> {
+            body.username.isEmpty() or body.location.isEmpty() or body.bio.isEmpty() -> {
                 val error = FireshareApp.instance.getString(R.string.error_input_empty)
                 _updateProfileStatus.value = Resource.Failure(error)
             }
             body.username.length < AppConst.MIN_USERNAME_LENGTH -> {
                 val error = FireshareApp.instance.getString(
-                    R.string.error_username_too_short,
-                    AppConst.MIN_USERNAME_LENGTH
+                        R.string.error_username_too_short,
+                        AppConst.MIN_USERNAME_LENGTH
                 )
                 _updateProfileStatus.value = Resource.Failure(error)
             }

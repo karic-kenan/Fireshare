@@ -10,7 +10,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -37,7 +36,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
     private val viewModel: SettingsViewModel by viewModel()
 
     private var curImageUri: Uri? = null
-    private lateinit var cropContent: ActivityResultLauncher<Any?>
     private lateinit var uid: String
 
     companion object {
@@ -57,6 +55,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
 
     private fun setupUi() {
         binding.etUsername.addTextChangedListener { binding.btnUpdateProfile.isEnabled = true }
+        binding.etLocation.addTextChangedListener { binding.btnUpdateProfile.isEnabled = true }
         binding.etBio.addTextChangedListener { binding.btnUpdateProfile.isEnabled = true }
     }
 
@@ -92,14 +91,14 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
                         binding.settingsProgressBar.isVisible = false
                         binding.btnUpdateProfile.isEnabled = true
 
-                        snackBar("Profile updated")
+                        snackBar(getString(R.string.profile_updated))
                     }
                     is Resource.Failure -> {
                         binding.settingsProgressBar.isVisible = false
                         binding.btnUpdateProfile.isEnabled = true
 
-                        Timber.e(resource.message ?: "Unknown error occurred!")
-                        snackBar(resource.message ?: "Unknown error occurred!")
+                        Timber.e(resource.message ?: getString(R.string.unknown_error))
+                        snackBar(resource.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -118,8 +117,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
                     is Resource.Failure -> {
                         binding.settingsProgressBar.isVisible = false
 
-                        Timber.e(resource.message ?: "Unknown error occurred!")
-                        snackBar(resource.message ?: "Unknown error occurred!")
+                        Timber.e(resource.message ?: getString(R.string.unknown_error))
+                        snackBar(resource.message ?: getString(R.string.unknown_error))
                     }
                 }
             }
@@ -133,23 +132,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
         }
         binding.etUsername.setText(data.username)
         binding.etBio.setText(data.bio)
+        binding.etLocation.setText(data.location)
         binding.btnUpdateProfile.isEnabled = false
     }
 
     private fun updateUserProfileInfo() {
-        val username = binding.etUsername.text.toString()
-        val bio = binding.etBio.text.toString()
+        val username = binding.etUsername.text?.trim().toString()
+        val location = binding.etLocation.text?.trim().toString()
+        val bio = binding.etBio.text?.trim().toString()
 
-        val body = ProfileUpdateRequestBody(uid, username, bio, curImageUri)
+        val body = ProfileUpdateRequestBody(uid, username, bio, location, curImageUri)
 
         viewModel.updateProfile(body)
     }
 
     private fun launchImagePicker() {
         ImagePicker.with(this)
-            .crop()
-            .compress(2048)
-            .start()
+                .crop()
+                .compress(2048)
+                .start()
     }
 
     override fun onClick(view: View?) {

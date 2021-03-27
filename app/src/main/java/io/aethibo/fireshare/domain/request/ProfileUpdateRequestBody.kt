@@ -11,5 +11,6 @@ data class ProfileUpdateRequestBody(
         val uidToUpdate: String = "",
         val username: String = "",
         val bio: String = "",
+        val location: String = "",
         val photoUrl: Uri? = null
 )

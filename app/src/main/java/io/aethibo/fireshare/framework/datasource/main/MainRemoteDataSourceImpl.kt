@@ -173,7 +173,7 @@ class MainRemoteDataSourceImpl : MainRemoteDataSource {
                         ).toString()
                     }
 
-                    val map = mutableMapOf("username" to body.username, "bio" to body.bio)
+                    val map = mutableMapOf("username" to body.username, "bio" to body.bio, "location" to body.location)
 
                     imageUrl?.let { uri -> map["photoUrl"] = uri }
 
