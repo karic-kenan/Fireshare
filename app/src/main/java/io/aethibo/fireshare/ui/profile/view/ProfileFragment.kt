@@ -212,12 +212,9 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
         binding.profileHeader.tvProfileName.text = data.displayName
         binding.profileHeader.tvProfileUsername.text =
                 getString(R.string.label_username, data.username)
-        binding.profileHeader.tvProfileBio.text = data.bio
-        binding.profileHeader.tvProfileLocation.text = data.location
-    }
-
-    override fun onDestroy() {
-        Timber.d("FragmentProfile is destroyed")
-        super.onDestroy()
+        binding.profileHeader.tvProfileBio.text = data.bio.takeIf { it.isNotEmpty() }
+                ?: getString(R.string.no_description)
+        binding.profileHeader.tvProfileLocation.text = data.location.takeIf { it.isNotEmpty() }
+                ?: getString(R.string.no_location)
     }
 }
