@@ -55,11 +55,15 @@ class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
 
     private fun setupButtonClickListeners() {
         binding.btnSignIn.setOnClickListener(this)
-        binding.mtSignUpLabel.setOnClickListener(this)
+        binding.incLayoutAuthLogin.mtSignUpLabel.setOnClickListener(this)
     }
 
-    private fun signIn() =
-            viewModel.login(binding.etEmail.text?.trim().toString(), binding.etPassword.text?.trim().toString())
+    private fun signIn() {
+        val email = binding.etEmail.text?.trim().toString()
+        val password = binding.etPassword.text?.trim().toString()
+
+        viewModel.login(email, password)
+    }
 
     private fun registerAccount() {
         if (findNavController().previousBackStackEntry != null)

@@ -32,9 +32,9 @@ class AuthViewModel(
     val loginStatus: StateFlow<Resource<AuthResult>>
         get() = _loginStatus
 
-    fun register(email: String, username: String, password: String, repeatedPassword: String) {
+    fun register(email: String, fullName: String, username: String, password: String, repeatedPassword: String) {
         val error = when {
-            email.isEmpty() or username.isEmpty() or password.isEmpty() -> {
+            email.isEmpty() or username.isEmpty() or fullName.isEmpty() or password.isEmpty() -> {
                 FireshareApp.instance.getString(R.string.error_input_empty)
             }
             password != repeatedPassword -> {
@@ -69,7 +69,7 @@ class AuthViewModel(
         _registerStatus.value = Resource.Loading()
 
         viewModelScope.launch(dispatchers) {
-            val registerRequestBody = RegisterRequestBody(username, email, password)
+            val registerRequestBody = RegisterRequestBody(fullName, username, email, password)
             val result = registerUser.invoke(registerRequestBody)
 
             _registerStatus.value = result

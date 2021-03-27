@@ -34,7 +34,7 @@ class AuthenticationDataSourceImpl : AuthRemoteDataSource {
         safeCall {
             val result = auth.createUserWithEmailAndPassword(body.email, body.password).await()
             val uid = result.user?.uid!!
-            val user = User(uid, body.username)
+            val user = User(uid, body.username, body.fullName)
             usersCollection.document(uid).set(user).await()
             Resource.Success(result)
         }

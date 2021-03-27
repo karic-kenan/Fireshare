@@ -35,6 +35,7 @@
     <!-- Register screen -->
     <string name="register_title">Hey, get on board</string>
     <string name="register_subtitle">Sign up to continue</string>
+    <string name="full_name">Enter your full name</string>
     <string name="username">Enter your username</string>
     <string name="repeated_password">Confirm your password</string>
     <string name="success_registration">Successfully registered account</string>

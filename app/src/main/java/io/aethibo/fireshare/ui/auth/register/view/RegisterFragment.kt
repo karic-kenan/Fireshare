@@ -57,15 +57,19 @@ class RegisterFragment : Fragment(R.layout.fragment_register), View.OnClickListe
 
     private fun setupButtonClickListeners() {
         binding.btnSignUp.setOnClickListener(this)
-        binding.mtSignInLabel.setOnClickListener(this)
+        binding.incLayoutAuthRegister.mtSignInLabel.setOnClickListener(this)
     }
 
-    private fun signUp() = viewModel.register(
-            binding.etEmail.text?.trim().toString(),
-            binding.etUsername.text?.trim().toString(),
-            binding.etPassword.text?.trim().toString(),
-            binding.etRepeatPassword.text?.trim().toString()
-    )
+    private fun signUp() {
+
+        val fullName = binding.etFullName.text?.trim().toString()
+        val username = binding.etUsername.text?.trim().toString()
+        val email = binding.etEmail.text?.trim().toString()
+        val password = binding.etPassword.text?.trim().toString()
+        val repeatPassword = binding.etRepeatPassword.text?.trim().toString()
+
+        viewModel.register(email, fullName, username, password, repeatPassword)
+    }
 
     private fun loginToAccount() {
         if (findNavController().previousBackStackEntry != null)
