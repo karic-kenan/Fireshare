@@ -85,8 +85,8 @@ class ProfilePostAdapter :
 
             image.load(post.imageUrl) {
                 crossfade(true)
-                placeholder(R.drawable.ic_launcher_foreground)
-                error(R.drawable.ic_launcher_foreground)
+                placeholder(R.drawable.ic_flame)
+                error(R.drawable.ic_flame)
             }
 
             likeButton.setImageResource(if (post.isLiked) R.drawable.ic_like else R.drawable.ic_unlike)

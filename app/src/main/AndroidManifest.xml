@@ -24,7 +24,5 @@
 
         <activity android:name=".MainActivity" />
 
-        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
     </application>
-
 </manifest>
