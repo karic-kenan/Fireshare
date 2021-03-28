@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Created by Karic Kenan on 27.3.2021
-  ~ Copyright (c) 2021 . All rights reserved.
-  -->
-
 <resources>
     <color name="ic_launcher_background">#E67E22</color>
 </resources>
