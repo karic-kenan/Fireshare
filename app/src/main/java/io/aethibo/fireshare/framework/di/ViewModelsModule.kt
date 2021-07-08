@@ -13,7 +13,7 @@ import io.aethibo.fireshare.ui.notificationsfeed.viewmodel.FeedViewModel
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.viewmodel.SettingsViewModel
 import io.aethibo.fireshare.ui.timeline.viewmodel.TimelineViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelsModule = module {

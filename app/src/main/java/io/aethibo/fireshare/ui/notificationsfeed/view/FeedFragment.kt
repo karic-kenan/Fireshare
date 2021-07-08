@@ -19,7 +19,7 @@ import io.aethibo.fireshare.ui.notificationsfeed.adapter.FeedAdapter
 import io.aethibo.fireshare.ui.notificationsfeed.viewmodel.FeedViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class FeedFragment : Fragment(R.layout.fragment_notifications_feed) {

@@ -28,7 +28,7 @@ import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class DiscoveryFragment : Fragment(R.layout.fragment_discovery), SearchView.OnQueryTextListener {

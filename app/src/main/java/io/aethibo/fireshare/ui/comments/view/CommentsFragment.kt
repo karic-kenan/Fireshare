@@ -21,7 +21,7 @@ import io.aethibo.fireshare.ui.comments.adapter.CommentsAdapter
 import io.aethibo.fireshare.ui.comments.viewmodel.CommentsViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.flow.collect
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class CommentsFragment : Fragment(R.layout.fragment_comments), View.OnClickListener {

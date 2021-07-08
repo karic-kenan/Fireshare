@@ -16,7 +16,7 @@ import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.auth.shared.AuthViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.flow.collectLatest
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {

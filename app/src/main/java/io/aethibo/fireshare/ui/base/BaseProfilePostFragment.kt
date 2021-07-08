@@ -18,7 +18,7 @@ import io.aethibo.fireshare.ui.profile.adapter.ProfilePostAdapter
 import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.coroutines.flow.collect
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 abstract class BaseProfilePostFragment(layoutId: Int) : Fragment(layoutId) {
