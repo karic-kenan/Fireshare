@@ -26,7 +26,6 @@ import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.settings.viewmodel.SettingsViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -120,6 +119,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), View.OnClickListe
                         Timber.e(resource.message ?: getString(R.string.unknown_error))
                         snackBar(resource.message ?: getString(R.string.unknown_error))
                     }
+                    else -> {}
                 }
             }
         }

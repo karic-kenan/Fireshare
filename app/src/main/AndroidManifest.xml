@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/splashScreenTheme">
-        <activity android:name="io.aethibo.fireshare.ui.auth.AuthActivity">
+        <activity
+            android:name="io.aethibo.fireshare.ui.auth.AuthActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

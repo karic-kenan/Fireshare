@@ -24,7 +24,6 @@ import io.aethibo.fireshare.ui.timeline.adapter.TimelineAdapter
 import io.aethibo.fireshare.ui.timeline.viewmodel.TimelineViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
 import kotlinx.android.synthetic.main.fragment_timeline.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -81,6 +80,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                         Timber.e("Error: ${value.message ?: getString(R.string.unknown_error)}")
                         snackBar("Error: ${value.message ?: getString(R.string.unknown_error)}")
                     }
+                    else -> {}
                 }
             }
         }

@@ -66,6 +66,7 @@ class FeedFragment : Fragment(R.layout.fragment_notifications_feed) {
                         Timber.e("Error: ${value.message ?: "Unknown error occurred"}")
                         snackBar("Error: ${value.message ?: "Unknown error occurred"}")
                     }
+                    else -> {}
                 }
             }
         }

@@ -32,7 +32,6 @@ import io.aethibo.fireshare.ui.profile.viewmodel.ProfileViewModel
 import io.aethibo.fireshare.ui.settings.view.SettingsFragment
 import io.aethibo.fireshare.ui.utils.formatLargeNumber
 import io.aethibo.fireshare.ui.utils.snackBar
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -165,6 +164,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                         binding.profileProgressBar.isVisible = false
                         snackBar(value.message ?: getString(R.string.unknown_error))
                     }
+                    else -> {}
                 }
             }
         }
@@ -183,6 +183,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                         binding.profileProgressBar.isVisible = false
                         snackBar(value.message ?: getString(R.string.unknown_error))
                     }
+                    else -> {}
                 }
             }
         }
@@ -201,6 +202,7 @@ open class ProfileFragment : BaseProfilePostFragment(R.layout.fragment_profile) 
                         binding.profileProgressBar.isVisible = false
                         snackBar(value.message ?: getString(R.string.unknown_error))
                     }
+                    else -> {}
                 }
             }
         }
