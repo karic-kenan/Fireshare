@@ -6,7 +6,7 @@
 package io.aethibo.fireshare.domain
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PostToCommentModel(val postId: String, val postImage: String, val ownerId: String) : Parcelable

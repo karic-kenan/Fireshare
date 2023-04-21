@@ -3,8 +3,8 @@ package io.aethibo.fireshare.domain
 import android.os.Parcelable
 import com.google.firebase.firestore.Exclude
 import com.google.firebase.firestore.IgnoreExtraProperties
-import kotlinx.android.parcel.Parcelize
-import java.util.*
+import kotlinx.parcelize.Parcelize
+import java.util.UUID
 
 @IgnoreExtraProperties
 @Parcelize

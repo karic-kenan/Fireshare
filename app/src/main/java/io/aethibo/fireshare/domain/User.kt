@@ -7,7 +7,7 @@ package io.aethibo.fireshare.domain
 
 import android.os.Parcelable
 import io.aethibo.fireshare.framework.utils.AppConst
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Parcelize
