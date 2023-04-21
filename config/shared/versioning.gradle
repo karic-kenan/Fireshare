@@ -1,6 +1,6 @@
 ext.buildConfig = [
         'minSdk'   : 24,
-        'targetSdk': 32,
+        'targetSdk': 33,
 
         'version'  : [
                 'major': 1,
@@ -24,22 +24,22 @@ ext.versions = [
         /**
          * Build
          */
-        kotlinVersion             : '1.7.10',
-        gradleToolsVersion        : '7.2.2',
+        kotlinVersion             : '1.8.20',
+        gradleToolsVersion        : '8.0.0',
 
         /**
          * Android
          */
-        appCompatVersion          : '1.4.2',
-        activityKtxVersion        : '1.5.0',
-        fragmentKtxVersion        : '1.3.6',
-        coreKtxVersion            : '1.8.0',
+        appCompatVersion          : '1.6.1',
+        activityKtxVersion        : '1.7.0',
+        fragmentKtxVersion        : '1.5.7',
+        coreKtxVersion            : '1.10.0',
         constraintLayoutVersion   : '2.1.4',
 
         /**
          * Dependencies
          */
-        materialDesignVersion     : '1.6.1',
+        materialDesignVersion     : '1.8.0',
         coilVersion               : '1.2.2',
         pagingVersion             : '3.1.1',
         viewBindingDelegateVersion: '1.4.1',
@@ -52,23 +52,23 @@ ext.versions = [
         /**
          * Architecture components
          */
-        viewModelVersion          : '2.5.0',
-        liveDataVersion           : '2.5.0',
-        lifeCycleVersion          : '2.5.0',
+        viewModelVersion          : '2.6.1',
+        liveDataVersion           : '2.6.1',
+        lifeCycleVersion          : '2.6.1',
 
         /**
          * Firebase
          */
-        authVersion               : '21.0.6',
-        firestoreVersion          : '24.2.1',
-        storageVersion            : '20.0.1',
+        authVersion               : '21.3.0',
+        firestoreVersion          : '24.5.0',
+        storageVersion            : '20.1.0',
         firebaseCoroutinesVersion : '1.1.1',
 
         /**
          * Navigation components
          */
-        navigationVersion         : '2.5.1',
-        navigationSafeArgsVersion : '2.4.1',
+        navigationVersion         : '2.5.3',
+        navigationSafeArgsVersion : '2.5.3',
         pandoraVersion            : '1.8',
 
         /**
@@ -87,10 +87,10 @@ ext.versions = [
          */
         coroutinesTestVersion     : '1.6.4',
         junitTestVersion          : '4.13.2',
-        extJunitTetVersion        : '1.1.3',
-        espressoTestVersion       : '3.4.0',
+        extJunitTetVersion        : '1.1.5',
+        espressoTestVersion       : '3.5.1',
         okhttpTestVersion         : '5.0.0-alpha.2',
-        coreTestVersion           : '2.1.0'
+        coreTestVersion           : '2.2.0'
 ]
 
 ext.libs = [
