@@ -23,7 +23,6 @@ import io.aethibo.fireshare.ui.othersprofile.view.OthersProfileFragment
 import io.aethibo.fireshare.ui.timeline.adapter.TimelineAdapter
 import io.aethibo.fireshare.ui.timeline.viewmodel.TimelineViewModel
 import io.aethibo.fireshare.ui.utils.snackBar
-import kotlinx.android.synthetic.main.fragment_timeline.*
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
@@ -58,7 +57,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
     }
 
     private fun setupAdapter() {
-        rvTimeline.apply {
+        binding.rvTimeline.apply {
             itemAnimator = null
             adapter = timelineAdapter
         }
@@ -75,11 +74,13 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                         val result = value.data as List<Post>
                         timelineAdapter.submitList(result)
                     }
+
                     is Resource.Failure -> {
                         binding.pbTimeline.isVisible = false
                         Timber.e("Error: ${value.message ?: getString(R.string.unknown_error)}")
                         snackBar("Error: ${value.message ?: getString(R.string.unknown_error)}")
                     }
+
                     else -> {}
                 }
             }
@@ -91,6 +92,7 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                     is Resource.Init -> Timber.d("Initialized post liking")
                     is Resource.Loading -> currentLikedIndex?.let {
                     }
+
                     is Resource.Success -> currentLikedIndex?.let {
                         /**
                          * Todo: Needs pagination.
@@ -101,8 +103,9 @@ class TimelineFragment : Fragment(R.layout.fragment_timeline) {
                         timelineAdapter.notifyItemChanged(it)
                         viewModel.getTimeline()
                     }
+
                     is Resource.Failure -> currentLikedIndex?.let {
-                        snackBar(value.message ?:getString(R.string.unknown_error))
+                        snackBar(value.message ?: getString(R.string.unknown_error))
                     }
                 }
             }

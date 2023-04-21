@@ -23,7 +23,6 @@ import io.aethibo.fireshare.domain.Post
 import io.aethibo.fireshare.framework.utils.FirebaseUtil
 import io.aethibo.fireshare.ui.utils.formatLargeNumber
 import io.aethibo.fireshare.ui.utils.startBounceAnimation
-import timber.log.Timber
 
 class ProfilePostAdapter :
         PagingDataAdapter<Post, ProfilePostAdapter.ProfilePostViewHolder>(Companion) {
@@ -95,7 +94,6 @@ class ProfilePostAdapter :
              * Click listeners
              */
             likeButton.setOnClickListener {
-                Timber.d("Like clicked")
                 onLikeClickListener?.let { click ->
                     if (!post.isLiking) {
                         click(post, absoluteAdapterPosition)
@@ -105,7 +103,6 @@ class ProfilePostAdapter :
             }
 
             menu.setOnClickListener {
-                Timber.d("Menu clicked")
                 onMenuClickListener?.let { click ->
                     click(post, absoluteAdapterPosition)
                 }

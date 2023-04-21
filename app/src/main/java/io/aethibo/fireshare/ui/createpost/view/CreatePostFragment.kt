@@ -24,8 +24,6 @@ import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.createpost.viewmodel.CreatePostViewModel
 import io.aethibo.fireshare.ui.utils.slideUpViews
 import io.aethibo.fireshare.ui.utils.snackBar
-import kotlinx.android.synthetic.main.fragment_create_post.*
-import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
@@ -89,7 +87,7 @@ class CreatePostFragment : Fragment(R.layout.fragment_create_post), View.OnClick
         viewModel.currentImageUrl.observe(viewLifecycleOwner) { value: Uri ->
             currentImageUri = value
 
-            btnSetPostImage.isVisible = false
+            binding.btnSetPostImage.isVisible = false
             binding.ivPostImage.load(currentImageUri) {
                 crossfade(true)
             }

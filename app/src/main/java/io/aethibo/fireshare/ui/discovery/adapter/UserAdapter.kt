@@ -8,6 +8,8 @@ package io.aethibo.fireshare.ui.discovery.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +17,6 @@ import coil.load
 import coil.transform.CircleCropTransformation
 import io.aethibo.fireshare.R
 import io.aethibo.fireshare.domain.User
-import kotlinx.android.synthetic.main.item_user.view.*
 
 class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallback()) {
 
@@ -31,14 +32,18 @@ class UserAdapter : ListAdapter<User, UserAdapter.UserViewHolder>(UserDiffCallba
     inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(item: User) = with(itemView) {
-            ivProfileAvatar.load(item.photoUrl) {
+
+            val avatar: ImageView = itemView.findViewById(R.id.ivProfileAvatar)
+            val username: TextView = itemView.findViewById(R.id.tvUsername)
+
+            avatar.load(item.photoUrl) {
                 crossfade(true)
                 transformations(CircleCropTransformation())
                 placeholder(R.drawable.default_user_image)
                 error(R.drawable.default_user_image)
             }
 
-            tvUsername.text = item.username
+            username.text = item.username
 
             this.setOnClickListener {
                 onUserClickListener?.let { click ->

@@ -18,8 +18,6 @@ import io.aethibo.fireshare.domain.User
 import io.aethibo.fireshare.framework.utils.Resource
 import io.aethibo.fireshare.ui.profile.view.ProfileFragment
 import io.aethibo.fireshare.ui.utils.snackBar
-import kotlinx.android.synthetic.main.layout_profile_header.*
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import timber.log.Timber
 
@@ -54,8 +52,7 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
         viewModel.checkIsFollowing(uid)
 
         subscribeToObservers()
-
-        btnProfileFollow?.setOnClickListener {
+        binding.profileHeader.btnProfileFollow.setOnClickListener {
             viewModel.toggleFollowUser(uid)
         }
     }
@@ -69,10 +66,9 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
                     is Resource.Success -> {
                         binding.profileHeader.btnProfileFollow.isVisible = true
                         val data = value.data as User
-                        Timber.d("User fetched: ${data.username}")
                     }
+
                     is Resource.Failure -> {
-                        Timber.d("Error: Failed to fetch user")
                         snackBar(value.message ?: "Unknown error occurred!")
                     }
                 }
@@ -103,9 +99,8 @@ class OthersProfileFragment : ProfileFragment(), View.OnClickListener {
                     setupFollowUi()
                 else
                     setupUnFollowUi()
-
-                Timber.d("User follow ${result.userId} is: ${result.isFollowing}")
             }
+
             is Resource.Failure -> {
                 binding.profileProgressBar.isVisible = false
                 snackBar(value.message ?: "Unknown error occurred!")
